@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievements & Ranks - SS KanhaiyaLal Agrawal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Teacher Portal - SS KanhaiyaLal Agrawal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -13,349 +13,549 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #0f172a;
+            background-color: #070d19;
             color: #f8fafc;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 15px; 
+            padding: 16px 12px 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 75%);
+            z-index: -1;
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 760px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeIn 0.3s ease-out;
         }
 
-        /* Top Bar */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Top Navigation */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #1e293b;
-            padding: 12px 18px; 
+            background: rgba(30, 41, 59, 0.7);
+            padding: 12px 16px;
             border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-            border: 1px solid #334155;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .brand {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 16px; 
+            font-size: 15px;
             font-weight: 600;
             color: #38bdf8;
         }
 
         .brand i {
-            background: rgba(56, 189, 248, 0.1);
-            padding: 8px; 
+            background: rgba(56, 189, 248, 0.15);
+            padding: 7px 9px;
             border-radius: 8px;
             color: #38bdf8;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .btn-dashboard {
-            background: #334155;
-            color: #f8fafc;
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
             text-decoration: none;
-            padding: 7px 14px; 
+            padding: 6px 12px;
             border-radius: 8px;
-            font-size: 13px; 
-            font-weight: 500;
+            font-size: 12px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid #475569;
+            transition: all 0.2s ease;
         }
 
         .btn-dashboard:hover {
-            background: #475569;
-            color: #ffffff;
+            background: rgba(56, 189, 248, 0.25);
+            transform: translateY(-1px);
         }
 
-        /* Clean Card Sections */
-        .section-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        /* Clean Panel Card */
+        .panel-card {
+            background: rgba(30, 41, 59, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 18px 16px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
         }
 
-        .section-title {
-            font-size: 15px;
+        .panel-title {
+            font-size: 14px;
             font-weight: 600;
             color: #38bdf8;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 10px;
-        }
-
-        /* Sleek Minimal My Rank Card */
-        .my-rank-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #0f172a;
-            padding: 15px 18px;
-            border-radius: 10px;
-            border: 1px solid #334155;
-        }
-
-        .my-rank-left h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #f8fafc;
-            margin-bottom: 2px;
-        }
-
-        .my-rank-left p {
-            font-size: 12px;
-            color: #94a3b8;
-        }
-
-        .rank-pill {
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-        }
-
-        /* Clean Top 5 Leaderboard */
-        .leaderboard-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #0f172a;
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            transition: 0.3s;
-        }
-
-        .leaderboard-item:hover {
-            border-color: #475569;
-        }
-
-        .student-main {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .rank-badge-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 700;
-            font-size: 14px;
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: #cbd5e1;
-        }
-
-        .rank-1 { background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.4); color: #facc15; }
-        .rank-2 { background: rgba(203, 213, 225, 0.15); border-color: rgba(203, 213, 225, 0.4); color: #cbd5e1; }
-        .rank-3 { background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.4); color: #fb923c; }
-
-        .student-name-text {
-            font-size: 14px;
-            font-weight: 600;
-            color: #f8fafc;
-        }
-
-        .student-meta-text {
-            font-size: 11px;
-            color: #94a3b8;
-        }
-
-        .student-percentage {
-            font-size: 13px;
-            font-weight: 600;
-            color: #38bdf8;
-            background: #1e293b;
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid #334155;
-            white-space: nowrap;
-        }
-
-        /* Horizontal Scrollable Feedback Cards */
-        .feedback-scroll-container {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             padding-bottom: 8px;
-            scroll-snap-type: x mandatory;
-            min-height: 120px;
         }
 
-        .feedback-scroll-container::-webkit-scrollbar {
-            height: 6px;
-        }
-        .feedback-scroll-container::-webkit-scrollbar-track {
-            background: #0f172a;
-            border-radius: 3px;
-        }
-        .feedback-scroll-container::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 3px;
+        /* Form Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
 
-        .feedback-card {
-            min-width: 280px;
-            max-width: 300px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 15px;
-            flex-shrink: 0;
-            scroll-snap-align: start;
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: 0.3s;
+            gap: 5px;
         }
 
-        .feedback-card:hover {
-            border-color: #475569;
-        }
-
-        .feedback-card.general {
-            border-left: 3px solid #38bdf8;
-        }
-
-        .feedback-card.personal {
-            border-left: 3px solid #22c55e;
-        }
-
-        .feedback-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+        label {
             font-size: 11px;
-            color: #38bdf8;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
-        .feedback-card.personal .feedback-card-header {
-            color: #22c55e;
-        }
-
-        .feedback-card-body {
+        .form-control {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            padding: 9px 12px;
+            border-radius: 8px;
             font-size: 12.5px;
-            color: #cbd5e1;
-            line-height: 1.5;
-        }
-
-        .no-data {
-            color: #64748b;
-            font-size: 13px;
-            text-align: center;
-            padding: 20px;
+            outline: none;
+            transition: all 0.2s ease;
             width: 100%;
         }
 
+        .form-control:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        textarea.form-control {
+            min-height: 70px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        /* Status Indicator */
+        .status-pill {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 8px;
+            border-radius: 5px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+            width: fit-content;
+            margin-top: 2px;
+        }
+
+        .status-pill.success {
+            display: inline-flex;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+        }
+
+        .status-pill.neutral {
+            display: inline-flex;
+            background: rgba(148, 163, 184, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #94a3b8;
+        }
+
+        /* Upload Container */
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .file-upload-btn {
+            position: relative;
+            overflow: hidden;
+            border: 1px dashed rgba(56, 189, 248, 0.35);
+            background: rgba(56, 189, 248, 0.06);
+            color: #38bdf8;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .file-upload-btn:hover {
+            background: rgba(56, 189, 248, 0.15);
+        }
+
+        .file-upload-btn input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-status {
+            display: none;
+            font-size: 11px;
+            color: #4ade80;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Submit Action Buttons */
+        .btn-submit {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-submit:hover {
+            background: #0284c7;
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* List Items */
+        .records-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .record-card {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .record-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .record-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #38bdf8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .record-desc {
+            font-size: 11px;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .record-meta {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #f87171;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-size: 10.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #ffffff;
+        }
+
+        .empty-state {
+            color: #64748b;
+            font-size: 12px;
+            text-align: center;
+            padding: 18px;
+        }
+
+        /* Mobile Layout Handling */
         @media (max-width: 600px) {
-            .my-rank-box { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .rank-pill { align-self: flex-start; }
-            .feedback-card { min-width: 260px; }
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .panel-card {
+                padding: 14px 12px;
+            }
+
+            .brand span {
+                font-size: 14px;
+            }
+
+            .btn-dashboard {
+                font-size: 11.5px;
+                padding: 5px 10px;
+            }
         }
     </style>
 </head>
-
-    <body>
+<body>
 
     <div class="container">
+        <!-- Top Bar -->
         <div class="top-bar">
             <div class="brand">
                 <i class="fa-solid fa-award"></i>
-                <span>Achievements & Ranks</span>
+                <span>Teacher Management Portal</span>
             </div>
             <a href="database.html" class="btn-dashboard">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
         </div>
 
-        <div class="section-card">
-            <div class="section-title">
-                <i class="fa-solid fa-user-graduate"></i> Your Standing
+        <!-- 1. Exam Result & Performance Manager -->
+        <div class="panel-card">
+            <div class="panel-title">
+                <i class="fa-solid fa-file-circle-check"></i> Student Performance & Exam Records
             </div>
-            <div class="my-rank-box">
-                <div class="my-rank-left">
-                    <h3 id="studentNameDisplay">Loading...</h3>
-                    <p>Class & Stream: <span id="classStreamDisplay" style="color:#38bdf8;">Loading...</span></p>
+
+            <div class="form-grid">
+                <!-- Student Email (Auto Fill) -->
+                <div class="form-group full-width">
+                    <label>Student Email Address</label>
+                    <input type="email" id="stEmail" class="form-control" placeholder="student@gmail.com" onblur="autoFetchStudent()" oninput="resetStatusPill()">
+                    <div id="emailPill" class="status-pill"></div>
                 </div>
-                <div class="rank-pill" id="myRankPill">
-                    <i class="fa-solid fa-ranking-star"></i> Rank --
+
+                <!-- Exam / Assessment -->
+                <div class="form-group full-width">
+                    <label>Examination / Assessment</label>
+                    <select id="stExamType" class="form-control">
+                        <option value="Half Yearly Examination" selected>Half Yearly Examination</option>
+                        <option value="Annual Examination">Annual Examination</option>
+                        <option value="Unit Test 1">Unit Test 1</option>
+                        <option value="Unit Test 2">Unit Test 2</option>
+                        <option value="Pre-Board Examination">Pre-Board Examination</option>
+                        <option value="Monthly Assessment">Monthly Assessment</option>
+                    </select>
+                </div>
+
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input type="text" id="stName" class="form-control" placeholder="Abhinav Pandey">
+                </div>
+
+                <!-- Roll Number -->
+                <div class="form-group">
+                    <label>Roll Number</label>
+                    <input type="text" id="stRoll" class="form-control" placeholder="101">
+                </div>
+
+                <!-- Class -->
+                <div class="form-group">
+                    <label>Class</label>
+                    <select id="stClass" class="form-control" onchange="handleClassChange()">
+                        <option value="Nursery">Nursery</option>
+                        <option value="LKG">LKG</option>
+                        <option value="UKG">UKG</option>
+                        <option value="1">Class 1st</option>
+                        <option value="2">Class 2nd</option>
+                        <option value="3">Class 3rd</option>
+                        <option value="4">Class 4th</option>
+                        <option value="5">Class 5th</option>
+                        <option value="6">Class 6th</option>
+                        <option value="7">Class 7th</option>
+                        <option value="8">Class 8th</option>
+                        <option value="9">Class 9th</option>
+                        <option value="10">Class 10th</option>
+                        <option value="11" selected>Class 11th</option>
+                        <option value="12">Class 12th</option>
+                    </select>
+                </div>
+
+                <!-- Section -->
+                <div class="form-group">
+                    <label>Section</label>
+                    <select id="stSection" class="form-control">
+                        <option value="B" selected>Section B</option>
+                        <option value="A">Section A</option>
+                        <option value="C">Section C</option>
+                        <option value="D">Section D</option>
+                        <option value="ALL">All Sections</option>
+                    </select>
+                </div>
+
+                <!-- Stream (11 & 12) -->
+                <div class="form-group full-width" id="streamGroup" style="display: flex;">
+                    <label>Stream</label>
+                    <select id="stStream" class="form-control">
+                        <option value="PCM" selected>Science (PCM)</option>
+                        <option value="PCB">Science (PCB)</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Arts">Humanities / Arts</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+
+                <!-- Rank & Performance Standing -->
+                <div class="form-group full-width">
+                    <label>Academic Standing / Rank</label>
+                    <select id="stRank" class="form-control">
+                        <option value="1">Rank 1 (Topper)</option>
+                        <option value="2">Rank 2 (Second Position)</option>
+                        <option value="3">Rank 3 (Third Position)</option>
+                        <option value="4">Rank 4</option>
+                        <option value="5">Rank 5</option>
+                        <option value="distinction">Above Average (Distinction)</option>
+                        <option value="average" selected>Average Standing</option>
+                        <option value="below_average">Below Average</option>
+                        <option value="needs_improvement">Needs Improvement</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+
+                <!-- Marks Calculation -->
+                <div class="form-group">
+                    <label>Marks Obtained</label>
+                    <input type="number" id="marksObtained" class="form-control" placeholder="465" oninput="calculatePercentage()">
+                </div>
+                <div class="form-group">
+                    <label>Maximum Marks</label>
+                    <input type="number" id="marksTotal" class="form-control" placeholder="500" value="500" oninput="calculatePercentage()">
+                </div>
+
+                <!-- Percentage -->
+                <div class="form-group full-width">
+                    <label>Calculated Percentage</label>
+                    <input type="text" id="stPercentage" class="form-control" placeholder="93.0%" style="color: #38bdf8; font-weight: 600;">
+                </div>
+
+                <!-- Description / Remarks -->
+                <div class="form-group full-width">
+                    <label>Evaluation & Remarks</label>
+                    <textarea id="stDescription" class="form-control" placeholder="Write performance assessment, strengths, and areas to improve..."></textarea>
+                </div>
+
+                <!-- Report Card File / Link -->
+                <div class="form-group full-width">
+                    <label>Report Card (PDF / Image - Max 1MB or Drive Link)</label>
+                    <div class="upload-container">
+                        <div class="file-upload-btn">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Document (Max 1MB)
+                            <input type="file" id="reportFileInput" accept="image/*,application/pdf" onchange="handleFileSelected(event)">
+                        </div>
+                        <div id="fileStatus" class="file-status"></div>
+                        <input type="url" id="reportLink" class="form-control" placeholder="https://drive.google.com/...">
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="section-card">
-            <div class="section-title">
-                <i class="fa-solid fa-trophy"></i> Top 5 Class Leaderboard
+                    <div class="teacher-review-box">
+                    <div style="font-size: 11px; font-weight: 700; color: #38bdf8; margin-bottom: 4px;">
+                        <i class="fa-solid fa-user-pen"></i> Teacher's Evaluation & Assessment:
+                    </div>
+                    <div id="modalDescription" style="white-space: pre-wrap;">No detailed remarks submitted for this assessment.</div>
+                </div>
             </div>
-            <div class="leaderboard-list" id="leaderboardListContainer">
-                <div class="no-data">Loading Leaderboard...</div>
-            </div>
-        </div>
-
-        <div class="section-card">
-            <div class="section-title">
-                <i class="fa-solid fa-comments"></i> Teachers' Remarks & Feedback
-            </div>
-            
-            <div class="feedback-scroll-container" id="feedbackContainer">
-                <div class="no-data">Loading Feedbacks...</div>
+            <div class="modal-footer">
+                <button class="btn-action" id="btnDownloadReport" onclick="openReportCard()">
+                    <i class="fa-solid fa-file-pdf"></i> View Official Report Card
+                </button>
             </div>
         </div>
-
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // Check Login Session
-        const loggedInUser = localStorage.getItem('loggedInUser');
-        const userEmail = localStorage.getItem('user_email');
+        const loggedInUser = localStorage.getItem('loggedInUser') || localStorage.getItem('username') || '';
+        const userEmail = (localStorage.getItem('user_email') || localStorage.getItem('loggedInEmail') || localStorage.getItem('userEmail') || '').toLowerCase().trim();
 
-        if (!loggedInUser) {
+        if (!loggedInUser && !userEmail) {
             window.location.href = 'index.html';
         }
 
-        // Display user name immediately
-        document.getElementById('studentNameDisplay').innerText = loggedInUser;
-
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
             authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
@@ -371,207 +571,235 @@
         }
         const db = firebase.firestore();
 
-        let currentStudentClass = "";
-        let currentStudentStream = "";
-        let leaderboardUnsubscribe = null;
-        let feedbackUnsubscribe = null;
+        let currentStudentClass = "11";
+        let currentStudentStream = "PCM";
+        let currentStudentSection = "B";
+        let myStudentRecord = null;
 
-        // Initialize Page Data
+        window.onload = function() {
+            document.getElementById('studentNameDisplay').innerText = loggedInUser || userEmail;
+            initAchievementsPortal();
+        };
+
         async function initAchievementsPortal() {
             await fetchStudentProfile();
-            setupRealtimeLeaderboard();
-            setupRealtimeFeedbacks();
+            listenLiveLeaderboard();
+            listenLiveFeedbacks();
         }
 
-        // 1. Fetch Student Profile for Class and Stream
+        // 1. Fetch Student Profile and Match Record
         async function fetchStudentProfile() {
             try {
-                const studentsRef = db.collection('students');
-                let querySnapshot = await studentsRef.where('name', '==', loggedInUser).get();
-                
-                if (querySnapshot.empty && userEmail) {
-                    querySnapshot = await studentsRef.where('email', '==', userEmail).get();
+                let snap = null;
+                if (userEmail) {
+                    snap = await db.collection('students').where('email', '==', userEmail).get();
+                }
+                if ((!snap || snap.empty) && loggedInUser) {
+                    snap = await db.collection('students').where('name', '==', loggedInUser).get();
                 }
 
-                if (!querySnapshot.empty) {
-                    const studentDoc = querySnapshot.docs[0].data();
-                    currentStudentClass = studentDoc.class || studentDoc.classSection || "";
-                    currentStudentStream = studentDoc.stream || "";
-                    const myRank = studentDoc.rank || 'N/A';
-                    
-                    document.getElementById('classStreamDisplay').innerText = `${currentStudentClass || 'N/A'} - ${currentStudentStream || 'General'}`;
-                    document.getElementById('myRankPill').innerHTML = `<i class="fa-solid fa-ranking-star"></i> Rank #${myRank}`;
+                if (snap && !snap.empty) {
+                    myStudentRecord = snap.docs[0].data();
+                    currentStudentClass = myStudentRecord.class || myStudentRecord.classSection || "11";
+                    currentStudentStream = myStudentRecord.stream || "PCM";
+                    currentStudentSection = myStudentRecord.section || "B";
+                    updateStandingUI(myStudentRecord);
                 } else {
-                    document.getElementById('classStreamDisplay').innerText = "Class Record Pending";
-                    document.getElementById('myRankPill').innerHTML = `<i class="fa-solid fa-ranking-star"></i> Rank --`;
+                    document.getElementById('classStreamDisplay').innerText = `Class 11 - PCM (Section B)`;
+                    document.getElementById('standingPillDisplay').innerHTML = `<i class="fa-solid fa-user-graduate"></i> Enrolled`;
                 }
             } catch (err) {
-                console.error("Error loading profile:", err);
+                console.error("Profile load error:", err);
             }
         }
 
-        // 2. Real-time Live Leaderboard Listener
-        function setupRealtimeLeaderboard() {
-            const leaderboardContainer = document.getElementById('leaderboardListContainer');
+        function updateStandingUI(data) {
+            document.getElementById('studentNameDisplay').innerText = data.name || loggedInUser;
+            document.getElementById('classStreamDisplay').innerText = `Class ${data.class || '11'}th (${data.stream || 'General'}) • Sec ${data.section || 'B'}`;
 
-            if (leaderboardUnsubscribe) leaderboardUnsubscribe();
+            let badgeHtml = '<i class="fa-solid fa-medal"></i> Active';
+            if (data.rank && ['1', '2', '3', '4', '5', 1, 2, 3, 4, 5].includes(data.rank)) {
+                badgeHtml = `<i class="fa-solid fa-trophy" style="color:#facc15;"></i> Rank #${data.rank}`;
+            } else if (data.standing) {
+                badgeHtml = `<i class="fa-solid fa-award"></i> ${data.standing.replace('_', ' ').toUpperCase()}`;
+            }
 
-            leaderboardUnsubscribe = db.collection('students')
-                .onSnapshot((snapshot) => {
-                    if (snapshot.empty) {
-                        leaderboardContainer.innerHTML = `<div class="no-data">No leaderboard records updated yet.</div>`;
-                        return;
-                    }
-
-                    let studentsList = [];
-
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        let classMatch = !currentStudentClass || data.class === currentStudentClass || data.classSection === currentStudentClass;
-                        let streamMatch = !currentStudentStream || data.stream === currentStudentStream || data.stream === "General" || data.stream === "All";
-
-                        if (classMatch && streamMatch) {
-                            studentsList.push({
-                                id: doc.id,
-                                ...data
-                            });
-                        }
-                    });
-
-                    // Update logged in user's live rank if changed by teacher
-                    const meInList = studentsList.find(s => s.name === loggedInUser || s.email === userEmail);
-                    if (meInList && meInList.rank) {
-                        document.getElementById('myRankPill').innerHTML = `<i class="fa-solid fa-ranking-star"></i> Rank #${meInList.rank}`;
-                    }
-
-                    // Sort by rank or score
-                    studentsList.sort((a, b) => {
-                        let rA = parseInt(a.rank) || 999;
-                        let rB = parseInt(b.rank) || 999;
-                        return rA - rB;
-                    });
-
-                    const top5 = studentsList.slice(0, 5);
-
-                    if (top5.length === 0) {
-                        leaderboardContainer.innerHTML = `<div class="no-data">Aapki Class/Stream ke liye koi ranks upload nahi hui hai.</div>`;
-                        return;
-                    }
-
-                    renderLeaderboard(top5);
-                }, (err) => {
-                    console.error("Error in real-time leaderboard:", err);
-                    leaderboardContainer.innerHTML = `<div class="no-data">Unable to connect to database.</div>`;
-                });
+            document.getElementById('standingPillDisplay').innerHTML = badgeHtml;
         }
 
-        function renderLeaderboard(top5List) {
-            const leaderboardContainer = document.getElementById('leaderboardListContainer');
-            leaderboardContainer.innerHTML = '';
-            let position = 1;
+        // 2. Real-time Leaderboard Listener (Class Top 5)
+        function listenLiveLeaderboard() {
+            const container = document.getElementById('leaderboardListContainer');
 
-            top5List.forEach(data => {
-                const isMe = (data.name === loggedInUser);
-                
-                let iconHtml = '';
-                let itemStyle = '';
-                
-                if (position === 1) {
-                    iconHtml = `<div class="rank-badge-icon rank-1"><i class="fa-solid fa-trophy"></i></div>`;
-                } else if (position === 2) {
-                    iconHtml = `<div class="rank-badge-icon rank-2"><i class="fa-solid fa-award"></i></div>`;
-                } else if (position === 3) {
-                    iconHtml = `<div class="rank-badge-icon rank-3"><i class="fa-solid fa-medal"></i></div>`;
-                } else {
-                    iconHtml = `<div class="rank-badge-icon">${position}</div>`;
+            db.collection('students').onSnapshot((snapshot) => {
+                if (snapshot.empty) {
+                    container.innerHTML = `<div class="no-data">No records updated yet.</div>`;
+                    return;
                 }
 
-                if (isMe) {
-                    itemStyle = `border-color: #38bdf8; background: rgba(56, 189, 248, 0.05);`;
+                let list = [];
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    const dEmail = (d.email || '').toLowerCase().trim();
+                    const dName = (d.name || '').toLowerCase().trim();
+
+                    // Update logged-in student live info if changed
+                    if ((userEmail && dEmail === userEmail) || (loggedInUser && dName === loggedInUser.toLowerCase().trim())) {
+                        myStudentRecord = d;
+                        updateStandingUI(d);
+                    }
+
+                    // Top 5 Filter (Only Ranked 1 to 5)
+                    let rankNum = parseInt(d.rank);
+                    if (!isNaN(rankNum) && rankNum >= 1 && rankNum <= 5) {
+                        list.push(d);
+                    }
+                });
+
+                list.sort((a, b) => (parseInt(a.rank) || 99) - (parseInt(b.rank) || 99));
+                const top5 = list.slice(0, 5);
+
+                if (top5.length === 0) {
+                    container.innerHTML = `<div class="no-data">Top rank records will appear here once published.</div>`;
+                    return;
                 }
 
-                const displayName = isMe ? `${data.name} (You)` : data.name;
-                const scoreText = data.score ? `${data.score}%` : (data.marks ? `${data.marks} Marks` : `Rank #${data.rank || position}`);
+                renderLeaderboard(top5);
+            }, err => {
+                console.error(err);
+                container.innerHTML = `<div class="no-data">Connecting to leaderboard...</div>`;
+            });
+        }
+
+        function renderLeaderboard(list) {
+            const container = document.getElementById('leaderboardListContainer');
+            container.innerHTML = '';
+
+            list.forEach(item => {
+                const isMe = (userEmail && (item.email || '').toLowerCase() === userEmail) || (loggedInUser && item.name === loggedInUser);
+                const pos = parseInt(item.rank) || 1;
+
+                let iconHtml = `<div class="rank-badge-icon">${pos}</div>`;
+                if (pos === 1) iconHtml = `<div class="rank-badge-icon rank-1"><i class="fa-solid fa-trophy"></i></div>`;
+                if (pos === 2) iconHtml = `<div class="rank-badge-icon rank-2"><i class="fa-solid fa-award"></i></div>`;
+                if (pos === 3) iconHtml = `<div class="rank-badge-icon rank-3"><i class="fa-solid fa-medal"></i></div>`;
+
+                const highlightStyle = isMe ? 'border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.05);' : '';
+                const displayName = isMe ? `${item.name} (You)` : item.name;
+                const scoreText = item.score || item.marks || `Rank #${pos}`;
 
                 const itemHTML = `
-                    <div class="leaderboard-item" style="${itemStyle}">
+                    <div class="leaderboard-item" style="${highlightStyle}">
                         <div class="student-main">
                             ${iconHtml}
                             <div>
                                 <div class="student-name-text">${displayName}</div>
-                                <div class="student-meta-text">Roll No: ${data.rollNo || data.roll || 'N/A'}</div>
+                                <div class="student-meta-text">Roll No: ${item.rollNo || item.roll || 'N/A'} • Sec ${item.section || 'B'}</div>
                             </div>
                         </div>
                         <div class="student-percentage">${scoreText}</div>
                     </div>
                 `;
-                leaderboardContainer.innerHTML += itemHTML;
-                position++;
+                container.innerHTML += itemHTML;
             });
         }
 
-        // 3. Real-time Live Teacher Remarks Listener
-        function setupRealtimeFeedbacks() {
-            const feedbackContainer = document.getElementById('feedbackContainer');
+        // 3. Real-time Faculty Remarks Carousel Listener
+        function listenLiveFeedbacks() {
+            const container = document.getElementById('feedbackContainer');
 
-            if (feedbackUnsubscribe) feedbackUnsubscribe();
+            db.collection('feedbacks').onSnapshot((snapshot) => {
+                if (snapshot.empty) {
+                    container.innerHTML = `<div class="no-data">No remarks or announcements posted yet.</div>`;
+                    return;
+                }
 
-            feedbackUnsubscribe = db.collection('feedbacks')
-                .onSnapshot((snapshot) => {
-                    if (snapshot.empty) {
-                        feedbackContainer.innerHTML = `<div class="no-data">No feedback or remarks posted by teachers yet.</div>`;
-                        return;
-                    }
+                container.innerHTML = '';
+                let count = 0;
 
-                    feedbackContainer.innerHTML = '';
-                    let count = 0;
+                snapshot.forEach(doc => {
+                    const fb = doc.data();
+                    const target = (fb.targetUser || '').toLowerCase().trim();
+                    const isGeneral = fb.type === 'general' || !fb.targetUser;
+                    const isPersonal = target === userEmail || (loggedInUser && target === loggedInUser.toLowerCase().trim());
 
-                    snapshot.forEach(doc => {
-                        const fb = doc.data();
-                        const isGeneral = fb.type === 'general' || fb.target === 'class' || !fb.targetUser;
-                        const isPersonalForMe = fb.targetUser === loggedInUser || fb.targetUser === userEmail;
+                    if (isGeneral || isPersonal) {
+                        count++;
+                        const cardType = isPersonal ? 'personal' : 'general';
+                        const headerTitle = isPersonal ? 'Personal Evaluation' : (fb.title || 'Class Notice');
+                        const iconClass = isPersonal ? 'fa-solid fa-user-check' : 'fa-solid fa-bullhorn';
+                        const teacherName = fb.teacherName || 'Faculty Member';
+                        const visibilityText = isPersonal ? 'Confidential • Only for you' : 'Class Announcement';
 
-                        if (isGeneral || isPersonalForMe) {
-                            count++;
-                            const cardType = isPersonalForMe ? 'personal' : 'general';
-                            const headerTitle = isPersonalForMe ? 'Personal Remark' : (fb.title || 'Announcement');
-                            const iconClass = isPersonalForMe ? 'fa-solid fa-user-pen' : 'fa-solid fa-bullhorn';
-                            const teacherName = fb.teacherName || fb.teacher || 'Faculty Member';
-                            const visibilityText = isPersonalForMe ? 'Visible to: Only You' : 'Visible to: Class';
-
-                            const cardHTML = `
-                                <div class="feedback-card ${cardType}">
-                                    <div>
-                                        <div class="feedback-card-header">
-                                            <span><i class="${iconClass}"></i> ${headerTitle}</span>
-                                            <span>${teacherName}</span>
-                                        </div>
-                                        <div class="feedback-card-body">
-                                            "${fb.message || fb.text || ''}"
-                                        </div>
+                        const cardHTML = `
+                            <div class="feedback-card ${cardType}">
+                                <div>
+                                    <div class="feedback-card-header">
+                                        <span><i class="${iconClass}"></i> ${headerTitle}</span>
+                                        <span>${teacherName}</span>
                                     </div>
-                                    <div style="font-size: 10px; color: #64748b; margin-top: 10px; border-top: 1px solid #334155; padding-top: 6px;">
-                                        ${visibilityText}
+                                    <div class="feedback-card-body">
+                                        "${fb.message || ''}"
                                     </div>
                                 </div>
-                            `;
-                            feedbackContainer.innerHTML += cardHTML;
-                        }
-                    });
-
-                    if (count === 0) {
-                        feedbackContainer.innerHTML = `<div class="no-data">No active remarks for you currently.</div>`;
+                                <div style="font-size: 10px; color: #64748b; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">
+                                    ${visibilityText}
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += cardHTML;
                     }
-                }, (err) => {
-                    console.error("Error loading feedbacks:", err);
-                    feedbackContainer.innerHTML = `<div class="no-data">Feedback system ready. Waiting for teacher updates.</div>`;
                 });
+
+                if (count === 0) {
+                    container.innerHTML = `<div class="no-data">No active remarks for your profile.</div>`;
+                }
+            }, err => {
+                console.error(err);
+            });
         }
 
-        // Run portal setup on load
-        window.onload = function() {
-            initAchievementsPortal();
+        // 4. Modal Open & Report Card Viewer Handlers
+        function openResultModal() {
+            const record = myStudentRecord || {};
+
+            document.getElementById('modalExamTitle').innerText = record.examType || "Academic Performance";
+            document.getElementById('modalScoreDisplay').innerText = record.score || record.marks || "Evaluation Pending";
+            document.getElementById('modalStandingText').innerText = record.standing ? `Assessment: ${record.standing.replace('_', ' ').toUpperCase()}` : "Regular Assessment";
+            document.getElementById('modalStudentName').innerText = record.name || loggedInUser;
+            document.getElementById('modalRollNo').innerText = record.rollNo || record.roll || "N/A";
+            document.getElementById('modalClassSec').innerText = `Class ${record.class || currentStudentClass} (${record.section || 'B'})`;
+            document.getElementById('modalStream').innerText = record.stream || currentStudentStream;
+            document.getElementById('modalDescription').innerText = record.description || "No specific remarks attached for this term evaluation.";
+
+            const btnDownload = document.getElementById('btnDownloadReport');
+            if (record.reportCardUrl && record.reportCardUrl.trim() !== '') {
+                btnDownload.style.display = 'inline-flex';
+            } else {
+                btnDownload.style.display = 'none';
+            }
+
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('resultModal');
+            if (event.target === modal) {
+                closeResultModal();
+            }
         };
+
+        function openReportCard() {
+            if (myStudentRecord && myStudentRecord.reportCardUrl) {
+                window.open(myStudentRecord.reportCardUrl, '_blank');
+            } else {
+                alert("No digital report card document is attached by the teacher.");
+            }
+        }
     </script>
 </body>
 </html>
