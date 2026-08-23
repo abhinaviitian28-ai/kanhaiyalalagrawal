@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Teacher Portal - SS KanhaiyaLal Agrawal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Achievements & Academic Standing - SS KanhaiyaLal Agrawal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -22,7 +22,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 16px 12px 30px;
+            padding: 16px 12px 35px;
             position: relative;
             overflow-x: hidden;
         }
@@ -40,46 +40,48 @@
 
         .container {
             width: 100%;
-            max-width: 760px;
+            max-width: 800px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.35s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Top Navigation */
+        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(30, 41, 59, 0.7);
-            padding: 12px 16px;
-            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.75);
+            padding: 12px 18px;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
             border: 1px solid rgba(56, 189, 248, 0.25);
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .brand {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 700;
             color: #38bdf8;
+            letter-spacing: 0.3px;
         }
 
         .brand i {
             background: rgba(56, 189, 248, 0.15);
-            padding: 7px 9px;
-            border-radius: 8px;
+            padding: 8px 10px;
+            border-radius: 9px;
             color: #38bdf8;
-            font-size: 14px;
+            font-size: 15px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
         .btn-dashboard {
@@ -87,14 +89,15 @@
             color: #38bdf8;
             border: 1px solid rgba(56, 189, 248, 0.3);
             text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 7px 13px;
+            border-radius: 9px;
+            font-size: 12.5px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
+            cursor: pointer;
         }
 
         .btn-dashboard:hover {
@@ -102,279 +105,440 @@
             transform: translateY(-1px);
         }
 
-        /* Clean Panel Card */
-        .panel-card {
-            background: rgba(30, 41, 59, 0.55);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* Standard Section Card */
+        .section-card {
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 14px;
-            padding: 18px 16px;
+            padding: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(8px);
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
         }
 
-        .panel-title {
+        .section-title {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             color: #38bdf8;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 9px;
+            letter-spacing: 0.2px;
         }
 
-        /* Form Layout */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        /* Premium Laurel Result Banner */
+        .premium-result-banner {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1px solid rgba(250, 204, 21, 0.35);
+            border-radius: 14px;
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .premium-result-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(250, 204, 21, 0.08), transparent);
+            transition: 0.5s;
+        }
+
+        .premium-result-banner:hover::before {
+            left: 100%;
+        }
+
+        .premium-result-banner:hover {
+            transform: translateY(-2px);
+            border-color: rgba(250, 204, 21, 0.6);
+            box-shadow: 0 12px 35px rgba(234, 179, 8, 0.15);
+        }
+
+        .banner-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .laurel-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(234, 179, 8, 0.15);
+            border: 1px solid rgba(234, 179, 8, 0.4);
+            color: #facc15;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .banner-details h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 2px;
+        }
+
+        .banner-details p {
+            font-size: 11.5px;
+            color: #94a3b8;
+        }
+
+        .banner-badge-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .standing-pill {
+            background: rgba(234, 179, 8, 0.15);
+            border: 1px solid rgba(234, 179, 8, 0.4);
+            color: #facc15;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 12.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .click-hint {
+            font-size: 11px;
+            color: #38bdf8;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Leaderboard List */
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            padding: 11px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.25s ease;
+        }
+
+        .leaderboard-item:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+        }
+
+        .student-main {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-        .full-width {
-            grid-column: 1 / -1;
+        .rank-badge-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 13px;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
         }
 
-        .form-group {
+        .rank-1 { background: rgba(234, 179, 8, 0.2); border-color: rgba(234, 179, 8, 0.5); color: #facc15; }
+        .rank-2 { background: rgba(203, 213, 225, 0.2); border-color: rgba(203, 213, 225, 0.5); color: #e2e8f0; }
+        .rank-3 { background: rgba(249, 115, 22, 0.2); border-color: rgba(249, 115, 22, 0.5); color: #fb923c; }
+
+        .student-name-text {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #f8fafc;
+        }
+
+        .student-meta-text {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .student-percentage {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 4px 10px;
+            border-radius: 7px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            white-space: nowrap;
+        }
+
+        /* Horizontal Remarks Carousel */
+        .feedback-scroll-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scroll-snap-type: x mandatory;
+            min-height: 120px;
+        }
+
+        .feedback-scroll-container::-webkit-scrollbar { height: 5px; }
+        .feedback-scroll-container::-webkit-scrollbar-track { background: #0f172a; border-radius: 3px; }
+        .feedback-scroll-container::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+        .feedback-card {
+            min-width: 275px;
+            max-width: 295px;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+            flex-shrink: 0;
+            scroll-snap-align: start;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            justify-content: space-between;
+            transition: all 0.25s ease;
         }
 
-        label {
+        .feedback-card:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+        }
+
+        .feedback-card.general { border-left: 3px solid #38bdf8; }
+        .feedback-card.personal { border-left: 3px solid #22c55e; }
+
+        .feedback-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
             font-size: 11px;
             font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
+            color: #38bdf8;
         }
 
-        .form-control {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #f8fafc;
-            padding: 9px 12px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            outline: none;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
+        .feedback-card.personal .feedback-card-header { color: #4ade80; }
 
-        .form-control:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
-        }
-
-        select.form-control {
-            cursor: pointer;
-        }
-
-        textarea.form-control {
-            min-height: 70px;
-            resize: vertical;
+        .feedback-card-body {
+            font-size: 12px;
+            color: #cbd5e1;
             line-height: 1.5;
         }
 
-        /* Status Indicator */
-        .status-pill {
-            font-size: 11px;
-            font-weight: 500;
-            padding: 3px 8px;
-            border-radius: 5px;
-            display: none;
-            align-items: center;
-            gap: 5px;
-            width: fit-content;
-            margin-top: 2px;
-        }
-
-        .status-pill.success {
-            display: inline-flex;
-            background: rgba(34, 197, 94, 0.12);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            color: #4ade80;
-        }
-
-        .status-pill.neutral {
-            display: inline-flex;
-            background: rgba(148, 163, 184, 0.1);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            color: #94a3b8;
-        }
-
-        /* Upload Container */
-        .upload-container {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .file-upload-btn {
-            position: relative;
-            overflow: hidden;
-            border: 1px dashed rgba(56, 189, 248, 0.35);
-            background: rgba(56, 189, 248, 0.06);
-            color: #38bdf8;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 11.5px;
-            font-weight: 600;
+        .no-data {
+            color: #64748b;
+            font-size: 12.5px;
             text-align: center;
-            cursor: pointer;
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* Result & Report Card Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 13, 25, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 14px;
+            animation: fadeInModal 0.25s ease-out;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #0f172a;
+            border: 1px solid rgba(234, 179, 8, 0.35);
+            width: 100%;
+            max-width: 520px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.6);
+        }
+
+        .modal-title-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-title-area h2 {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .close-btn {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 6px;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .file-upload-btn:hover {
-            background: rgba(56, 189, 248, 0.15);
+        .close-btn:hover {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
         }
 
-        .file-upload-btn input[type=file] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
+        .modal-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-height: 60vh;
+            overflow-y: auto;
         }
 
-        .file-status {
-            display: none;
-            font-size: 11px;
-            color: #4ade80;
-            align-items: center;
-            gap: 5px;
+        .laurel-showcase {
+            text-align: center;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.45);
+            border: 1px dashed rgba(234, 179, 8, 0.3);
+            border-radius: 12px;
         }
 
-        /* Submit Action Buttons */
-        .btn-submit {
+        .laurel-showcase .laurel-decor {
+            font-size: 22px;
+            color: #facc15;
+            margin-bottom: 4px;
+        }
+
+        .laurel-showcase .score-badge {
+            font-size: 18px;
+            font-weight: 800;
+            color: #38bdf8;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            background: #0f172a;
+        }
+
+        .info-cell {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 9px 12px;
+            border-radius: 8px;
+        }
+
+        .info-cell span {
+            font-size: 10.5px;
+            color: #94a3b8;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .info-cell b {
+            font-size: 12.5px;
+            color: #f8fafc;
+        }
+
+        .teacher-review-box {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 12.5px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .modal-footer {
+            padding: 14px 18px;
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-action {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
             color: #ffffff;
-            border: 1px solid rgba(56, 189, 248, 0.35);
-            padding: 10px 14px;
-            border-radius: 8px;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 9px 16px;
+            border-radius: 9px;
             font-size: 12.5px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 6px;
-            width: 100%;
-            margin-top: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.25);
+            transition: all 0.25s ease;
         }
 
-        .btn-submit:hover {
+        .btn-action:hover {
             background: #0284c7;
             transform: translateY(-1px);
         }
 
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* List Items */
-        .records-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 280px;
-            overflow-y: auto;
-        }
-
-        .record-card {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
-            padding: 10px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .record-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            min-width: 0;
-        }
-
-        .record-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: #38bdf8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .record-desc {
-            font-size: 11px;
-            color: #cbd5e1;
-            line-height: 1.4;
-        }
-
-        .record-meta {
-            font-size: 10px;
-            color: #64748b;
-        }
-
-        .btn-delete {
-            background: rgba(239, 68, 68, 0.12);
-            border: 1px solid rgba(239, 68, 68, 0.25);
-            color: #f87171;
-            padding: 5px 9px;
-            border-radius: 6px;
-            font-size: 10.5px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-
-        .btn-delete:hover {
-            background: rgba(239, 68, 68, 0.25);
-            color: #ffffff;
-        }
-
-        .empty-state {
-            color: #64748b;
-            font-size: 12px;
-            text-align: center;
-            padding: 18px;
-        }
-
-        /* Mobile Layout Handling */
         @media (max-width: 600px) {
-            .form-grid {
+            .premium-result-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .banner-badge-group {
+                align-items: flex-start;
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .modal-info-grid {
                 grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .panel-card {
-                padding: 14px 12px;
-            }
-
-            .brand span {
-                font-size: 14px;
-            }
-
-            .btn-dashboard {
-                font-size: 11.5px;
-                padding: 5px 10px;
             }
         }
     </style>
@@ -386,151 +550,95 @@
         <div class="top-bar">
             <div class="brand">
                 <i class="fa-solid fa-award"></i>
-                <span>Teacher Management Portal</span>
+                <span>Academic Standing & Ranks</span>
             </div>
             <a href="database.html" class="btn-dashboard">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
         </div>
 
-        <!-- 1. Exam Result & Performance Manager -->
-        <div class="panel-card">
-            <div class="panel-title">
-                <i class="fa-solid fa-file-circle-check"></i> Student Performance & Exam Records
+        <!-- 1. Interactive Laurel Result Banner (Click to open detailed modal) -->
+        <div class="premium-result-banner" id="resultBanner" onclick="openResultModal()">
+            <div class="banner-left">
+                <div class="laurel-icon-box">
+                    <i class="fa-solid fa-medal"></i>
+                </div>
+                <div class="banner-details">
+                    <h3 id="studentNameDisplay">Loading Profile...</h3>
+                    <p id="classStreamDisplay">Class & Stream: Pending</p>
+                </div>
             </div>
+            <div class="banner-badge-group">
+                <div class="standing-pill" id="standingPillDisplay">
+                    <i class="fa-solid fa-crown"></i> Standing: --
+                </div>
+                <div class="click-hint">
+                    View Report & Assessment <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
 
-            <div class="form-grid">
-                <!-- Student Email (Auto Fill) -->
-                <div class="form-group full-width">
-                    <label>Student Email Address</label>
-                    <input type="email" id="stEmail" class="form-control" placeholder="student@gmail.com" onblur="autoFetchStudent()" oninput="resetStatusPill()">
-                    <div id="emailPill" class="status-pill"></div>
+        <!-- 2. Top 5 Class Leaderboard -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fa-solid fa-trophy"></i> Top 5 Class Leaderboard
+            </div>
+            <div class="leaderboard-list" id="leaderboardListContainer">
+                <div class="no-data">Loading Leaderboard...</div>
+            </div>
+        </div>
+
+        <!-- 3. Teachers' Remarks & Feedback Horizontal Carousel -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fa-solid fa-comments"></i> Faculty Remarks & Notices
+            </div>
+            
+            <div class="feedback-scroll-container" id="feedbackContainer">
+                <div class="no-data">Loading Remarks...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Detailed Result & Report Card Modal -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title-area">
+                    <i class="fa-solid fa-certificate" style="color: #facc15;"></i>
+                    <h2 id="modalExamTitle">Examination Performance</h2>
+                </div>
+                <button class="close-btn" onclick="closeResultModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="laurel-showcase">
+                    <div class="laurel-decor">🌿 🏆 🌿</div>
+                    <div class="score-badge" id="modalScoreDisplay">Score: --</div>
+                    <div style="font-size: 11px; color: #94a3b8; margin-top: 3px;" id="modalStandingText">Standing Assessment</div>
                 </div>
 
-                <!-- Exam / Assessment -->
-                <div class="form-group full-width">
-                    <label>Examination / Assessment</label>
-                    <select id="stExamType" class="form-control">
-                        <option value="Half Yearly Examination" selected>Half Yearly Examination</option>
-                        <option value="Annual Examination">Annual Examination</option>
-                        <option value="Unit Test 1">Unit Test 1</option>
-                        <option value="Unit Test 2">Unit Test 2</option>
-                        <option value="Pre-Board Examination">Pre-Board Examination</option>
-                        <option value="Monthly Assessment">Monthly Assessment</option>
-                    </select>
-                </div>
-
-                <!-- Full Name -->
-                <div class="form-group">
-                    <label>Student Name</label>
-                    <input type="text" id="stName" class="form-control" placeholder="Abhinav Pandey">
-                </div>
-
-                <!-- Roll Number -->
-                <div class="form-group">
-                    <label>Roll Number</label>
-                    <input type="text" id="stRoll" class="form-control" placeholder="101">
-                </div>
-
-                <!-- Class -->
-                <div class="form-group">
-                    <label>Class</label>
-                    <select id="stClass" class="form-control" onchange="handleClassChange()">
-                        <option value="Nursery">Nursery</option>
-                        <option value="LKG">LKG</option>
-                        <option value="UKG">UKG</option>
-                        <option value="1">Class 1st</option>
-                        <option value="2">Class 2nd</option>
-                        <option value="3">Class 3rd</option>
-                        <option value="4">Class 4th</option>
-                        <option value="5">Class 5th</option>
-                        <option value="6">Class 6th</option>
-                        <option value="7">Class 7th</option>
-                        <option value="8">Class 8th</option>
-                        <option value="9">Class 9th</option>
-                        <option value="10">Class 10th</option>
-                        <option value="11" selected>Class 11th</option>
-                        <option value="12">Class 12th</option>
-                    </select>
-                </div>
-
-                <!-- Section -->
-                <div class="form-group">
-                    <label>Section</label>
-                    <select id="stSection" class="form-control">
-                        <option value="B" selected>Section B</option>
-                        <option value="A">Section A</option>
-                        <option value="C">Section C</option>
-                        <option value="D">Section D</option>
-                        <option value="ALL">All Sections</option>
-                    </select>
-                </div>
-
-                <!-- Stream (11 & 12) -->
-                <div class="form-group full-width" id="streamGroup" style="display: flex;">
-                    <label>Stream</label>
-                    <select id="stStream" class="form-control">
-                        <option value="PCM" selected>Science (PCM)</option>
-                        <option value="PCB">Science (PCB)</option>
-                        <option value="Commerce">Commerce</option>
-                        <option value="Arts">Humanities / Arts</option>
-                        <option value="General">General</option>
-                    </select>
-                </div>
-
-                <!-- Rank & Performance Standing -->
-                <div class="form-group full-width">
-                    <label>Academic Standing / Rank</label>
-                    <select id="stRank" class="form-control">
-                        <option value="1">Rank 1 (Topper)</option>
-                        <option value="2">Rank 2 (Second Position)</option>
-                        <option value="3">Rank 3 (Third Position)</option>
-                        <option value="4">Rank 4</option>
-                        <option value="5">Rank 5</option>
-                        <option value="distinction">Above Average (Distinction)</option>
-                        <option value="average" selected>Average Standing</option>
-                        <option value="below_average">Below Average</option>
-                        <option value="needs_improvement">Needs Improvement</option>
-                        <option value="failed">Failed</option>
-                    </select>
-                </div>
-
-                <!-- Marks Calculation -->
-                <div class="form-group">
-                    <label>Marks Obtained</label>
-                    <input type="number" id="marksObtained" class="form-control" placeholder="465" oninput="calculatePercentage()">
-                </div>
-                <div class="form-group">
-                    <label>Maximum Marks</label>
-                    <input type="number" id="marksTotal" class="form-control" placeholder="500" value="500" oninput="calculatePercentage()">
-                </div>
-
-                <!-- Percentage -->
-                <div class="form-group full-width">
-                    <label>Calculated Percentage</label>
-                    <input type="text" id="stPercentage" class="form-control" placeholder="93.0%" style="color: #38bdf8; font-weight: 600;">
-                </div>
-
-                <!-- Description / Remarks -->
-                <div class="form-group full-width">
-                    <label>Evaluation & Remarks</label>
-                    <textarea id="stDescription" class="form-control" placeholder="Write performance assessment, strengths, and areas to improve..."></textarea>
-                </div>
-
-                <!-- Report Card File / Link -->
-                <div class="form-group full-width">
-                    <label>Report Card (PDF / Image - Max 1MB or Drive Link)</label>
-                    <div class="upload-container">
-                        <div class="file-upload-btn">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Document (Max 1MB)
-                            <input type="file" id="reportFileInput" accept="image/*,application/pdf" onchange="handleFileSelected(event)">
-                        </div>
-                        <div id="fileStatus" class="file-status"></div>
-                        <input type="url" id="reportLink" class="form-control" placeholder="https://drive.google.com/...">
+                <div class="modal-info-grid">
+                    <div class="info-cell">
+                        <span>Student Name</span>
+                        <b id="modalStudentName">--</b>
+                    </div>
+                    <div class="info-cell">
+                        <span>Roll Number</span>
+                        <b id="modalRollNo">--</b>
+                    </div>
+                    <div class="info-cell">
+                        <span>Class & Section</span>
+                        <b id="modalClassSec">--</b>
+                    </div>
+                    <div class="info-cell">
+                        <span>Stream</span>
+                        <b id="modalStream">--</b>
                     </div>
                 </div>
-            </div>
-                    <div class="teacher-review-box">
+        <div class="teacher-review-box">
                     <div style="font-size: 11px; font-weight: 700; color: #38bdf8; margin-bottom: 4px;">
                         <i class="fa-solid fa-user-pen"></i> Teacher's Evaluation & Assessment:
                     </div>
