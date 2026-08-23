@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Achievements & Academic Standing - SS KanhaiyaLal Agrawal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Academic Standing & Ranks - SS KanhaiyaLal Agrawal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -18,11 +18,11 @@
 
         body {
             background-color: #070d19;
-            color: #f8fafc;
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 16px 12px 35px;
+            padding: 14px 12px 30px;
             position: relative;
             overflow-x: hidden;
         }
@@ -34,21 +34,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 75%);
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
             z-index: -1;
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 760px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            animation: fadeIn 0.35s ease-out;
+            gap: 14px;
+            animation: pageFade 0.25s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+        @keyframes pageFade {
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -58,180 +58,169 @@
             justify-content: space-between;
             align-items: center;
             background: rgba(30, 41, 59, 0.75);
-            padding: 12px 18px;
-            border-radius: 14px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
             backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }
 
         .brand {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
-            color: #38bdf8;
-            letter-spacing: 0.3px;
+            color: #ffffff;
+            letter-spacing: 0.2px;
         }
 
         .brand i {
-            background: rgba(56, 189, 248, 0.15);
-            padding: 8px 10px;
-            border-radius: 9px;
+            background: rgba(56, 189, 248, 0.12);
+            padding: 7px 9px;
+            border-radius: 8px;
             color: #38bdf8;
-            font-size: 15px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-size: 14px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
         }
 
         .btn-dashboard {
-            background: rgba(56, 189, 248, 0.12);
+            background: rgba(56, 189, 248, 0.1);
             color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.25);
             text-decoration: none;
-            padding: 7px 13px;
-            border-radius: 9px;
-            font-size: 12.5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.25s ease;
-            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         .btn-dashboard:hover {
-            background: rgba(56, 189, 248, 0.25);
-            transform: translateY(-1px);
+            background: rgba(56, 189, 248, 0.2);
+            color: #ffffff;
         }
 
-        /* Standard Section Card */
+        /* Section Cards */
         .section-card {
-            background: rgba(30, 41, 59, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 41, 59, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 14px;
-            padding: 18px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            padding: 16px;
             backdrop-filter: blur(8px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
         }
 
         .section-title {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
             color: #38bdf8;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 9px;
-            letter-spacing: 0.2px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Premium Laurel Result Banner */
-        .premium-result-banner {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
-            border: 1px solid rgba(250, 204, 21, 0.35);
-            border-radius: 14px;
-            padding: 16px 18px;
+        /* Academic Result Card */
+        .result-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 12px;
+            padding: 14px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            transition: all 0.2s ease;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .premium-result-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(250, 204, 21, 0.08), transparent);
-            transition: 0.5s;
+        .result-card:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            transform: translateY(-1px);
         }
 
-        .premium-result-banner:hover::before {
-            left: 100%;
-        }
-
-        .premium-result-banner:hover {
-            transform: translateY(-2px);
-            border-color: rgba(250, 204, 21, 0.6);
-            box-shadow: 0 12px 35px rgba(234, 179, 8, 0.15);
-        }
-
-        .banner-left {
+        .result-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
+            min-width: 0;
         }
 
-        .laurel-icon-box {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(234, 179, 8, 0.15);
-            border: 1px solid rgba(234, 179, 8, 0.4);
-            color: #facc15;
+        .result-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
+            font-size: 16px;
             flex-shrink: 0;
         }
 
-        .banner-details h3 {
-            font-size: 15px;
+        .result-meta h3 {
+            font-size: 14.5px;
             font-weight: 700;
-            color: #f8fafc;
-            margin-bottom: 2px;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .banner-details p {
+        .result-meta p {
             font-size: 11.5px;
             color: #94a3b8;
+            margin-top: 1px;
         }
 
-        .banner-badge-group {
+        .result-right {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 6px;
+            gap: 4px;
+            flex-shrink: 0;
         }
 
-        .standing-pill {
-            background: rgba(234, 179, 8, 0.15);
-            border: 1px solid rgba(234, 179, 8, 0.4);
-            color: #facc15;
-            padding: 5px 12px;
-            border-radius: 20px;
+        .badge-pill {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #38bdf8;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
             font-weight: 700;
-            font-size: 12.5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
             white-space: nowrap;
         }
 
-        .click-hint {
+        .badge-pill.gold {
+            background: rgba(234, 179, 8, 0.15);
+            border-color: rgba(234, 179, 8, 0.4);
+            color: #facc15;
+        }
+
+        .link-text {
             font-size: 11px;
-            color: #38bdf8;
-            font-weight: 500;
+            color: #94a3b8;
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
-        /* Leaderboard List */
+        /* Leaderboard Items */
         .leaderboard-list {
             display: flex;
             flex-direction: column;
-            gap: 9px;
+            gap: 8px;
         }
 
         .leaderboard-item {
@@ -239,125 +228,137 @@
             justify-content: space-between;
             align-items: center;
             background: #0f172a;
-            padding: 11px 14px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.25s ease;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.2s ease;
         }
 
-        .leaderboard-item:hover {
-            border-color: rgba(56, 189, 248, 0.35);
+        .leaderboard-item.is-me {
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(56, 189, 248, 0.04);
         }
 
-        .student-main {
+        .leader-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            min-width: 0;
         }
 
-        .rank-badge-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 9px;
+        .rank-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 12px;
             font-weight: 700;
-            font-size: 13px;
             background: #1e293b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-        }
-
-        .rank-1 { background: rgba(234, 179, 8, 0.2); border-color: rgba(234, 179, 8, 0.5); color: #facc15; }
-        .rank-2 { background: rgba(203, 213, 225, 0.2); border-color: rgba(203, 213, 225, 0.5); color: #e2e8f0; }
-        .rank-3 { background: rgba(249, 115, 22, 0.2); border-color: rgba(249, 115, 22, 0.5); color: #fb923c; }
-
-        .student-name-text {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: #f8fafc;
-        }
-
-        .student-meta-text {
-            font-size: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: #94a3b8;
+            flex-shrink: 0;
         }
 
-        .student-percentage {
-            font-size: 12.5px;
+        .rank-num.r1 { background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.4); color: #facc15; }
+        .rank-num.r2 { background: rgba(203, 213, 225, 0.15); border-color: rgba(203, 213, 225, 0.4); color: #e2e8f0; }
+        .rank-num.r3 { background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.4); color: #fb923c; }
+
+        .leader-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .leader-meta {
+            font-size: 10.5px;
+            color: #64748b;
+        }
+
+        .leader-score {
+            font-size: 12px;
             font-weight: 700;
             color: #38bdf8;
-            background: rgba(56, 189, 248, 0.1);
-            padding: 4px 10px;
-            border-radius: 7px;
-            border: 1px solid rgba(56, 189, 248, 0.25);
+            background: rgba(56, 189, 248, 0.08);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
             white-space: nowrap;
         }
 
-        /* Horizontal Remarks Carousel */
-        .feedback-scroll-container {
+        /* Remarks Horizontal Carousel */
+        .feedback-scroll {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             overflow-x: auto;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
             scroll-snap-type: x mandatory;
-            min-height: 120px;
         }
 
-        .feedback-scroll-container::-webkit-scrollbar { height: 5px; }
-        .feedback-scroll-container::-webkit-scrollbar-track { background: #0f172a; border-radius: 3px; }
-        .feedback-scroll-container::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .feedback-scroll::-webkit-scrollbar { height: 4px; }
+        .feedback-scroll::-webkit-scrollbar-track { background: #0f172a; }
+        .feedback-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
 
         .feedback-card {
-            min-width: 275px;
-            max-width: 295px;
+            min-width: 260px;
+            max-width: 280px;
             background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-left: 3px solid #38bdf8;
+            border-radius: 10px;
+            padding: 12px;
             flex-shrink: 0;
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.25s ease;
         }
 
-        .feedback-card:hover {
-            border-color: rgba(56, 189, 248, 0.35);
+        .feedback-card.personal {
+            border-left-color: #22c55e;
         }
 
-        .feedback-card.general { border-left: 3px solid #38bdf8; }
-        .feedback-card.personal { border-left: 3px solid #22c55e; }
-
-        .feedback-card-header {
+        .feedback-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
             font-size: 11px;
             font-weight: 600;
             color: #38bdf8;
+            margin-bottom: 6px;
         }
 
-        .feedback-card.personal .feedback-card-header { color: #4ade80; }
+        .feedback-card.personal .feedback-header {
+            color: #4ade80;
+        }
 
-        .feedback-card-body {
-            font-size: 12px;
-            color: #cbd5e1;
-            line-height: 1.5;
+        .feedback-body {
+            font-size: 11.5px;
+            color: #e2e8f0;
+            line-height: 1.45;
+        }
+
+        .feedback-footer {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 8px;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .no-data {
             color: #64748b;
-            font-size: 12.5px;
+            font-size: 12px;
             text-align: center;
-            padding: 20px;
+            padding: 16px;
             width: 100%;
         }
 
-        /* Result & Report Card Modal */
+        /* Modal Overlay */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -371,173 +372,155 @@
             align-items: center;
             z-index: 1000;
             padding: 14px;
-            animation: fadeInModal 0.25s ease-out;
-        }
-
-        @keyframes fadeInModal {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal-content {
             background: #0f172a;
-            border: 1px solid rgba(234, 179, 8, 0.35);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             width: 100%;
-            max-width: 520px;
-            border-radius: 16px;
+            max-width: 480px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         .modal-header {
-            padding: 16px 18px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(30, 41, 59, 0.6);
         }
 
-        .modal-title-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-title-area h2 {
-            font-size: 15.5px;
+        .modal-header h2 {
+            font-size: 14.5px;
             font-weight: 700;
-            color: #f8fafc;
+            color: #ffffff;
         }
 
         .close-btn {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #cbd5e1;
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
         .close-btn:hover {
             background: #ef4444;
-            color: white;
-            border-color: #ef4444;
+            color: #ffffff;
         }
 
         .modal-body {
-            padding: 18px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            max-height: 60vh;
+            gap: 12px;
+            max-height: 65vh;
             overflow-y: auto;
         }
 
-        .laurel-showcase {
+        .score-box {
             text-align: center;
             padding: 12px;
-            background: rgba(30, 41, 59, 0.45);
-            border: 1px dashed rgba(234, 179, 8, 0.3);
-            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
         }
 
-        .laurel-showcase .laurel-decor {
-            font-size: 22px;
-            color: #facc15;
-            margin-bottom: 4px;
-        }
-
-        .laurel-showcase .score-badge {
-            font-size: 18px;
-            font-weight: 800;
+        .score-box .score-val {
+            font-size: 17px;
+            font-weight: 700;
             color: #38bdf8;
-            letter-spacing: 0.5px;
         }
 
-        .modal-info-grid {
+        .score-box .standing-val {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .info-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            background: #0f172a;
+            gap: 8px;
         }
 
-        .info-cell {
-            background: rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 9px 12px;
-            border-radius: 8px;
+        .info-item {
+            background: rgba(30, 41, 59, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 10px;
+            border-radius: 6px;
         }
 
-        .info-cell span {
-            font-size: 10.5px;
+        .info-item span {
+            font-size: 10px;
             color: #94a3b8;
-            display: block;
             text-transform: uppercase;
+            display: block;
         }
 
-        .info-cell b {
-            font-size: 12.5px;
-            color: #f8fafc;
+        .info-item b {
+            font-size: 12px;
+            color: #ffffff;
         }
 
-        .teacher-review-box {
-            background: rgba(56, 189, 248, 0.05);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 12.5px;
+        .remarks-container {
+            background: rgba(56, 189, 248, 0.04);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 12px;
             color: #cbd5e1;
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
         .modal-footer {
-            padding: 14px 18px;
+            padding: 12px 16px;
             background: rgba(15, 23, 42, 0.95);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             justify-content: flex-end;
         }
 
-        .btn-action {
+        .btn-pdf {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
             color: #ffffff;
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            padding: 9px 16px;
-            border-radius: 9px;
-            font-size: 12.5px;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.25s ease;
+            text-decoration: none;
         }
 
-        .btn-action:hover {
+        .btn-pdf:hover {
             background: #0284c7;
-            transform: translateY(-1px);
         }
 
-        @media (max-width: 600px) {
-            .premium-result-banner {
+        @media (max-width: 500px) {
+            .result-card {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 12px;
+                gap: 10px;
             }
-            .banner-badge-group {
-                align-items: flex-start;
-                width: 100%;
+            .result-right {
                 flex-direction: row;
                 justify-content: space-between;
+                width: 100%;
+                align-items: center;
             }
-            .modal-info-grid {
+            .info-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -557,108 +540,108 @@
             </a>
         </div>
 
-        <!-- 1. Interactive Laurel Result Banner (Click to open detailed modal) -->
-        <div class="premium-result-banner" id="resultBanner" onclick="openResultModal()">
-            <div class="banner-left">
-                <div class="laurel-icon-box">
-                    <i class="fa-solid fa-medal"></i>
-                </div>
-                <div class="banner-details">
-                    <h3 id="studentNameDisplay">Loading Profile...</h3>
-                    <p id="classStreamDisplay">Class & Stream: Pending</p>
-                </div>
+        <!-- 1. Academic Performance Card (Strict Account Matching) -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fa-solid fa-user-graduate"></i> Examination Standing
             </div>
-            <div class="banner-badge-group">
-                <div class="standing-pill" id="standingPillDisplay">
-                    <i class="fa-solid fa-crown"></i> Standing: --
+
+            <div class="result-card" id="resultCard" onclick="openResultModal()">
+                <div class="result-left">
+                    <div class="result-icon">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <div class="result-meta">
+                        <h3 id="studentNameDisplay">Loading Profile...</h3>
+                        <p id="classStreamDisplay">Syncing account records...</p>
+                    </div>
                 </div>
-                <div class="click-hint">
-                    View Report & Assessment <i class="fa-solid fa-arrow-right"></i>
+                <div class="result-right">
+                    <div class="badge-pill" id="standingPill">Active</div>
+                    <div class="link-text">
+                        Details <i class="fa-solid fa-arrow-right"></i>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 2. Top 5 Class Leaderboard -->
+        <!-- 2. Class Leaderboard (Top 5 Ranked) -->
         <div class="section-card">
             <div class="section-title">
                 <i class="fa-solid fa-trophy"></i> Top 5 Class Leaderboard
             </div>
-            <div class="leaderboard-list" id="leaderboardListContainer">
-                <div class="no-data">Loading Leaderboard...</div>
+            <div class="leaderboard-list" id="leaderboardContainer">
+                <div class="no-data">Loading class leaderboard...</div>
             </div>
         </div>
 
-        <!-- 3. Teachers' Remarks & Feedback Horizontal Carousel -->
+        <!-- 3. Faculty Notices & Personal Remarks -->
         <div class="section-card">
             <div class="section-title">
                 <i class="fa-solid fa-comments"></i> Faculty Remarks & Notices
             </div>
-            
-            <div class="feedback-scroll-container" id="feedbackContainer">
-                <div class="no-data">Loading Remarks...</div>
+            <div class="feedback-scroll" id="feedbackContainer">
+                <div class="no-data">Loading remarks...</div>
             </div>
         </div>
 
     </div>
 
-    <!-- Detailed Result & Report Card Modal -->
+    <!-- Result & Report Card Modal -->
     <div class="modal-overlay" id="resultModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title-area">
-                    <i class="fa-solid fa-certificate" style="color: #facc15;"></i>
-                    <h2 id="modalExamTitle">Examination Performance</h2>
-                </div>
+                <h2 id="modalExamTitle">Examination Details</h2>
                 <button class="close-btn" onclick="closeResultModal()">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="laurel-showcase">
-                    <div class="laurel-decor">🌿 🏆 🌿</div>
-                    <div class="score-badge" id="modalScoreDisplay">Score: --</div>
-                    <div style="font-size: 11px; color: #94a3b8; margin-top: 3px;" id="modalStandingText">Standing Assessment</div>
+                <div class="score-box">
+                    <div class="score-val" id="modalScoreDisplay">Score: --</div>
+                    <div class="standing-val" id="modalStandingText">Standing Status</div>
                 </div>
 
-                <div class="modal-info-grid">
-                    <div class="info-cell">
+                <div class="info-grid">
+                    <div class="info-item">
                         <span>Student Name</span>
-                        <b id="modalStudentName">--</b>
+                        <b id="modalName">--</b>
                     </div>
-                    <div class="info-cell">
+                    <div class="info-item">
                         <span>Roll Number</span>
-                        <b id="modalRollNo">--</b>
+                        <b id="modalRoll">--</b>
                     </div>
-                    <div class="info-cell">
+                    <div class="info-item">
                         <span>Class & Section</span>
-                        <b id="modalClassSec">--</b>
+                        <b id="modalClass">--</b>
                     </div>
-                    <div class="info-cell">
+                    <div class="info-item">
                         <span>Stream</span>
                         <b id="modalStream">--</b>
                     </div>
                 </div>
-        <div class="teacher-review-box">
-                    <div style="font-size: 11px; font-weight: 700; color: #38bdf8; margin-bottom: 4px;">
-                        <i class="fa-solid fa-user-pen"></i> Teacher's Evaluation & Assessment:
-                    </div>
-                    <div id="modalDescription" style="white-space: pre-wrap;">No detailed remarks submitted for this assessment.</div>
+
+                <div class="remarks-container">
+                    <span style="color:#38bdf8; font-weight:600; display:block; margin-bottom:3px;">Teacher Remarks:</span>
+                    <div id="modalRemarks">No remarks attached.</div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-action" id="btnDownloadReport" onclick="openReportCard()">
-                    <i class="fa-solid fa-file-pdf"></i> View Official Report Card
+                <button class="btn-pdf" id="btnReportCard" onclick="openReportCard()">
+                    <i class="fa-solid fa-file-pdf"></i> View Report Card
                 </button>
             </div>
         </div>
     </div>
-
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
-        const loggedInUser = localStorage.getItem('loggedInUser') || localStorage.getItem('username') || '';
-        const userEmail = (localStorage.getItem('user_email') || localStorage.getItem('loggedInEmail') || localStorage.getItem('userEmail') || '').toLowerCase().trim();
+        const rawUser = localStorage.getItem('loggedInUser') || localStorage.getItem('username') || '';
+        const rawEmail = localStorage.getItem('user_email') || localStorage.getItem('loggedInEmail') || localStorage.getItem('userEmail') || localStorage.getItem('email') || '';
+
+        const loggedInUser = rawUser.trim().toLowerCase();
+        const userEmail = rawEmail.trim().toLowerCase();
 
         if (!loggedInUser && !userEmail) {
             window.location.href = 'index.html';
@@ -674,74 +657,82 @@
             measurementId: "G-TQKTRTKBEJ"
         };
         
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let currentStudentClass = "11";
-        let currentStudentStream = "PCM";
-        let currentStudentSection = "B";
         let myStudentRecord = null;
+        let studentClass = "11";
+        let studentSection = "B";
+        let studentStream = "PCM";
 
         window.onload = function() {
-            document.getElementById('studentNameDisplay').innerText = loggedInUser || userEmail;
-            initAchievementsPortal();
+            document.getElementById('studentNameDisplay').innerText = rawUser || rawEmail;
+            initPortal();
         };
 
-        async function initAchievementsPortal() {
-            await fetchStudentProfile();
-            listenLiveLeaderboard();
-            listenLiveFeedbacks();
+        async function initPortal() {
+            await fetchCurrentStudentProfile();
+            listenLeaderboard();
+            listenFeedbacks();
         }
 
-        // 1. Fetch Student Profile and Match Record
-        async function fetchStudentProfile() {
+        async function fetchCurrentStudentProfile() {
             try {
-                let snap = null;
+                let foundDoc = null;
+
+                // Match from 'students' collection strictly by Email
                 if (userEmail) {
-                    snap = await db.collection('students').where('email', '==', userEmail).get();
-                }
-                if ((!snap || snap.empty) && loggedInUser) {
-                    snap = await db.collection('students').where('name', '==', loggedInUser).get();
+                    const emailSnap = await db.collection('students').where('email', '==', userEmail).get();
+                    if (!emailSnap.empty) foundDoc = emailSnap.docs[0].data();
                 }
 
-                if (snap && !snap.empty) {
-                    myStudentRecord = snap.docs[0].data();
-                    currentStudentClass = myStudentRecord.class || myStudentRecord.classSection || "11";
-                    currentStudentStream = myStudentRecord.stream || "PCM";
-                    currentStudentSection = myStudentRecord.section || "B";
-                    updateStandingUI(myStudentRecord);
+                // Fallback strictly matching Name if email doc is absent
+                if (!foundDoc && rawUser) {
+                    const nameSnap = await db.collection('students').where('name', '==', rawUser).get();
+                    if (!nameSnap.empty) foundDoc = nameSnap.docs[0].data();
+                }
+
+                if (foundDoc) {
+                    myStudentRecord = foundDoc;
+                    studentClass = foundDoc.class || "11";
+                    studentSection = foundDoc.section || "B";
+                    studentStream = foundDoc.stream || "PCM";
+                    renderMyStanding(foundDoc);
                 } else {
-                    document.getElementById('classStreamDisplay').innerText = `Class 11 - PCM (Section B)`;
-                    document.getElementById('standingPillDisplay').innerHTML = `<i class="fa-solid fa-user-graduate"></i> Enrolled`;
+                    myStudentRecord = null;
+                    document.getElementById('studentNameDisplay').innerText = rawUser || userEmail;
+                    document.getElementById('classStreamDisplay').innerText = "Class Record Pending (No exam published)";
+                    document.getElementById('standingPill').innerText = "Enrolled";
+                    document.getElementById('standingPill').className = "badge-pill";
                 }
-            } catch (err) {
-                console.error("Profile load error:", err);
+            } catch (e) {
+                console.error("Profile load error:", e);
             }
         }
 
-        function updateStandingUI(data) {
-            document.getElementById('studentNameDisplay').innerText = data.name || loggedInUser;
-            document.getElementById('classStreamDisplay').innerText = `Class ${data.class || '11'}th (${data.stream || 'General'}) • Sec ${data.section || 'B'}`;
+        function renderMyStanding(d) {
+            document.getElementById('studentNameDisplay').innerText = d.name || rawUser;
+            document.getElementById('classStreamDisplay').innerText = `Class ${d.class || '11'}th (${d.stream || 'General'}) • Sec ${d.section || 'B'}`;
 
-            let badgeHtml = '<i class="fa-solid fa-medal"></i> Active';
-            if (data.rank && ['1', '2', '3', '4', '5', 1, 2, 3, 4, 5].includes(data.rank)) {
-                badgeHtml = `<i class="fa-solid fa-trophy" style="color:#facc15;"></i> Rank #${data.rank}`;
-            } else if (data.standing) {
-                badgeHtml = `<i class="fa-solid fa-award"></i> ${data.standing.replace('_', ' ').toUpperCase()}`;
+            const pill = document.getElementById('standingPill');
+            if (d.rank && ['1', '2', '3', '4', '5', 1, 2, 3, 4, 5].includes(d.rank)) {
+                pill.className = 'badge-pill gold';
+                pill.innerHTML = `<i class="fa-solid fa-trophy"></i> Rank #${d.rank}`;
+            } else if (d.standing) {
+                pill.className = 'badge-pill';
+                pill.innerText = d.standing.replace('_', ' ').toUpperCase();
+            } else {
+                pill.className = 'badge-pill';
+                pill.innerText = 'Active';
             }
-
-            document.getElementById('standingPillDisplay').innerHTML = badgeHtml;
         }
 
-        // 2. Real-time Leaderboard Listener (Class Top 5)
-        function listenLiveLeaderboard() {
-            const container = document.getElementById('leaderboardListContainer');
+        function listenLeaderboard() {
+            const container = document.getElementById('leaderboardContainer');
 
-            db.collection('students').onSnapshot((snapshot) => {
+            db.collection('students').onSnapshot(snapshot => {
                 if (snapshot.empty) {
-                    container.innerHTML = `<div class="no-data">No records updated yet.</div>`;
+                    container.innerHTML = `<div class="no-data">No records published yet.</div>`;
                     return;
                 }
 
@@ -751,15 +742,15 @@
                     const dEmail = (d.email || '').toLowerCase().trim();
                     const dName = (d.name || '').toLowerCase().trim();
 
-                    // Update logged-in student live info if changed
-                    if ((userEmail && dEmail === userEmail) || (loggedInUser && dName === loggedInUser.toLowerCase().trim())) {
+                    // Live sync logged-in student's record strictly
+                    if ((userEmail && dEmail === userEmail) || (loggedInUser && dName === loggedInUser)) {
                         myStudentRecord = d;
-                        updateStandingUI(d);
+                        renderMyStanding(d);
                     }
 
-                    // Top 5 Filter (Only Ranked 1 to 5)
-                    let rankNum = parseInt(d.rank);
-                    if (!isNaN(rankNum) && rankNum >= 1 && rankNum <= 5) {
+                    // Only filter Top 5 ranks
+                    const r = parseInt(d.rank);
+                    if (!isNaN(r) && r >= 1 && r <= 5) {
                         list.push(d);
                     }
                 });
@@ -768,57 +759,46 @@
                 const top5 = list.slice(0, 5);
 
                 if (top5.length === 0) {
-                    container.innerHTML = `<div class="no-data">Top rank records will appear here once published.</div>`;
+                    container.innerHTML = `<div class="no-data">No class rank entries published yet.</div>`;
                     return;
                 }
 
-                renderLeaderboard(top5);
+                container.innerHTML = '';
+                top5.forEach(item => {
+                    const isMe = (userEmail && (item.email || '').toLowerCase().trim() === userEmail) || (loggedInUser && (item.name || '').toLowerCase().trim() === loggedInUser);
+                    const pos = parseInt(item.rank) || 1;
+
+                    let rankClass = 'rank-num';
+                    if (pos === 1) rankClass += ' r1';
+                    if (pos === 2) rankClass += ' r2';
+                    if (pos === 3) rankClass += ' r3';
+
+                    const itemHTML = `
+                        <div class="leaderboard-item ${isMe ? 'is-me' : ''}">
+                            <div class="leader-left">
+                                <div class="${rankClass}">${pos}</div>
+                                <div>
+                                    <div class="leader-name">${item.name} ${isMe ? '<span style="color:#38bdf8; font-size:11px;">(You)</span>' : ''}</div>
+                                    <div class="leader-meta">Roll: ${item.rollNo || item.roll || 'N/A'} • Sec ${item.section || 'B'}</div>
+                                </div>
+                            </div>
+                            <div class="leader-score">${item.score || item.marks || ('Rank #' + pos)}</div>
+                        </div>
+                    `;
+                    container.innerHTML += itemHTML;
+                });
             }, err => {
                 console.error(err);
-                container.innerHTML = `<div class="no-data">Connecting to leaderboard...</div>`;
+                container.innerHTML = `<div class="no-data">Unable to connect to database.</div>`;
             });
         }
 
-        function renderLeaderboard(list) {
-            const container = document.getElementById('leaderboardListContainer');
-            container.innerHTML = '';
-
-            list.forEach(item => {
-                const isMe = (userEmail && (item.email || '').toLowerCase() === userEmail) || (loggedInUser && item.name === loggedInUser);
-                const pos = parseInt(item.rank) || 1;
-
-                let iconHtml = `<div class="rank-badge-icon">${pos}</div>`;
-                if (pos === 1) iconHtml = `<div class="rank-badge-icon rank-1"><i class="fa-solid fa-trophy"></i></div>`;
-                if (pos === 2) iconHtml = `<div class="rank-badge-icon rank-2"><i class="fa-solid fa-award"></i></div>`;
-                if (pos === 3) iconHtml = `<div class="rank-badge-icon rank-3"><i class="fa-solid fa-medal"></i></div>`;
-
-                const highlightStyle = isMe ? 'border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.05);' : '';
-                const displayName = isMe ? `${item.name} (You)` : item.name;
-                const scoreText = item.score || item.marks || `Rank #${pos}`;
-
-                const itemHTML = `
-                    <div class="leaderboard-item" style="${highlightStyle}">
-                        <div class="student-main">
-                            ${iconHtml}
-                            <div>
-                                <div class="student-name-text">${displayName}</div>
-                                <div class="student-meta-text">Roll No: ${item.rollNo || item.roll || 'N/A'} • Sec ${item.section || 'B'}</div>
-                            </div>
-                        </div>
-                        <div class="student-percentage">${scoreText}</div>
-                    </div>
-                `;
-                container.innerHTML += itemHTML;
-            });
-        }
-
-        // 3. Real-time Faculty Remarks Carousel Listener
-        function listenLiveFeedbacks() {
+        function listenFeedbacks() {
             const container = document.getElementById('feedbackContainer');
 
-            db.collection('feedbacks').onSnapshot((snapshot) => {
+            db.collection('feedbacks').onSnapshot(snapshot => {
                 if (snapshot.empty) {
-                    container.innerHTML = `<div class="no-data">No remarks or announcements posted yet.</div>`;
+                    container.innerHTML = `<div class="no-data">No notices or remarks posted.</div>`;
                     return;
                 }
 
@@ -829,62 +809,58 @@
                     const fb = doc.data();
                     const target = (fb.targetUser || '').toLowerCase().trim();
                     const isGeneral = fb.type === 'general' || !fb.targetUser;
-                    const isPersonal = target === userEmail || (loggedInUser && target === loggedInUser.toLowerCase().trim());
+                    const isPersonal = target === userEmail || (loggedInUser && target === loggedInUser);
 
                     if (isGeneral || isPersonal) {
                         count++;
-                        const cardType = isPersonal ? 'personal' : 'general';
-                        const headerTitle = isPersonal ? 'Personal Evaluation' : (fb.title || 'Class Notice');
-                        const iconClass = isPersonal ? 'fa-solid fa-user-check' : 'fa-solid fa-bullhorn';
-                        const teacherName = fb.teacherName || 'Faculty Member';
-                        const visibilityText = isPersonal ? 'Confidential • Only for you' : 'Class Announcement';
-
-                        const cardHTML = `
-                            <div class="feedback-card ${cardType}">
-                                <div>
-                                    <div class="feedback-card-header">
-                                        <span><i class="${iconClass}"></i> ${headerTitle}</span>
-                                        <span>${teacherName}</span>
-                                    </div>
-                                    <div class="feedback-card-body">
-                                        "${fb.message || ''}"
-                                    </div>
+                        const isPers = isPersonal && fb.type !== 'general';
+                        const card = document.createElement('div');
+                        card.className = `feedback-card ${isPers ? 'personal' : ''}`;
+                        card.innerHTML = `
+                            <div>
+                                <div class="feedback-header">
+                                    <span>${isPers ? 'Personal Evaluation' : (fb.title || 'Class Notice')}</span>
+                                    <span>${fb.teacherName || 'Faculty'}</span>
                                 </div>
-                                <div style="font-size: 10px; color: #64748b; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">
-                                    ${visibilityText}
-                                </div>
+                                <div class="feedback-body">${fb.message || ''}</div>
+                            </div>
+                            <div class="feedback-footer">
+                                ${isPers ? 'Confidential • Only for you' : 'Class Announcement'}
                             </div>
                         `;
-                        container.innerHTML += cardHTML;
+                        container.appendChild(card);
                     }
                 });
 
                 if (count === 0) {
-                    container.innerHTML = `<div class="no-data">No active remarks for your profile.</div>`;
+                    container.innerHTML = `<div class="no-data">No remarks for your account.</div>`;
                 }
             }, err => {
                 console.error(err);
             });
         }
 
-        // 4. Modal Open & Report Card Viewer Handlers
         function openResultModal() {
-            const record = myStudentRecord || {};
+            const d = myStudentRecord;
+            if (!d) {
+                alert("No official exam report has been published for your profile yet.");
+                return;
+            }
 
-            document.getElementById('modalExamTitle').innerText = record.examType || "Academic Performance";
-            document.getElementById('modalScoreDisplay').innerText = record.score || record.marks || "Evaluation Pending";
-            document.getElementById('modalStandingText').innerText = record.standing ? `Assessment: ${record.standing.replace('_', ' ').toUpperCase()}` : "Regular Assessment";
-            document.getElementById('modalStudentName').innerText = record.name || loggedInUser;
-            document.getElementById('modalRollNo').innerText = record.rollNo || record.roll || "N/A";
-            document.getElementById('modalClassSec').innerText = `Class ${record.class || currentStudentClass} (${record.section || 'B'})`;
-            document.getElementById('modalStream').innerText = record.stream || currentStudentStream;
-            document.getElementById('modalDescription').innerText = record.description || "No specific remarks attached for this term evaluation.";
+            document.getElementById('modalExamTitle').innerText = d.examType || "Examination Report";
+            document.getElementById('modalScoreDisplay').innerText = d.score || d.marks || "Evaluation Pending";
+            document.getElementById('modalStandingText').innerText = d.standing ? `Status: ${d.standing.replace('_', ' ').toUpperCase()}` : "Regular Assessment";
+            document.getElementById('modalName').innerText = d.name || rawUser;
+            document.getElementById('modalRoll').innerText = d.rollNo || d.roll || "N/A";
+            document.getElementById('modalClass').innerText = `Class ${d.class || studentClass} (${d.section || studentSection})`;
+            document.getElementById('modalStream').innerText = d.stream || studentStream;
+            document.getElementById('modalRemarks').innerText = d.description || "No specific comments submitted.";
 
-            const btnDownload = document.getElementById('btnDownloadReport');
-            if (record.reportCardUrl && record.reportCardUrl.trim() !== '') {
-                btnDownload.style.display = 'inline-flex';
+            const btnPdf = document.getElementById('btnReportCard');
+            if (d.reportCardUrl && d.reportCardUrl.trim() !== '') {
+                btnPdf.style.display = 'inline-flex';
             } else {
-                btnDownload.style.display = 'none';
+                btnPdf.style.display = 'none';
             }
 
             document.getElementById('resultModal').style.display = 'flex';
@@ -896,16 +872,47 @@
 
         window.onclick = function(event) {
             const modal = document.getElementById('resultModal');
-            if (event.target === modal) {
-                closeResultModal();
-            }
+            if (event.target === modal) closeResultModal();
         };
 
+        // Mobile Safe PDF / Blob / Drive Opener
         function openReportCard() {
-            if (myStudentRecord && myStudentRecord.reportCardUrl) {
-                window.open(myStudentRecord.reportCardUrl, '_blank');
+            if (!myStudentRecord || !myStudentRecord.reportCardUrl) {
+                alert("No report card file is attached.");
+                return;
+            }
+
+            const url = myStudentRecord.reportCardUrl.trim();
+
+            if (url.startsWith('data:')) {
+                try {
+                    const arr = url.split(',');
+                    const mime = arr[0].match(/:(.*?);/)[1];
+                    const bstr = atob(arr[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    const blob = new Blob([u8arr], { type: mime });
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    const win = window.open(blobUrl, '_blank');
+                    if (!win) {
+                        const a = document.createElement('a');
+                        a.href = blobUrl;
+                        a.target = '_blank';
+                        a.download = `Report_Card_${myStudentRecord.name || 'Student'}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                } catch (e) {
+                    console.error("PDF preview error:", e);
+                    window.open(url, '_blank');
+                }
             } else {
-                alert("No digital report card document is attached by the teacher.");
+                window.open(url, '_blank');
             }
         }
     </script>
