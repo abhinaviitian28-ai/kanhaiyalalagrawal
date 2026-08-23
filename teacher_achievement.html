@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Teacher Portal - SS KanhaiyaLal Agrawal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #070d19;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 16px 12px 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 75%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 760px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Top Navigation */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.7);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .brand i {
+            background: rgba(56, 189, 248, 0.15);
+            padding: 7px 9px;
+            border-radius: 8px;
+            color: #38bdf8;
+            font-size: 14px;
+        }
+
+        .btn-dashboard {
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-dashboard:hover {
+            background: rgba(56, 189, 248, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* Clean Panel Card */
+        .panel-card {
+            background: rgba(30, 41, 59, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 18px 16px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #38bdf8;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 8px;
+        }
+
+        /* Form Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .form-control {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        textarea.form-control {
+            min-height: 70px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        /* Status Indicator */
+        .status-pill {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 8px;
+            border-radius: 5px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+            width: fit-content;
+            margin-top: 2px;
+        }
+
+        .status-pill.success {
+            display: inline-flex;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+        }
+
+        .status-pill.neutral {
+            display: inline-flex;
+            background: rgba(148, 163, 184, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #94a3b8;
+        }
+
+        /* Upload Container */
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .file-upload-btn {
+            position: relative;
+            overflow: hidden;
+            border: 1px dashed rgba(56, 189, 248, 0.35);
+            background: rgba(56, 189, 248, 0.06);
+            color: #38bdf8;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .file-upload-btn:hover {
+            background: rgba(56, 189, 248, 0.15);
+        }
+
+        .file-upload-btn input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-status {
+            display: none;
+            font-size: 11px;
+            color: #4ade80;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Submit Action Buttons */
+        .btn-submit {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-submit:hover {
+            background: #0284c7;
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* List Items */
+        .records-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+
+        .record-card {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .record-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .record-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #38bdf8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .record-desc {
+            font-size: 11px;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .record-meta {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #f87171;
+            padding: 5px 9px;
+            border-radius: 6px;
+            font-size: 10.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #ffffff;
+        }
+
+        .empty-state {
+            color: #64748b;
+            font-size: 12px;
+            text-align: center;
+            padding: 18px;
+        }
+
+        /* Mobile Layout Handling */
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .panel-card {
+                padding: 14px 12px;
+            }
+
+            .brand span {
+                font-size: 14px;
+            }
+
+            .btn-dashboard {
+                font-size: 11.5px;
+                padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="brand">
+                <i class="fa-solid fa-award"></i>
+                <span>Teacher Management Portal</span>
+            </div>
+            <a href="database.html" class="btn-dashboard">
+                <i class="fa-solid fa-house"></i> Dashboard
+            </a>
+        </div>
+
+        <!-- 1. Exam Result & Performance Manager -->
+        <div class="panel-card">
+            <div class="panel-title">
+                <i class="fa-solid fa-file-circle-check"></i> Student Performance & Exam Records
+            </div>
+
+            <div class="form-grid">
+                <!-- Student Email (Auto Fill) -->
+                <div class="form-group full-width">
+                    <label>Student Email Address</label>
+                    <input type="email" id="stEmail" class="form-control" placeholder="student@gmail.com" onblur="autoFetchStudent()" oninput="resetStatusPill()">
+                    <div id="emailPill" class="status-pill"></div>
+                </div>
+
+                <!-- Exam / Assessment -->
+                <div class="form-group full-width">
+                    <label>Examination / Assessment</label>
+                    <select id="stExamType" class="form-control">
+                        <option value="Half Yearly Examination" selected>Half Yearly Examination</option>
+                        <option value="Annual Examination">Annual Examination</option>
+                        <option value="Unit Test 1">Unit Test 1</option>
+                        <option value="Unit Test 2">Unit Test 2</option>
+                        <option value="Pre-Board Examination">Pre-Board Examination</option>
+                        <option value="Monthly Assessment">Monthly Assessment</option>
+                    </select>
+                </div>
+
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input type="text" id="stName" class="form-control" placeholder="Abhinav Pandey">
+                </div>
+
+                <!-- Roll Number -->
+                <div class="form-group">
+                    <label>Roll Number</label>
+                    <input type="text" id="stRoll" class="form-control" placeholder="101">
+                </div>
+
+                <!-- Class -->
+                <div class="form-group">
+                    <label>Class</label>
+                    <select id="stClass" class="form-control" onchange="handleClassChange()">
+                        <option value="Nursery">Nursery</option>
+                        <option value="LKG">LKG</option>
+                        <option value="UKG">UKG</option>
+                        <option value="1">Class 1st</option>
+                        <option value="2">Class 2nd</option>
+                        <option value="3">Class 3rd</option>
+                        <option value="4">Class 4th</option>
+                        <option value="5">Class 5th</option>
+                        <option value="6">Class 6th</option>
+                        <option value="7">Class 7th</option>
+                        <option value="8">Class 8th</option>
+                        <option value="9">Class 9th</option>
+                        <option value="10">Class 10th</option>
+                        <option value="11" selected>Class 11th</option>
+                        <option value="12">Class 12th</option>
+                    </select>
+                </div>
+
+                <!-- Section -->
+                <div class="form-group">
+                    <label>Section</label>
+                    <select id="stSection" class="form-control">
+                        <option value="B" selected>Section B</option>
+                        <option value="A">Section A</option>
+                        <option value="C">Section C</option>
+                        <option value="D">Section D</option>
+                        <option value="ALL">All Sections</option>
+                    </select>
+                </div>
+
+                <!-- Stream (11 & 12) -->
+                <div class="form-group full-width" id="streamGroup" style="display: flex;">
+                    <label>Stream</label>
+                    <select id="stStream" class="form-control">
+                        <option value="PCM" selected>Science (PCM)</option>
+                        <option value="PCB">Science (PCB)</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Arts">Humanities / Arts</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+
+                <!-- Rank & Performance Standing -->
+                <div class="form-group full-width">
+                    <label>Academic Standing / Rank</label>
+                    <select id="stRank" class="form-control">
+                        <option value="1">Rank 1 (Topper)</option>
+                        <option value="2">Rank 2 (Second Position)</option>
+                        <option value="3">Rank 3 (Third Position)</option>
+                        <option value="4">Rank 4</option>
+                        <option value="5">Rank 5</option>
+                        <option value="distinction">Above Average (Distinction)</option>
+                        <option value="average" selected>Average Standing</option>
+                        <option value="below_average">Below Average</option>
+                        <option value="needs_improvement">Needs Improvement</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+
+                <!-- Marks Calculation -->
+                <div class="form-group">
+                    <label>Marks Obtained</label>
+                    <input type="number" id="marksObtained" class="form-control" placeholder="465" oninput="calculatePercentage()">
+                </div>
+                <div class="form-group">
+                    <label>Maximum Marks</label>
+                    <input type="number" id="marksTotal" class="form-control" placeholder="500" value="500" oninput="calculatePercentage()">
+                </div>
+
+                <!-- Percentage -->
+                <div class="form-group full-width">
+                    <label>Calculated Percentage</label>
+                    <input type="text" id="stPercentage" class="form-control" placeholder="93.0%" style="color: #38bdf8; font-weight: 600;">
+                </div>
+
+                <!-- Description / Remarks -->
+                <div class="form-group full-width">
+                    <label>Evaluation & Remarks</label>
+                    <textarea id="stDescription" class="form-control" placeholder="Write performance assessment, strengths, and areas to improve..."></textarea>
+                </div>
+
+                <!-- Report Card File / Link -->
+                <div class="form-group full-width">
+                    <label>Report Card (PDF / Image - Max 1MB or Drive Link)</label>
+                    <div class="upload-container">
+                        <div class="file-upload-btn">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Document (Max 1MB)
+                            <input type="file" id="reportFileInput" accept="image/*,application/pdf" onchange="handleFileSelected(event)">
+                        </div>
+                        <div id="fileStatus" class="file-status"></div>
+                        <input type="url" id="reportLink" class="form-control" placeholder="https://drive.google.com/...">
+                    </div>
+                </div>
+            </div>
+
+            <button id="btnSaveRecord" class="btn-submit" onclick="saveStudentRecord()">
+                <i class="fa-solid fa-check"></i> Save Record
+            </button>
+        </div>
+
+        <!-- 2. Direct Feedback / Notice Publisher -->
+        <div class="panel-card">
+            <div class="panel-title">
+                <i class="fa-solid fa-comment-dots"></i> Teacher Remarks & Announcements
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Audience</label>
+                    <select id="fbType" class="form-control" onchange="handleFeedbackTypeChange()">
+                        <option value="general">Entire Class</option>
+                        <option value="personal">Individual Student</option>
+                    </select>
+                </div>
+                <div class="form-group" id="targetUserGroup" style="display: none;">
+                    <label>Recipient Email or Name</label>
+                    <input type="text" id="fbTargetUser" class="form-control" placeholder="student@gmail.com">
+                </div>
+                <div class="form-group full-width">
+                    <label>Subject / Title</label>
+                    <input type="text" id="fbTitle" class="form-control" placeholder="Term Assessment Review">
+                </div>
+                <div class="form-group full-width">
+                    <label>Message Content</label>
+                    <textarea id="fbMessage" class="form-control" placeholder="Write announcement or personal remark..."></textarea>
+                </div>
+            </div>
+            <button class="btn-submit" onclick="postDirectFeedback()" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
+                <i class="fa-solid fa-paper-plane"></i> Publish Remark
+            </button>
+        </div>
+
+        <!-- 3. Active Records List -->
+        <div class="panel-card">
+            <div class="panel-title">
+                <i class="fa-solid fa-list"></i> Active Records & Feedbacks
+            </div>
+            <div class="records-list" id="recordsListContainer">
+                <div class="empty-state">Loading records...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const loggedInTeacher = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || "Abhinav Pandey";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
+            authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
+            projectId: "ss-kanhaiyalal-agrawal",
+            storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
+            messagingSenderId: "776171239833",
+            appId: "1:776171239833:web:39eea44420db97384b3b08",
+            measurementId: "G-TQKTRTKBEJ"
+        };
+        
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let uploadedFileDataUrl = '';
+
+        window.onload = function() {
+            handleClassChange();
+            loadActiveFeedbacks();
+        };
+
+        function handleClassChange() {
+            const cls = document.getElementById('stClass').value;
+            const isSenior = (cls === '11' || cls === '12');
+            document.getElementById('streamGroup').style.display = isSenior ? 'flex' : 'none';
+        }
+
+        function calculatePercentage() {
+            const obtained = parseFloat(document.getElementById('marksObtained').value);
+            const total = parseFloat(document.getElementById('marksTotal').value);
+
+            if (!isNaN(obtained) && !isNaN(total) && total > 0) {
+                const perc = ((obtained / total) * 100).toFixed(1);
+                document.getElementById('stPercentage').value = `${perc}% (${obtained}/${total})`;
+            } else if (!isNaN(obtained)) {
+                document.getElementById('stPercentage').value = `${obtained}%`;
+            }
+        }
+
+        function resetStatusPill() {
+            const pill = document.getElementById('emailPill');
+            pill.style.display = 'none';
+        }
+
+        async function autoFetchStudent() {
+            const email = document.getElementById('stEmail').value.trim().toLowerCase();
+            const pill = document.getElementById('emailPill');
+
+            if (!email) {
+                pill.style.display = 'none';
+                return;
+            }
+
+            pill.className = 'status-pill neutral';
+            pill.style.display = 'inline-flex';
+            pill.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking records...';
+
+            try {
+                let matched = false;
+
+                const usersSnap = await db.collection('users').get();
+                usersSnap.forEach(doc => {
+                    const d = doc.data();
+                    const dEmail = (d.email || '').toLowerCase().trim();
+                    if (dEmail === email || doc.id.toLowerCase() === email) {
+                        applyStudentData(d);
+                        matched = true;
+                    }
+                });
+
+                if (!matched) {
+                    const stuSnap = await db.collection('students').where('email', '==', email).get();
+                    if (!stuSnap.empty) {
+                        applyStudentData(stuSnap.docs[0].data());
+                        matched = true;
+                    }
+                }
+
+                if (matched) {
+                    pill.className = 'status-pill success';
+                    pill.innerHTML = '<i class="fa-solid fa-circle-check"></i> Profile matched';
+                } else {
+                    pill.className = 'status-pill neutral';
+                    pill.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> New profile entry';
+                }
+            } catch (err) {
+                console.error(err);
+                pill.style.display = 'none';
+            }
+        }
+
+        function cleanClassVal(val) {
+            if (!val) return '11';
+            const m = String(val).match(/\d+/);
+            return m ? m[0] : String(val).trim();
+        }
+
+        function applyStudentData(data) {
+            if (data.name || data.fullName || data.username) {
+                document.getElementById('stName').value = data.name || data.fullName || data.username;
+            }
+            if (data.rollNo || data.roll) {
+                document.getElementById('stRoll').value = data.rollNo || data.roll;
+            }
+            if (data.class || data.className || data.studentClass) {
+                document.getElementById('stClass').value = cleanClassVal(data.class || data.className || data.studentClass);
+                handleClassChange();
+            }
+            if (data.stream || data.subject) {
+                const s = (data.stream || data.subject).toUpperCase();
+                const stElem = document.getElementById('stStream');
+                for (let i = 0; i < stElem.options.length; i++) {
+                    if (stElem.options[i].value.toUpperCase().includes(s)) {
+                        stElem.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            if (data.section || data.sec) {
+                const sec = String(data.section || data.sec).toUpperCase();
+                const secElem = document.getElementById('stSection');
+                for (let i = 0; i < secElem.options.length; i++) {
+                    if (secElem.options[i].value.toUpperCase() === sec) {
+                        secElem.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function handleFileSelected(event) {
+            const file = event.target.files[0];
+            const status = document.getElementById('fileStatus');
+            if (!file) return;
+
+            const maxLimit = 1024 * 1024; // 1MB limit for database safety
+
+            if (file.size > maxLimit) {
+                alert("File exceeds 1MB limit. Please use a Drive link instead.");
+                event.target.value = '';
+                uploadedFileDataUrl = '';
+                status.style.display = 'none';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedFileDataUrl = e.target.result;
+                status.style.display = 'inline-flex';
+                status.innerHTML = `<i class="fa-solid fa-check"></i> ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function saveStudentRecord() {
+            const email = document.getElementById('stEmail').value.trim().toLowerCase();
+            const name = document.getElementById('stName').value.trim();
+            const rollNo = document.getElementById('stRoll').value.trim();
+            const classVal = document.getElementById('stClass').value;
+            const section = document.getElementById('stSection').value;
+            const isSenior = (classVal === '11' || classVal === '12');
+            const stream = isSenior ? document.getElementById('stStream').value : 'General';
+            const examType = document.getElementById('stExamType').value;
+            const standingVal = document.getElementById('stRank').value;
+            const percentage = document.getElementById('stPercentage').value.trim();
+            const description = document.getElementById('stDescription').value.trim();
+            const reportLink = document.getElementById('reportLink').value.trim();
+            const finalReportUrl = uploadedFileDataUrl || reportLink || '';
+
+            if (!name) {
+                return alert("Please enter the student's name.");
+            }
+
+            const btn = document.getElementById('btnSaveRecord');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+            let parsedRank = '';
+            let standingLabel = standingVal;
+
+            if (['1', '2', '3', '4', '5'].includes(standingVal)) {
+                parsedRank = parseInt(standingVal);
+                standingLabel = `Rank ${parsedRank}`;
+            }
+
+            try {
+                let snap = null;
+                if (email) {
+                    snap = await db.collection('students').where('email', '==', email).get();
+                }
+                if ((!snap || snap.empty) && name) {
+                    snap = await db.collection('students').where('name', '==', name).get();
+                }
+
+                const recordData = {
+                    name,
+                    email,
+                    rollNo,
+                    roll: rollNo,
+                    class: classVal,
+                    classSection: classVal,
+                    section,
+                    stream,
+                    examType,
+                    rank: parsedRank,
+                    standing: standingLabel,
+                    score: percentage || 'N/A',
+                    marks: percentage || 'N/A',
+                    description,
+                    reportCardUrl: finalReportUrl,
+                    updatedBy: loggedInTeacher,
+                    updatedAt: new Date().toISOString()
+                };
+
+                if (snap && !snap.empty) {
+                    await db.collection('students').doc(snap.docs[0].id).update(recordData);
+                    alert(`Record updated successfully for ${name}.`);
+                } else {
+                    await db.collection('students').add(recordData);
+                    alert(`New record created successfully for ${name}.`);
+                }
+
+                if (description) {
+                    await db.collection('feedbacks').add({
+                        type: email ? 'personal' : 'general',
+                        targetUser: email || name,
+                        title: `${examType} - Evaluation`,
+                        message: description,
+                        teacherName: loggedInTeacher,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                // Reset Fields
+                document.getElementById('stEmail').value = '';
+                document.getElementById('stName').value = '';
+                document.getElementById('stRoll').value = '';
+                document.getElementById('marksObtained').value = '';
+                document.getElementById('stPercentage').value = '';
+                document.getElementById('stDescription').value = '';
+                document.getElementById('reportLink').value = '';
+                document.getElementById('reportFileInput').value = '';
+                document.getElementById('fileStatus').style.display = 'none';
+                document.getElementById('emailPill').style.display = 'none';
+                uploadedFileDataUrl = '';
+
+            } catch (err) {
+                console.error("Save error:", err);
+                alert("Failed to save record. Check database permissions.");
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Save Record';
+        }
+
+        function handleFeedbackTypeChange() {
+            const val = document.getElementById('fbType').value;
+            document.getElementById('targetUserGroup').style.display = (val === 'personal') ? 'flex' : 'none';
+        }
+
+        async function postDirectFeedback() {
+            const type = document.getElementById('fbType').value;
+            const targetUser = document.getElementById('fbTargetUser').value.trim();
+            const title = document.getElementById('fbTitle').value.trim();
+            const message = document.getElementById('fbMessage').value.trim();
+
+            if (!title || !message) {
+                return alert("Please enter both a title and a message.");
+            }
+
+            if (type === 'personal' && !targetUser) {
+                return alert("Please specify the recipient student.");
+            }
+
+            try {
+                await db.collection('feedbacks').add({
+                    type,
+                    targetUser: type === 'personal' ? targetUser : '',
+                    title,
+                    message,
+                    teacherName: loggedInTeacher,
+                    createdAt: new Date().toISOString()
+                });
+
+                alert("Remark published successfully.");
+                document.getElementById('fbTitle').value = '';
+                document.getElementById('fbMessage').value = '';
+                document.getElementById('fbTargetUser').value = '';
+            } catch (err) {
+                console.error("Feedback post error:", err);
+                alert("Failed to publish remark.");
+            }
+        }
+
+        function loadActiveFeedbacks() {
+            db.collection('feedbacks').onSnapshot((snapshot) => {
+                const listContainer = document.getElementById('recordsListContainer');
+                if (snapshot.empty) {
+                    listContainer.innerHTML = `<div class="empty-state">No active remarks published yet.</div>`;
+                    return;
+                }
+
+                listContainer.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    const isPersonal = d.type === 'personal';
+                    const targetInfo = isPersonal ? `(To: ${d.targetUser})` : '(General Class)';
+
+                    const itemHTML = `
+                        <div class="record-card">
+                            <div class="record-info">
+                                <div class="record-title">${d.title || 'Notice'} <span style="font-size:10.5px; font-weight:normal; color:#94a3b8;">${targetInfo}</span></div>
+                                <div class="record-desc">${d.message || ''}</div>
+                                <div class="record-meta">By ${d.teacherName || loggedInTeacher}</div>
+                            </div>
+                            <button class="btn-delete" onclick="deleteRecord('${doc.id}')">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    listContainer.innerHTML += itemHTML;
+                });
+            }, (err) => {
+                console.error("Fetch feedbacks error:", err);
+            });
+        }
+
+        async function deleteRecord(docId) {
+            if (!confirm("Are you sure you want to remove this record?")) return;
+            try {
+                await db.collection('feedbacks').doc(docId).delete();
+            } catch (err) {
+                alert("Failed to delete record.");
+            }
+        }
+    </script>
+</body>
+</html>
