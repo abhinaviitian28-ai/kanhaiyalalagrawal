@@ -1,313 +1,50 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notice Board - SSKLAM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notice Board - SS KanhaiyaLal Agrawal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: #0f172a;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            background-color: #070d19;
             color: #ffffff;
             min-height: 100vh;
-            padding: 15px;
+            display: flex;
+            justify-content: center;
+            padding: 16px 12px 35px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
+            z-index: -1;
         }
 
         .container {
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        /* Top Header */
-        .page-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(30, 41, 59, 0.7);
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
-            backdrop-filter: blur(8px);
-        }
-
-        .header-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .header-title i {
-            font-size: 22px;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.15);
-            padding: 8px;
-            border-radius: 8px;
-        }
-
-        .header-title h1 {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .back-dashboard-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .back-dashboard-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-        }
-
-        /* Search Bar */
-        .search-box {
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        .search-box input {
             width: 100%;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 12px 16px 12px 42px;
-            border-radius: 10px;
-            color: #ffffff;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .search-box input:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-            font-size: 15px;
-        }
-
-        /* Filter Tabs */
-        .filters-wrapper {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            scrollbar-width: none;
-        }
-        .filters-wrapper::-webkit-scrollbar {
-            display: none;
-        }
-
-        .filter-btn {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .filter-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-
-        .filter-btn.active {
-            background: #2563eb;
-            color: #ffffff;
-            border-color: #3b82f6;
-            box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
-        }
-
-        .filter-btn.bookmark-btn.active {
-            background: #eab308;
-            color: #0f172a;
-            border-color: #fde047;
-            box-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
-        }
-
-        /* Date Divider */
-        .date-divider {
-            display: flex;
-            align-items: center;
-            margin: 22px 0 12px 0;
-            gap: 12px;
-        }
-
-        .date-divider::before, .date-divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .date-divider span {
-            font-size: 11px;
-            font-weight: 700;
-            color: #94a3b8;
-            background: rgba(30, 41, 59, 0.8);
-            padding: 4px 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        /* Notice List & Strips */
-        .notice-list {
+            max-width: 760px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-
-        .notice-strip {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
-            position: relative;
-        }
-
-        .notice-strip:hover {
-            transform: translateY(-2px);
-            background: rgba(30, 41, 59, 0.9);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Icy Blue Animation for NEW Notices */
-        .notice-strip.is-new {
-            border: 1px solid #38bdf8;
-            animation: icyGlow 2s infinite ease-in-out;
-        }
-
-        @keyframes icyGlow {
-            0% {
-                box-shadow: 0 0 5px rgba(56, 189, 248, 0.3), inset 0 0 5px rgba(56, 189, 248, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 18px rgba(56, 189, 248, 0.7), inset 0 0 10px rgba(56, 189, 248, 0.3);
-            }
-            100% {
-                box-shadow: 0 0 5px rgba(56, 189, 248, 0.3), inset 0 0 5px rgba(56, 189, 248, 0.1);
-            }
-        }
-
-        .strip-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .type-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            flex-shrink: 0;
-            letter-spacing: 0.5px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .type-urgent { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .type-urgent .dot { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
-
-        .type-exam { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-        .type-exam .dot { background: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
-
-        .type-holiday { background: rgba(234, 179, 8, 0.15); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.3); }
-        .type-holiday .dot { background: #eab308; box-shadow: 0 0 6px #eab308; }
-
-        .type-sports { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
-        .type-sports .dot { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
-
-        .strip-title {
-            font-size: 13px;
-            font-weight: 500;
-            color: #f1f5f9;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .strip-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-
-        .bookmark-icon {
-            color: #64748b;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 4px;
-            transition: color 0.2s, transform 0.2s;
-        }
-
-        .bookmark-icon:hover {
-            transform: scale(1.2);
-            color: #fde047;
-        }
-
-        .bookmark-icon.bookmarked {
-            color: #eab308;
-        }
-
-        /* --- Full Notice Detail View --- */
-        #detailView {
-            display: none;
-            animation: fadeIn 0.25s ease;
+            gap: 14px;
+            animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
@@ -315,275 +52,465 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .detail-top-bar {
+        /* Top Bar - Exact Portal Header Match */
+        .top-bar {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .back-btn {
-            background: rgba(30, 41, 59, 0.8);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .back-btn:hover {
-            background: #2563eb;
-            color: #ffffff;
-            border-color: #3b82f6;
-        }
-
-        .detail-card {
-            background: rgba(30, 41, 59, 0.85);
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            background: rgba(30, 41, 59, 0.75);
+            padding: 12px 18px;
             border-radius: 14px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(56, 189, 248, 0.25);
             backdrop-filter: blur(10px);
         }
 
-        .detail-meta {
+        .brand {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 12px;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+
+        .brand i {
+            background: rgba(56, 189, 248, 0.15);
+            padding: 8px 10px;
+            border-radius: 9px;
+            color: #38bdf8;
+            font-size: 15px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-dashboard {
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            text-decoration: none;
+            padding: 7px 13px;
+            border-radius: 9px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+        }
+
+        .btn-dashboard:hover {
+            background: rgba(56, 189, 248, 0.25);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Main Section Card */
+        .section-card {
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 18px 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+        }
+
+        .section-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            flex-wrap: wrap;
+            padding-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Search Input */
+        .search-box {
+            position: relative;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            padding: 10px 14px 10px 38px;
+            border-radius: 10px;
+            font-size: 12.5px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Filter Pills */
+        .filters-wrapper {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+
+        .filters-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            color: #ffffff;
+        }
+
+        .filter-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: #38bdf8;
+            color: #38bdf8;
+        }
+
+        /* Date Divider */
+        .date-divider {
+            margin: 14px 0 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .date-divider span {
+            font-size: 11px;
+            font-weight: 700;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Notice List & Strip Items */
+        .notice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .notice-strip {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
             gap: 10px;
         }
 
-        .detail-date {
-            font-size: 12px;
-            color: #94a3b8;
+        .notice-strip:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .strip-left {
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-
-        .detail-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-            line-height: 1.4;
-            margin-bottom: 15px;
-        }
-
-        .detail-author {
-            font-size: 12px;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.1);
-            padding: 6px 12px;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-        }
-
-        .detail-body {
-            font-size: 14px;
-            color: #cbd5e1;
-            line-height: 1.8;
-            margin-bottom: 25px;
-            white-space: pre-line;
-        }
-
-        /* Attachment Section */
-        .attachment-box {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px dashed rgba(56, 189, 248, 0.4);
-            border-radius: 10px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .attachment-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
+            gap: 10px;
             min-width: 0;
-        }
-
-        .attachment-info i {
-            font-size: 26px;
-            color: #38bdf8;
-            flex-shrink: 0;
-        }
-        
-        .attachment-text {
             flex: 1;
-            min-width: 0;
         }
 
-        .attachment-filename {
+        .strip-title {
             font-size: 13px;
             font-weight: 600;
-            color: #f1f5f9;
+            color: #ffffff;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .attachment-filesize {
-            font-size: 11px;
-            color: #64748b;
+        /* Badges */
+        .type-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
         }
 
-        .download-btn {
-            background: linear-gradient(135deg, #0284c7, #2563eb);
-            color: #ffffff;
-            border: none;
-            padding: 10px 16px;
+        .type-badge.type-urgent { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171; }
+        .type-badge.type-exam { background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; }
+        .type-badge.type-holiday { background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.4); color: #facc15; }
+        .type-badge.type-sports { background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.4); color: #4ade80; }
+
+        .bookmark-icon {
+            color: #64748b;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .bookmark-icon.bookmarked {
+            color: #facc15;
+        }
+
+        /* Detail View Styles */
+        .detail-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .back-btn {
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+            padding: 6px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+            gap: 6px;
             transition: all 0.2s ease;
-            white-space: nowrap;
-            flex-shrink: 0;
         }
 
-        .download-btn:hover {
-            box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4);
-            transform: translateY(-2px);
+        .back-btn:hover {
+            background: rgba(56, 189, 248, 0.25);
+            color: #ffffff;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #64748b;
-            background: rgba(30, 41, 59, 0.4);
-            border: 1px dashed rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            margin-top: 10px;
+        .detail-card {
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 18px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
-        .empty-state i {
-            font-size: 42px;
-            margin-bottom: 12px;
-            display: block;
-            color: #38bdf8;
-            opacity: 0.6;
+        .detail-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
-        .empty-state h3 {
-            font-size: 16px;
+        .detail-date {
+            font-size: 11.5px;
             color: #94a3b8;
-            margin-bottom: 6px;
         }
 
-        .empty-state p {
+        .attachment-box {
+            background: #0f172a;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .attachment-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .btn-pdf-view {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 8px 14px;
+            border-radius: 8px;
             font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-pdf-view:hover {
+            background: #0284c7;
+            transform: translateY(-1px);
+        }
+
+        .btn-see-more {
+            padding: 9px 22px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #38bdf8;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 12.5px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-see-more:hover {
+            background: rgba(56, 189, 248, 0.25);
+            color: #ffffff;
+        }
+
+        .no-data {
             color: #64748b;
+            font-size: 12px;
+            text-align: center;
+            padding: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .section-card {
+                padding: 14px 12px;
+            }
+            .attachment-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .btn-pdf-view {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
-
-   <body>
+<body>
 
     <div class="container">
         
+        <!-- List View -->
         <div id="listView">
             
-            <div class="page-header">
-                <div class="header-title">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="brand">
                     <i class="fa-solid fa-bullhorn"></i>
-                    <h1>Notice Board</h1>
+                    <span>Notice Board</span>
                 </div>
-                <a href="database.html" class="back-dashboard-btn">
+                <a href="database.html" class="btn-dashboard">
                     <i class="fa-solid fa-house"></i> Dashboard
                 </a>
             </div>
 
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search notices by keyword..." oninput="filterNotices()">
-            </div>
-
-            <div class="filters-wrapper">
-                <button class="filter-btn active" onclick="setFilter('all', this)">All Notices</button>
-                <button class="filter-btn" onclick="setFilter('URGENT', this)">🔴 Urgent</button>
-                <button class="filter-btn" onclick="setFilter('EXAM', this)">🔵 Exam</button>
-                <button class="filter-btn" onclick="setFilter('HOLIDAY', this)">🟡 Holiday</button>
-                <button class="filter-btn" onclick="setFilter('SPORTS', this)">🟢 Sports</button>
-                <button class="filter-btn bookmark-btn" onclick="setFilter('BOOKMARKS', this)">⭐ Bookmarks</button>
-            </div>
-
-            <div id="noticeContainer">
-                <div style="text-align: center; color: #94a3b8; padding: 30px; font-size: 13px;">
-                    <i class="fa-solid fa-spinner fa-spin"></i> Loading notices...
+            <!-- Content Card -->
+            <div class="section-card" style="margin-top: 14px;">
+                <div class="section-title">
+                    <i class="fa-solid fa-newspaper"></i> Official Announcements
                 </div>
-            </div>
 
-            <!-- See More Button -->
-            <div style="text-align: center; margin: 25px 0;">
-                <button id="seeMoreBtn" onclick="loadMoreNotices()" style="display: none; padding: 10px 24px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; border-radius: 25px; font-weight: 600; cursor: pointer; transition: 0.25s; font-size: 13px;">
-                    <i class="fa-solid fa-chevron-down"></i> See More Notices
-                </button>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search notices by keyword..." oninput="filterNotices()">
+                </div>
+
+                <div class="filters-wrapper">
+                    <button class="filter-btn active" onclick="setFilter('all', this)">All Notices</button>
+                    <button class="filter-btn" onclick="setFilter('URGENT', this)">🔴 Urgent</button>
+                    <button class="filter-btn" onclick="setFilter('EXAM', this)">🔵 Exam</button>
+                    <button class="filter-btn" onclick="setFilter('HOLIDAY', this)">🟡 Holiday</button>
+                    <button class="filter-btn" onclick="setFilter('SPORTS', this)">🟢 Sports</button>
+                    <button class="filter-btn" onclick="setFilter('BOOKMARKS', this)">⭐ Bookmarks</button>
+                </div>
+
+                <div id="noticeContainer">
+                    <div class="no-data">
+                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 18px; margin-bottom: 6px; display: block; color: #38bdf8;"></i> Loading notices...
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 18px 0 6px;">
+                    <button id="seeMoreBtn" class="btn-see-more" onclick="loadMoreNotices()" style="display: none;">
+                        <i class="fa-solid fa-chevron-down"></i> See More Notices
+                    </button>
+                </div>
             </div>
 
         </div>
 
+        <!-- Detail View -->
         <div id="detailView" style="display: none;">
             
             <div class="detail-top-bar">
                 <button class="back-btn" onclick="showListView()">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Notice Board
+                    <i class="fa-solid fa-arrow-left"></i> Back to Notices
                 </button>
-                <i id="detailBookmarkBtn" class="fa-star bookmark-icon" style="font-size: 20px; cursor: pointer;" onclick="toggleBookmarkInDetail()"></i>
+                <i id="detailBookmarkBtn" class="fa-star bookmark-icon" style="font-size: 20px;" onclick="toggleBookmarkInDetail()"></i>
             </div>
 
             <div class="detail-card">
                 <div class="detail-meta">
                     <div id="detailTypeBadge" class="type-badge">
-                        <span class="dot"></span> <span id="detailTypeTitle">GENERAL</span>
+                        <span id="detailTypeTitle">GENERAL</span>
                     </div>
                     <div class="detail-date" id="detailDate">
                         <i class="fa-regular fa-calendar"></i> <span id="detailDateText">--</span>
                     </div>
                 </div>
 
-                <h1 class="detail-title" id="detailTitle" style="font-size: 18px; color: #ffffff; margin: 12px 0 8px;">--</h1>
+                <h1 id="detailTitle" style="font-size: 16px; font-weight: 700; color: #ffffff; margin: 10px 0 6px;">--</h1>
 
-                <div class="detail-author" id="detailAuthor" style="font-size: 12px; color: #94a3b8; margin-bottom: 14px;">
+                <div id="detailAuthor" style="font-size: 11.5px; color: #94a3b8; margin-bottom: 14px;">
                     <i class="fa-solid fa-user-tie"></i> <span id="authorText">School Administration</span>
                 </div>
 
-                <div class="detail-body" id="detailBody" style="font-size: 13px; color: #cbd5e1; line-height: 1.6; white-space: pre-wrap; margin-bottom: 16px;"></div>
+                <div id="detailBody" style="font-size: 12.5px; color: #cbd5e1; line-height: 1.6; white-space: pre-wrap; margin-bottom: 14px;"></div>
 
-                <div class="attachment-box" id="attachmentBox" style="display: none; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 12px; align-items: center; justify-content: space-between;">
-                    <div class="attachment-info" style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fa-solid fa-file-pdf" style="font-size: 24px; color: #38bdf8;"></i>
-                        <div class="attachment-text">
-                            <div class="attachment-filename" id="attachName" style="font-size: 12.5px; font-weight: 600; color: #f8fafc;">Document</div>
-                            <div class="attachment-filesize" id="attachSize" style="font-size: 11px; color: #94a3b8;">Attachment File</div>
+                <div class="attachment-box" id="attachmentBox" style="display: none;">
+                    <div class="attachment-info">
+                        <i class="fa-solid fa-file-pdf" style="font-size: 24px; color: #38bdf8; flex-shrink: 0;"></i>
+                        <div style="min-width: 0;">
+                            <div id="attachName" style="font-size: 12px; font-weight: 600; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Document.pdf</div>
+                            <div id="attachSize" style="font-size: 10.5px; color: #94a3b8;">Official Document Attachment</div>
                         </div>
                     </div>
-                    <a href="#" id="attachDownloadLink" class="download-btn" target="_blank" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; text-decoration: none; padding: 6px 14px; border-radius: 7px; font-size: 12px; font-weight: 600;">
-                        <i class="fa-solid fa-eye"></i> View / Download
-                    </a>
+                    <button class="btn-pdf-view" onclick="handlePdfOpen()">
+                        <i class="fa-solid fa-eye"></i> View PDF
+                    </button>
                 </div>
             </div>
 
@@ -591,353 +518,356 @@
 
     </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
-    authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
-    projectId: "ss-kanhaiyalal-agrawal",
-    storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
-    messagingSenderId: "776171239833",
-    appId: "1:776171239833:web:39eea44420db97384b3b08",
-    measurementId: "G-TQKTRTKBEJ"
-  };
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
+            authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
+            projectId: "ss-kanhaiyalal-agrawal",
+            storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
+            messagingSenderId: "776171239833",
+            appId: "1:776171239833:web:39eea44420db97384b3b08",
+            measurementId: "G-TQKTRTKBEJ"
+        };
 
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-  const db = firebase.firestore();
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-  const loggedInUser = (localStorage.getItem('loggedInUser') || localStorage.getItem('username') || '').trim();
-  const userEmail = (localStorage.getItem('user_email') || localStorage.getItem('loggedInEmail') || localStorage.getItem('userEmail') || '').toLowerCase().trim();
+        const rawUser = localStorage.getItem('loggedInUser') || localStorage.getItem('username') || '';
+        const rawEmail = localStorage.getItem('user_email') || localStorage.getItem('loggedInEmail') || localStorage.getItem('userEmail') || '';
 
-  let studentProfile = { class: "11", stream: "PCM", section: "B" };
-  let allNotices = [];
-  let currentFilter = 'all';
-  let currentSearchQuery = '';
-  let bookmarkedIds = JSON.parse(localStorage.getItem('noticeBookmarks')) || [];
-  let activeNoticeId = null;
-  let visibleLimit = 5;
+        const loggedInUser = rawUser.trim().toLowerCase();
+        const userEmail = rawEmail.trim().toLowerCase();
 
-  async function initNoticePortal() {
-    await fetchStudentProfile();
-    listenLiveNotices();
-  }
+        let studentProfile = { class: "11", stream: "PCM", section: "B" };
+        let allNotices = [];
+        let currentFilter = 'all';
+        let currentSearchQuery = '';
+        let bookmarkedIds = JSON.parse(localStorage.getItem('noticeBookmarks')) || [];
+        let activeNoticeId = null;
+        let visibleLimit = 5;
 
-  async function fetchStudentProfile() {
-    try {
-      let snap = null;
-      if (userEmail) {
-        snap = await db.collection('students').where('email', '==', userEmail).get();
-      }
-      if ((!snap || snap.empty) && loggedInUser) {
-        snap = await db.collection('students').where('name', '==', loggedInUser).get();
-      }
+        window.onload = function() {
+            initNoticePortal();
+        };
 
-      if (snap && !snap.empty) {
-        studentProfile = snap.docs[0].data();
-      }
-    } catch (err) {
-      console.error("Profile fetch error in notice portal:", err);
-    }
-  }
-
-  // Real-time listener for reliable and instant notice loading
-  function listenLiveNotices() {
-    db.collection("notices").onSnapshot((snapshot) => {
-      allNotices = [];
-
-      if (snapshot.empty) {
-        renderNotices();
-        return;
-      }
-
-      const stClass = extractClassNum(studentProfile.class || studentProfile.classSection || "11");
-      const stStream = (studentProfile.stream || "General").toUpperCase();
-
-      snapshot.forEach((doc) => {
-        const d = doc.data();
-
-        // 1. All variations of fields handled
-        const title = d.title || d.noticeTitle || d.heading || 'Untitled Notice';
-        const description = d.description || d.message || d.content || d.body || d.text || '';
-        const rawType = (d.type || d.category || d.noticeType || 'GENERAL').toUpperCase();
-        const author = d.author || d.postedBy || d.teacherName || d.teacher || 'School Administration';
-        const rawDate = d.date || d.createdAt || d.postedOn || '';
-
-        // Attachment file extraction (covers all formats)
-        let fileUrl = '';
-        let fileName = 'Attached Document';
-        if (d.attachmentUrl) fileUrl = d.attachmentUrl;
-        else if (d.fileUrl) fileUrl = d.fileUrl;
-        else if (d.pdfUrl) fileUrl = d.pdfUrl;
-        else if (d.reportCardUrl) fileUrl = d.reportCardUrl;
-        else if (d.attachment && d.attachment.url) {
-          fileUrl = d.attachment.url;
-          fileName = d.attachment.name || fileName;
+        async function initNoticePortal() {
+            await fetchStudentProfile();
+            listenLiveNotices();
         }
 
-        // 2. Class & Stream Matching Logic (Strictly tolerant)
-        const targetClass = String(d.class || d.targetClass || d.classNum || "ALL").toUpperCase();
-        const targetStream = String(d.stream || d.targetStream || "ALL").toUpperCase();
+        async function fetchStudentProfile() {
+            try {
+                let snap = null;
+                if (userEmail) {
+                    snap = await db.collection('students').where('email', '==', userEmail).get();
+                }
+                if ((!snap || snap.empty) && rawUser) {
+                    snap = await db.collection('students').where('name', '==', rawUser).get();
+                }
 
-        const classMatch = (targetClass === "ALL" || targetClass.includes(stClass) || stClass === "");
-        const streamMatch = (targetStream === "ALL" || targetStream === "GENERAL" || targetStream.includes(stStream) || stStream === "GENERAL");
-
-        if (classMatch && streamMatch) {
-          allNotices.push({
-            id: doc.id,
-            title,
-            description,
-            type: rawType,
-            author,
-            date: formatDateString(rawDate),
-            rawDate: rawDate,
-            attachmentUrl: fileUrl,
-            attachmentName: fileName,
-            isNew: isNoticeRecent(rawDate)
-          });
+                if (snap && !snap.empty) {
+                    studentProfile = snap.docs[0].data();
+                }
+            } catch (err) {
+                console.error("Profile load error:", err);
+            }
         }
-      });
 
-      // Sort newest notices first
-      allNotices.sort((a, b) => new Date(b.rawDate || 0) - new Date(a.rawDate || 0));
+        function listenLiveNotices() {
+            db.collection("notices").onSnapshot((snapshot) => {
+                allNotices = [];
 
-      renderNotices();
-    }, (error) => {
-      console.error("Firebase notice load error:", error);
-      const container = document.getElementById('noticeContainer');
-      if (container) {
-        container.innerHTML = `<div style="text-align:center; color:#f87171; padding:20px; font-size:12.5px;">Error connecting to notices database.</div>`;
-      }
-    });
-  }
+                if (snapshot.empty) {
+                    renderNotices();
+                    return;
+                }
 
-  function extractClassNum(val) {
-    if (!val) return "11";
-    const m = String(val).match(/\d+/);
-    return m ? m[0] : String(val).trim();
-  }
+                const stClass = extractClassNum(studentProfile.class || studentProfile.classSection || "11");
+                const stStream = (studentProfile.stream || "General").toUpperCase();
 
-  function formatDateString(dateVal) {
-    if (!dateVal) return 'Recent';
-    if (typeof dateVal === 'object' && dateVal.toDate) {
-      return dateVal.toDate().toLocaleDateString('en-GB');
-    }
-    if (typeof dateVal === 'string' && dateVal.includes('T')) {
-      return dateVal.split('T')[0];
-    }
-    return String(dateVal);
-  }
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
 
-  function isNoticeRecent(dateVal) {
-    if (!dateVal) return false;
-    const nDate = new Date(dateVal.toDate ? dateVal.toDate() : dateVal);
-    const diff = (new Date() - nDate) / (1000 * 60 * 60 * 24);
-    return diff <= 2; // Marked new if within 2 days
-  }
+                    const title = d.title || d.noticeTitle || d.heading || 'Untitled Notice';
+                    const description = d.description || d.message || d.content || d.body || d.text || '';
+                    const rawType = (d.type || d.category || d.noticeType || 'GENERAL').toUpperCase();
+                    const author = d.author || d.postedBy || d.teacherName || d.teacher || 'School Administration';
+                    const rawDate = d.date || d.createdAt || d.postedOn || '';
 
-  function renderNotices() {
-    const container = document.getElementById('noticeContainer');
-    if (!container) return;
-    container.innerHTML = '';
+                    let fileUrl = '';
+                    let fileName = 'Notice_Attachment.pdf';
+                    if (d.attachmentUrl) fileUrl = d.attachmentUrl;
+                    else if (d.fileUrl) fileUrl = d.fileUrl;
+                    else if (d.pdfUrl) fileUrl = d.pdfUrl;
+                    else if (d.reportCardUrl) fileUrl = d.reportCardUrl;
+                    else if (d.attachment && d.attachment.url) {
+                        fileUrl = d.attachment.url;
+                        fileName = d.attachment.name || fileName;
+                    }
 
-    let filtered = allNotices.filter(notice => {
-      if (currentFilter === 'BOOKMARKS') {
-        if (!bookmarkedIds.includes(notice.id)) return false;
-      } else if (currentFilter !== 'all') {
-        if (!notice.type.includes(currentFilter.toUpperCase())) return false;
-      }
+                    const targetClass = String(d.class || d.targetClass || d.classNum || "ALL").toUpperCase();
+                    const targetStream = String(d.stream || d.targetStream || "ALL").toUpperCase();
 
-      if (currentSearchQuery !== '') {
-        const matchTitle = notice.title.toLowerCase().includes(currentSearchQuery);
-        const matchDesc = notice.description.toLowerCase().includes(currentSearchQuery);
-        const matchAuthor = notice.author.toLowerCase().includes(currentSearchQuery);
-        if (!matchTitle && !matchDesc && !matchAuthor) return false;
-      }
+                    const classMatch = (targetClass === "ALL" || targetClass.includes(stClass) || stClass === "");
+                    const streamMatch = (targetStream === "ALL" || targetStream === "GENERAL" || targetStream.includes(stStream) || stStream === "GENERAL");
 
-      return true;
-    });
+                    if (classMatch && streamMatch) {
+                        allNotices.push({
+                            id: doc.id,
+                            title,
+                            description,
+                            type: rawType,
+                            author,
+                            date: formatDateString(rawDate),
+                            rawDate: rawDate,
+                            attachmentUrl: fileUrl,
+                            attachmentName: fileName
+                        });
+                    }
+                });
 
-    if (filtered.length === 0) {
-      container.innerHTML = `
-        <div style="text-align: center; padding: 35px 20px; color: #64748b; font-size: 13px;">
-          <i class="fa-solid fa-bell-slash" style="font-size: 28px; margin-bottom: 8px; color: #475569; display: block;"></i>
-          No notices found for your class or current filter.
-        </div>
-      `;
-      updateSeeMoreButton(0);
-      return;
-    }
+                allNotices.sort((a, b) => new Date(b.rawDate || 0) - new Date(a.rawDate || 0));
+                renderNotices();
+            }, (error) => {
+                console.error("Notice fetch error:", error);
+                const container = document.getElementById('noticeContainer');
+                if (container) container.innerHTML = `<div class="no-data">Unable to connect to notices database.</div>`;
+            });
+        }
 
-    const visibleList = filtered.slice(0, visibleLimit);
+        function extractClassNum(val) {
+            if (!val) return "11";
+            const m = String(val).match(/\d+/);
+            return m ? m[0] : String(val).trim();
+        }
 
-    const grouped = {};
-    visibleList.forEach(notice => {
-      const noticeDate = notice.date || 'Announcements';
-      if (!grouped[noticeDate]) {
-        grouped[noticeDate] = [];
-      }
-      grouped[noticeDate].push(notice);
-    });
+        function formatDateString(dateVal) {
+            if (!dateVal) return 'Recent';
+            if (typeof dateVal === 'object' && dateVal.toDate) {
+                return dateVal.toDate().toLocaleDateString('en-GB');
+            }
+            if (typeof dateVal === 'string' && dateVal.includes('T')) {
+                return dateVal.split('T')[0];
+            }
+            return String(dateVal);
+        }
 
-    Object.keys(grouped).forEach(date => {
-      const dateDiv = document.createElement('div');
-      dateDiv.className = 'date-divider';
-      dateDiv.innerHTML = `<span>📅 ${date}</span>`;
-      container.appendChild(dateDiv);
+        function renderNotices() {
+            const container = document.getElementById('noticeContainer');
+            if (!container) return;
+            container.innerHTML = '';
 
-      const listDiv = document.createElement('div');
-      listDiv.className = 'notice-list';
+            let filtered = allNotices.filter(notice => {
+                if (currentFilter === 'BOOKMARKS') {
+                    if (!bookmarkedIds.includes(notice.id)) return false;
+                } else if (currentFilter !== 'all') {
+                    if (!notice.type.includes(currentFilter.toUpperCase())) return false;
+                }
 
-      grouped[date].forEach(notice => {
-        const isBookmarked = bookmarkedIds.includes(notice.id);
-        const newClass = notice.isNew ? 'is-new' : '';
+                if (currentSearchQuery !== '') {
+                    const matchTitle = notice.title.toLowerCase().includes(currentSearchQuery);
+                    const matchDesc = notice.description.toLowerCase().includes(currentSearchQuery);
+                    const matchAuthor = notice.author.toLowerCase().includes(currentSearchQuery);
+                    if (!matchTitle && !matchDesc && !matchAuthor) return false;
+                }
 
-        const strip = document.createElement('div');
-        strip.className = `notice-strip ${newClass}`;
-        strip.onclick = () => openNoticeDetail(notice.id);
+                return true;
+            });
 
-        strip.innerHTML = `
-          <div class="strip-left">
-            <span class="type-badge type-${notice.type.toLowerCase()}">
-              <span class="dot"></span> ${notice.type}
-            </span>
-            <span class="strip-title">${notice.title}</span>
-          </div>
-          <div class="strip-right">
-            <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-star bookmark-icon ${isBookmarked ? 'bookmarked' : ''}" 
-               onclick="toggleBookmark(event, '${notice.id}')" 
-               title="Bookmark Notice"></i>
-          </div>
-        `;
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="no-data">
+                        <i class="fa-solid fa-bell-slash" style="font-size: 24px; margin-bottom: 8px; color: #475569; display: block;"></i>
+                        No notices found for your class or current filter.
+                    </div>
+                `;
+                updateSeeMoreButton(0);
+                return;
+            }
 
-        listDiv.appendChild(strip);
-      });
+            const visibleList = filtered.slice(0, visibleLimit);
 
-      container.appendChild(listDiv);
-    });
+            const grouped = {};
+            visibleList.forEach(notice => {
+                const noticeDate = notice.date || 'Announcements';
+                if (!grouped[noticeDate]) grouped[noticeDate] = [];
+                grouped[noticeDate].push(notice);
+            });
 
-    updateSeeMoreButton(filtered.length);
-  }
+            Object.keys(grouped).forEach(date => {
+                const dateDiv = document.createElement('div');
+                dateDiv.className = 'date-divider';
+                dateDiv.innerHTML = `<span>📅 ${date}</span>`;
+                container.appendChild(dateDiv);
 
-  function loadMoreNotices() {
-    visibleLimit += 5;
-    renderNotices();
-  }
+                const listDiv = document.createElement('div');
+                listDiv.className = 'notice-list';
 
-  function updateSeeMoreButton(totalCount) {
-    const btn = document.getElementById('seeMoreBtn');
-    if (!btn) return;
-    
-    if (totalCount > visibleLimit && currentSearchQuery === '') {
-      btn.style.display = 'inline-block';
-      btn.innerHTML = `<i class="fa-solid fa-chevron-down"></i> See More Notices (${totalCount - visibleLimit} more)`;
-    } else {
-      btn.style.display = 'none';
-    }
-  }
+                grouped[date].forEach(notice => {
+                    const isBookmarked = bookmarkedIds.includes(notice.id);
+                    const strip = document.createElement('div');
+                    strip.className = 'notice-strip';
+                    strip.onclick = () => openNoticeDetail(notice.id);
 
-  function openNoticeDetail(id) {
-    const notice = allNotices.find(n => n.id === id);
-    if (!notice) return;
+                    strip.innerHTML = `
+                        <div class="strip-left">
+                            <span class="type-badge type-${notice.type.toLowerCase()}">${notice.type}</span>
+                            <span class="strip-title">${notice.title}</span>
+                        </div>
+                        <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-star bookmark-icon ${isBookmarked ? 'bookmarked' : ''}" 
+                           onclick="toggleBookmark(event, '${notice.id}')"></i>
+                    `;
+                    listDiv.appendChild(strip);
+                });
 
-    activeNoticeId = id;
+                container.appendChild(listDiv);
+            });
 
-    document.getElementById('detailTitle').innerText = notice.title;
-    document.getElementById('detailDateText').innerText = notice.date;
-    document.getElementById('authorText').innerText = notice.author;
-    document.getElementById('detailBody').innerText = notice.description;
+            updateSeeMoreButton(filtered.length);
+        }
 
-    const typeBadge = document.getElementById('detailTypeBadge');
-    if (typeBadge) {
-      typeBadge.className = `type-badge type-${notice.type.toLowerCase()}`;
-    }
-    const typeTitle = document.getElementById('detailTypeTitle');
-    if (typeTitle) {
-      typeTitle.innerText = notice.type;
-    }
+        function loadMoreNotices() {
+            visibleLimit += 5;
+            renderNotices();
+        }
 
-    const attachBox = document.getElementById('attachmentBox');
-    const downloadLink = document.getElementById('attachDownloadLink');
-    if (attachBox && downloadLink) {
-      if (notice.attachmentUrl && notice.attachmentUrl.trim() !== '') {
-        document.getElementById('attachName').innerText = notice.attachmentName || 'Attachment Document';
-        downloadLink.href = notice.attachmentUrl;
-        attachBox.style.display = 'flex';
-      } else {
-        attachBox.style.display = 'none';
-      }
-    }
+        function updateSeeMoreButton(totalCount) {
+            const btn = document.getElementById('seeMoreBtn');
+            if (!btn) return;
+            if (totalCount > visibleLimit && currentSearchQuery === '') {
+                btn.style.display = 'inline-block';
+                btn.innerHTML = `<i class="fa-solid fa-chevron-down"></i> See More (${totalCount - visibleLimit} remaining)`;
+            } else {
+                btn.style.display = 'none';
+            }
+        }
 
-    updateDetailBookmarkIcon();
+        function openNoticeDetail(id) {
+            const notice = allNotices.find(n => n.id === id);
+            if (!notice) return;
 
-    document.getElementById('listView').style.display = 'none';
-    document.getElementById('detailView').style.display = 'block';
+            activeNoticeId = id;
 
-    window.scrollTo(0, 0);
-  }
+            document.getElementById('detailTitle').innerText = notice.title;
+            document.getElementById('detailDateText').innerText = notice.date;
+            document.getElementById('authorText').innerText = notice.author;
+            document.getElementById('detailBody').innerText = notice.description;
 
-  function saveBookmarks() {
-    localStorage.setItem('noticeBookmarks', JSON.stringify(bookmarkedIds));
-  }
+            const typeBadge = document.getElementById('detailTypeBadge');
+            if (typeBadge) typeBadge.className = `type-badge type-${notice.type.toLowerCase()}`;
+            document.getElementById('detailTypeTitle').innerText = notice.type;
 
-  function toggleBookmark(event, id) {
-    if (event) event.stopPropagation();
-    if (bookmarkedIds.includes(id)) {
-      bookmarkedIds = bookmarkedIds.filter(bId => bId !== id);
-    } else {
-      bookmarkedIds.push(id);
-    }
-    saveBookmarks();
-    renderNotices();
-    if (activeNoticeId === id) {
-      updateDetailBookmarkIcon();
-    }
-  }
+            const attachBox = document.getElementById('attachmentBox');
+            if (attachBox) {
+                if (notice.attachmentUrl && notice.attachmentUrl.trim() !== '') {
+                    document.getElementById('attachName').innerText = notice.attachmentName || 'Notice_Document.pdf';
+                    attachBox.style.display = 'flex';
+                } else {
+                    attachBox.style.display = 'none';
+                }
+            }
 
-  function updateDetailBookmarkIcon() {
-    const icon = document.getElementById('detailBookmarkBtn');
-    if (!icon) return;
-    const isBookmarked = bookmarkedIds.includes(activeNoticeId);
-    if (isBookmarked) {
-      icon.className = 'fa-solid fa-star bookmark-icon bookmarked';
-      icon.style.color = '#fbbf24';
-    } else {
-      icon.className = 'fa-regular fa-star bookmark-icon';
-      icon.style.color = '#94a3b8';
-    }
-  }
+            updateDetailBookmarkIcon();
+            document.getElementById('listView').style.display = 'none';
+            document.getElementById('detailView').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
 
-  function toggleBookmarkInDetail() {
-    if (!activeNoticeId) return;
-    toggleBookmark(null, activeNoticeId);
-  }
+        function handlePdfOpen() {
+            const notice = allNotices.find(n => n.id === activeNoticeId);
+            if (!notice || !notice.attachmentUrl) {
+                alert("No PDF file attached to this notice.");
+                return;
+            }
 
-  function setFilter(filter, element) {
-    currentFilter = filter;
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    element.classList.add('active');
-    visibleLimit = 5;
-    renderNotices();
-  }
+            const url = notice.attachmentUrl.trim();
 
-  function filterNotices() {
-    currentSearchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
-    visibleLimit = 5;
-    renderNotices();
-  }
+            if (url.startsWith('data:')) {
+                try {
+                    const parts = url.split(',');
+                    const mime = parts[0].match(/:(.*?);/)[1];
+                    const bstr = atob(parts[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    const blob = new Blob([u8arr], { type: mime });
+                    const blobUrl = URL.createObjectURL(blob);
 
-  function showListView() {
-    document.getElementById('detailView').style.display = 'none';
-    document.getElementById('listView').style.display = 'block';
-    renderNotices();
-  }
+                    const win = window.open(blobUrl, '_blank');
+                    if (!win) {
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.target = '_blank';
+                        link.download = notice.attachmentName || 'Notice_Document.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                } catch (err) {
+                    console.error("PDF preview error:", err);
+                    window.open(url, '_blank');
+                }
+            } else {
+                window.open(url, '_blank');
+            }
+        }
 
-  window.onload = initNoticePortal;
-</script>
+        function saveBookmarks() {
+            localStorage.setItem('noticeBookmarks', JSON.stringify(bookmarkedIds));
+        }
 
+        function toggleBookmark(event, id) {
+            if (event) event.stopPropagation();
+            if (bookmarkedIds.includes(id)) {
+                bookmarkedIds = bookmarkedIds.filter(bId => bId !== id);
+            } else {
+                bookmarkedIds.push(id);
+            }
+            saveBookmarks();
+            renderNotices();
+            if (activeNoticeId === id) updateDetailBookmarkIcon();
+        }
+
+        function updateDetailBookmarkIcon() {
+            const icon = document.getElementById('detailBookmarkBtn');
+            if (!icon) return;
+            const isBookmarked = bookmarkedIds.includes(activeNoticeId);
+            if (isBookmarked) {
+                icon.className = 'fa-solid fa-star bookmark-icon bookmarked';
+            } else {
+                icon.className = 'fa-regular fa-star bookmark-icon';
+            }
+        }
+
+        function toggleBookmarkInDetail() {
+            if (!activeNoticeId) return;
+            toggleBookmark(null, activeNoticeId);
+        }
+
+        function setFilter(filter, element) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            visibleLimit = 5;
+            renderNotices();
+        }
+
+        function filterNotices() {
+            currentSearchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            visibleLimit = 5;
+            renderNotices();
+        }
+
+        function showListView() {
+            document.getElementById('detailView').style.display = 'none';
+            document.getElementById('listView').style.display = 'block';
+            renderNotices();
+        }
+    </script>
 </body>
 </html>
