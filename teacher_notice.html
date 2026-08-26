@@ -1,635 +1,520 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teacher Notice Portal - SSKL Agrawal Memorial Bal Vidhya Mandir</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Teacher Notice Portal - SSKL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    /* Hardware Accelerated Smooth Background */
-    body { 
-      background-color: #070d19;
-      min-height: 100vh; 
-      color: #ffffff; 
-      overflow-x: hidden;
-      padding: 18px 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
+    <style>
+        :root {
+            --bg: #070d19;
+            --card: #0f172a;
+            --primary: #38bdf8;
+            --text: #ffffff;
+            --subtext: #94a3b8;
+            --border: rgba(56, 189, 248, 0.25);
+        }
 
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(135deg, #070d19 0%, #0f172a 50%, #1e293b 100%);
-      z-index: -1;
-      transform: translateZ(0);
-    }
+        /* Front-End Security: Disable Text Selection & Dragging */
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+            user-select: none; 
+            -webkit-user-drag: none; 
+        }
 
-    .container {
-      width: 100%;
-      max-width: 900px;
-      animation: fadeIn 0.35s ease-out;
-    }
+        /* Form Inputs में Selection On रखना ज़रूरी है */
+        input, textarea, select { user-select: auto; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        /* Mobile White-Bar & Scroll Glitch Fix */
+        html, body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100dvh;
+            overscroll-behavior-y: none;
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            position: relative;
+        }
 
-    /* Fixed Clean Header (No Overlap on Mobile) */
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(30, 41, 59, 0.75);
-      padding: 14px 18px;
-      border-radius: 16px;
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      margin-bottom: 22px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      gap: 12px;
-      transform: translateZ(0);
-    }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
+            z-index: -1;
+        }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 16px;
-      font-weight: 700;
-      color: #38bdf8;
-      line-height: 1.25;
-      min-width: 0;
-    }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-    .brand i {
-      font-size: 18px;
-      flex-shrink: 0;
-    }
+        .container { width: 100%; max-width: 650px; padding-bottom: 30px; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .brand span {
-      white-space: normal;
-      word-break: keep-all;
-    }
+        /* Top Bar */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); backdrop-filter: blur(8px); }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 600; color: var(--text); }
+        .brand i { color: var(--primary); font-size: 18px; background: rgba(56, 189, 248, 0.1); padding: 8px; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.2); }
+        
+        .btn-home { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; cursor: pointer; }
+        .btn-home:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
-    .btn-dashboard {
-      text-decoration: none;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 12px;
-      white-space: nowrap;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
+        /* Type XYZ: Menu Strips */
+        .strip { display: flex; align-items: center; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 18px 15px; margin-bottom: 15px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15); backdrop-filter: blur(5px); }
+        .strip:hover { transform: translateY(-4px); background: rgba(15, 23, 42, 0.9); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2); }
+        .strip:active { transform: scale(0.97); }
+        
+        .strip-icon { width: 48px; height: 48px; background: rgba(56, 189, 248, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px; margin-right: 15px; flex-shrink: 0; border: 1px solid var(--border); }
+        .strip-text h3 { font-size: 14.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+        .strip-text p { font-size: 11.5px; color: var(--subtext); }
+        .strip-arrow { margin-left: auto; color: var(--primary); font-size: 16px; transition: transform 0.3s; }
+        .strip:hover .strip-arrow { transform: translateX(4px); }
 
-    .btn-dashboard:hover {
-      background: rgba(56, 189, 248, 0.25);
-      transform: translateY(-1px);
-    }
+        /* Modals (Popups) */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(7, 13, 25, 0.85); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.3s ease; }
+        .modal.active { display: flex; opacity: 1; }
+        
+        .modal-content { background: var(--card); width: 100%; max-width: 500px; border-radius: 18px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; max-height: 90dvh; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .modal.active .modal-content { transform: scale(1); }
+        
+        .modal-header { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.05); }
+        .modal-header h2 { font-size: 15.5px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .close-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--subtext); width: 32px; height: 32px; border-radius: 50%; font-size: 14px; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; }
+        .close-btn:hover { background: #ef4444; color: #fff; border-color: #ef4444; transform: rotate(90deg); }
 
-    /* Optimized Form Card */
-    .form-card {
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 26px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      transform: translateZ(0);
-    }
+        .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
 
-    .form-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #38bdf8;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+        /* Forms inside Modal */
+        label { font-size: 11px; font-weight: 600; color: var(--subtext); margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-box { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 12px 14px; border-radius: 10px; font-size: 13px; outline: none; color-scheme: dark; transition: all 0.3s ease; }
+        .input-box:focus { border-color: var(--primary); background: rgba(30, 41, 59, 0.6); box-shadow: 0 0 10px rgba(56, 189, 248, 0.15); }
+        select.input-box option { background-color: var(--card); color: var(--text); }
+        textarea.input-box { resize: vertical; min-height: 90px; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-bottom: 14px;
-    }
+        .file-box { border: 1px dashed var(--primary); background: rgba(56, 189, 248, 0.05); padding: 15px; border-radius: 10px; text-align: center; position: relative; cursor: pointer; transition: all 0.2s; }
+        .file-box:hover { background: rgba(56, 189, 248, 0.1); }
+        .file-box input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .file-msg { color: var(--primary); font-size: 12.5px; font-weight: 500; }
+        .file-hint { font-size: 10px; color: #fbbf24; margin-top: 6px; }
 
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+        .action-btn { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 14px; border-radius: 10px; font-size: 13.5px; font-weight: 600; text-align: center; width: 100%; cursor: pointer; margin-top: 5px; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .action-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(56, 189, 248, 0.3); }
+        .action-btn:active { transform: scale(0.96); }
+        .action-btn:disabled { opacity: 0.6; pointer-events: none; }
 
-    .input-group label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #cbd5e1;
-    }
+        /* Manage Notice List */
+        .notice-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-left: 4px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 12px; transition: all 0.2s ease; }
+        .notice-card:hover { border-color: rgba(56, 189, 248, 0.3); background: rgba(30, 41, 59, 0.8); }
+        
+        .n-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+        .n-title { font-size: 14px; font-weight: 600; color: var(--text); }
+        .n-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        
+        .badge { font-size: 10px; padding: 3px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; border: 1px solid; }
+        .badge-urgent { background: rgba(239, 68, 68, 0.1); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+        .badge-exam { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+        .badge-holiday { background: rgba(251, 191, 36, 0.1); color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); }
+        .badge-sports { background: rgba(74, 222, 128, 0.1); color: #4ade80; border-color: rgba(74, 222, 128, 0.3); }
+        .badge-general { background: rgba(148, 163, 184, 0.1); color: #cbd5e1; border-color: rgba(148, 163, 184, 0.3); }
+        .badge-info { background: rgba(255,255,255,0.05); color: var(--subtext); border-color: transparent; }
 
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      padding: 11px 13px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      color: #ffffff;
-      font-size: 13px;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
+        .n-desc { font-size: 11.5px; color: var(--subtext); line-height: 1.5; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .n-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+        
+        .btn-delete { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; }
+        .btn-delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
-    }
+        .no-data { color: var(--subtext); font-size: 12.5px; text-align: center; padding: 30px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
 
-    .form-textarea {
-      resize: vertical;
-      min-height: 85px;
-    }
-
-    .file-hint {
-      font-size: 11px;
-      color: #fbbf24;
-      margin-top: 4px;
-    }
-
-    .btn-publish {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
-      border: none;
-      border-radius: 12px;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      margin-top: 8px;
-    }
-
-    .btn-publish:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(56, 189, 248, 0.35);
-    }
-
-    /* List Section */
-    .section-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #38bdf8;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-transform: uppercase;
-    }
-
-    .notice-card {
-      background: rgba(30, 41, 59, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-left: 5px solid #38bdf8;
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 14px;
-      position: relative;
-      transform: translateZ(0);
-    }
-
-    .notice-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-      gap: 12px;
-    }
-
-    .notice-title {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .notice-meta {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-
-    .badge {
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .badge-urgent { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .badge-exam { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
-    .badge-holiday { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
-    .badge-sports { background: rgba(74, 222, 128, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
-    .badge-general { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
-
-    .badge-info { background: rgba(255, 255, 255, 0.08); color: #94a3b8; }
-
-    .notice-desc {
-      font-size: 12.5px;
-      color: #cbd5e1;
-      line-height: 1.45;
-      margin-bottom: 12px;
-    }
-
-    .notice-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 10px;
-      font-size: 11px;
-      color: #94a3b8;
-    }
-
-    .btn-delete {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #f87171;
-      padding: 5px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 11px;
-      transition: background 0.2s ease;
-    }
-
-    .btn-delete:hover {
-      background: rgba(239, 68, 68, 0.3);
-    }
-
-    .no-data {
-      text-align: center;
-      padding: 26px;
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    /* Responsive Mobile Fine-Tuning */
-    @media (max-width: 480px) {
-      .top-bar {
-        padding: 12px 14px;
-      }
-      .brand {
-        font-size: 13.5px;
-        gap: 8px;
-      }
-      .brand i {
-        font-size: 16px;
-      }
-      .btn-dashboard {
-        padding: 6px 10px;
-        font-size: 11px;
-      }
-      .form-card {
-        padding: 16px;
-      }
-    }
-  </style>
+        @media (max-width: 500px) {
+            .form-row { grid-template-columns: 1fr; gap: 12px; }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Top Header -->
-    <div class="top-bar">
-      <div class="brand">
-        <i class="fa-solid fa-bullhorn"></i>
-        <span>Teacher Notice Management</span>
-      </div>
-      <a href="teacher_dashboard.html" class="btn-dashboard">
-        <i class="fa-solid fa-house"></i> Dashboard
-      </a>
-    </div>
-
-    <!-- Create Notice Form -->
-    <div class="form-card">
-      <div class="form-title">
-        <i class="fa-solid fa-pen-to-square"></i> Publish New Notice
-      </div>
-
-      <div class="form-grid">
-        <div class="input-group">
-          <label>Notice Title *</label>
-          <input type="text" id="noticeTitle" class="form-input" placeholder="e.g., Annual Sports Meet 2026">
-        </div>
-
-        <div class="input-group">
-          <label>Category / Badge *</label>
-          <select id="noticeType" class="form-select">
-            <option value="GENERAL">General Notice</option>
-            <option value="URGENT">🔴 Urgent</option>
-            <option value="EXAM">🔵 Exam</option>
-            <option value="HOLIDAY">🟡 Holiday</option>
-            <option value="SPORTS">🟢 Sports</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label>Target Class *</label>
-          <select id="noticeClass" class="form-select">
-            <option value="All">All Classes</option>
-            <option value="Class 9th">Class 9th</option>
-            <option value="Class 10th">Class 10th</option>
-            <option value="Class 11th">Class 11th</option>
-            <option value="Class 12th">Class 12th</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label>Target Stream *</label>
-          <select id="noticeStream" class="form-select">
-            <option value="All">All Streams / General</option>
-            <option value="PCM">PCM</option>
-            <option value="PCB">PCB</option>
-            <option value="Commerce">Commerce</option>
-            <option value="Arts">Arts</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="input-group" style="margin-bottom: 14px;">
-        <label>Notice Content / Instructions *</label>
-        <textarea id="noticeDescription" class="form-textarea" placeholder="Write full details about the notice here..."></textarea>
-      </div>
-
-      <div class="input-group" style="margin-bottom: 14px;">
-        <label>Attach Document PDF (Optional)</label>
-        <input type="file" id="noticeFile" accept="application/pdf" class="form-input">
-        <div class="file-hint"><i class="fa-solid fa-triangle-exclamation"></i> Max allowed file size: 1.5 MB</div>
-      </div>
-
-      <button id="publishBtn" class="btn-publish" onclick="publishNotice()">
-        <i class="fa-solid fa-paper-plane"></i> Publish Notice
-      </button>
-    </div>
-
-    <!-- Published Notices List -->
-    <div class="section-title">
-      <i class="fa-solid fa-list-check"></i> Previously Published Notices
-    </div>
-
-    <div id="teacherNoticesContainer">
-      <div class="no-data">Loading published notices...</div>
-    </div>
-
-    <!-- See More Pagination -->
-    <div style="text-align: center; margin: 22px 0;">
-      <button id="seeMoreBtn" onclick="loadMoreNotices()" style="display: none; padding: 10px 24px; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.25s; font-size: 13px;">
-        <i class="fa-solid fa-chevron-down"></i> See More Notices
-      </button>
-    </div>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-  <script>
-    const loggedInTeacher = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || "School Administration";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
-      authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
-      projectId: "ss-kanhaiyalal-agrawal",
-      storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
-      messagingSenderId: "776171239833",
-      appId: "1:776171239833:web:39eea44420db97384b3b08",
-      measurementId: "G-TQKTRTKBEJ"
-    };
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.firestore();
-
-    let lastNoticeDoc = null;
-    let hasMoreNotices = true;
-    let myNoticesData = [];
-
-    async function publishNotice() {
-      const title = document.getElementById('noticeTitle').value.trim();
-      const type = document.getElementById('noticeType').value;
-      const targetClass = document.getElementById('noticeClass').value;
-      const targetStream = document.getElementById('noticeStream').value;
-      const description = document.getElementById('noticeDescription').value.trim();
-      const fileInput = document.getElementById('noticeFile');
-
-      if (!title || !description) {
-        alert("Please fill both Title and Description!");
-        return;
-      }
-
-      let attachmentObj = null;
-
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const maxBytes = 1.5 * 1024 * 1024;
-
-        if (file.size > maxBytes) {
-          alert("⚠️ File size exceeds 1.5 MB limit!");
-          return;
+    <!-- Security Script (Anti-Inspect & Anti-Copy) -->
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
         }
+    </script>
 
-        try {
-          const base64Url = await convertBase64(file);
-          attachmentObj = {
-            name: file.name,
-            size: (file.size / 1024).toFixed(1) + " KB",
-            url: base64Url
-          };
-        } catch (err) {
-          alert("Error processing file!");
-          return;
-        }
-      }
-
-      const publishBtn = document.getElementById('publishBtn');
-      publishBtn.disabled = true;
-      publishBtn.innerText = "Publishing...";
-
-      const now = new Date();
-      const dateStr = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-      const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-
-      const newNotice = {
-        title: title,
-        type: type,
-        class: targetClass,
-        stream: targetStream,
-        description: description,
-        author: loggedInTeacher,
-        date: dateStr,
-        time: timeStr,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        isNew: true,
-        attachment: attachmentObj
-      };
-
-      db.collection('notices').add(newNotice).then(() => {
-        alert("Notice published successfully!");
+    <div class="container">
         
-        document.getElementById('noticeTitle').value = '';
-        document.getElementById('noticeDescription').value = '';
-        document.getElementById('noticeFile').value = '';
-        publishBtn.disabled = false;
-        publishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish Notice';
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="brand">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span>Teacher Notice Portal</span>
+            </div>
+            <!-- Maintaining strict linking constraint: href="teacher_dashboard.html" -->
+            <a href="teacher_dashboard.html" class="btn-home">
+                <i class="fa-solid fa-house"></i> Dashboard
+            </a>
+        </div>
 
-        loadInitialNotices();
-      }).catch((err) => {
-        console.error("Notice save error:", err);
-        alert("Error publishing notice!");
-        publishBtn.disabled = false;
-        publishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish Notice';
-      });
-    }
+        <!-- TYPE XYZ STRIPS -->
+        <div class="strip" onclick="openModal('addNoticeModal')">
+            <div class="strip-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+            <div class="strip-text">
+                <h3>Publish New Notice</h3>
+                <p>Broadcast updates to students and classes</p>
+            </div>
+            <i class="fa-solid fa-chevron-right strip-arrow"></i>
+        </div>
 
-    function convertBase64(file) {
-      return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-        fileReader.onload = () => resolve(fileReader.result);
-        fileReader.onerror = (error) => reject(error);
-      });
-    }
+        <div class="strip" onclick="openModal('manageNoticeModal')">
+            <div class="strip-icon"><i class="fa-solid fa-list-check"></i></div>
+            <div class="strip-text">
+                <h3>Manage Notices</h3>
+                <p>Search, view or delete previously published notices</p>
+            </div>
+            <i class="fa-solid fa-chevron-right strip-arrow"></i>
+        </div>
 
-    function loadInitialNotices() {
-      myNoticesData = [];
-      lastNoticeDoc = null;
-      hasMoreNotices = true;
-      fetchNoticesBatch(false);
-    }
+    </div>
 
-    function fetchNoticesBatch(isAppend = false) {
-      let query = db.collection('notices').orderBy('createdAt', 'desc');
+    <!-- ================= MODALS ================= -->
 
-      if (isAppend && lastNoticeDoc) {
-        query = query.startAfter(lastNoticeDoc);
-      }
+    <!-- 1. Add Notice Modal -->
+    <div class="modal" id="addNoticeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-bullhorn"></i> Publish Notice</h2>
+                <button class="close-btn" onclick="closeModal('addNoticeModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Notice Title (Mandatory)</label>
+                    <input type="text" id="noticeTitle" class="input-box" placeholder="e.g., Annual Sports Meet 2026">
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label>Category / Badge</label>
+                        <select id="noticeType" class="input-box">
+                            <option value="GENERAL">General Notice</option>
+                            <option value="URGENT">🔴 Urgent</option>
+                            <option value="EXAM">🔵 Exam</option>
+                            <option value="HOLIDAY">🟡 Holiday</option>
+                            <option value="SPORTS">🟢 Sports</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Target Class</label>
+                        <select id="noticeClass" class="input-box" onchange="toggleNoticeStream()">
+                            <option value="All">All Classes</option>
+                            <option value="Class 9th">Class 9th</option>
+                            <option value="Class 10th">Class 10th</option>
+                            <option value="Class 11th">Class 11th</option>
+                            <option value="Class 12th">Class 12th</option>
+                        </select>
+                    </div>
+                </div>
 
-      query.limit(5).get().then((snapshot) => {
-        if (snapshot.empty) {
-          hasMoreNotices = false;
-          updateSeeMoreButton();
-          if (!isAppend && myNoticesData.length === 0) {
-            renderNoticesList();
-          }
-          return;
+                <div id="noticeStreamBox" style="display:none;">
+                    <label>Target Stream</label>
+                    <select id="noticeStream" class="input-box">
+                        <option value="All">All Streams / General</option>
+                        <option value="PCM">PCM</option>
+                        <option value="PCB">PCB</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Arts">Arts</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Notice Content / Instructions (Mandatory)</label>
+                    <textarea id="noticeDescription" class="input-box" placeholder="Write full details about the notice here..."></textarea>
+                </div>
+
+                <div>
+                    <label>Attach PDF Document (Optional)</label>
+                    <div class="file-box">
+                        <input type="file" id="noticeFile" accept="application/pdf" onchange="handleNoticeFile(event)">
+                        <div class="file-msg" id="noticeFileStatus"><i class="fa-solid fa-upload"></i> Tap to select PDF File</div>
+                    </div>
+                    <div class="file-hint">Max allowed file size: 1.5 MB</div>
+                </div>
+
+                <button id="publishBtn" class="action-btn" onclick="publishNotice()">
+                    <i class="fa-solid fa-paper-plane"></i> Publish Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Manage Notices Modal -->
+    <div class="modal" id="manageNoticeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-list-check"></i> Manage Records</h2>
+                <button class="close-btn" onclick="closeModal('manageNoticeModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" style="background: rgba(0,0,0,0.15);">
+                <div>
+                    <label>Filter Notices</label>
+                    <input type="text" id="manageSearchInput" class="input-box" placeholder="Search by title, class or keyword..." oninput="filterManageNotices()">
+                </div>
+                
+                <div id="teacherNoticesContainer" style="max-height: 400px; overflow-y: auto; padding-right: 4px;">
+                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading published notices...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const loggedInTeacher = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || "School Administration";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
+            authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
+            projectId: "ss-kanhaiyalal-agrawal",
+            storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
+            messagingSenderId: "776171239833",
+            appId: "1:776171239833:web:39eea44420db97384b3b08",
+            measurementId: "G-TQKTRTKBEJ"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let allNoticesCache = [];
+        let base64NoticeFile = null;
+        let attachmentObj = null;
+
+        window.onload = function() {
+            toggleNoticeStream();
+            fetchAllNotices();
+        };
+
+        // Modal Handlers
+        function openModal(id) { 
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+        
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
         }
 
-        lastNoticeDoc = snapshot.docs[snapshot.docs.length - 1];
-
-        if (snapshot.docs.length < 5) {
-          hasMoreNotices = false;
+        function toggleNoticeStream() {
+            const cls = document.getElementById('noticeClass').value;
+            document.getElementById('noticeStreamBox').style.display = (cls.includes('11') || cls.includes('12')) ? 'block' : 'none';
         }
 
-        snapshot.forEach((doc) => {
-          if (!myNoticesData.some(n => n.id === doc.id)) {
-            myNoticesData.push({
-              id: doc.id,
-              ...doc.data()
+        // File Handler
+        function handleNoticeFile(event) {
+            const file = event.target.files[0];
+            const statusDisplay = document.getElementById('noticeFileStatus');
+            
+            if (!file) {
+                attachmentObj = null;
+                statusDisplay.innerHTML = '<i class="fa-solid fa-upload"></i> Tap to select PDF File';
+                return;
+            }
+
+            const maxBytes = 1.5 * 1024 * 1024;
+            if (file.size > maxBytes) {
+                alert("⚠️ File size exceeds 1.5 MB limit!");
+                event.target.value = '';
+                attachmentObj = null;
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                attachmentObj = {
+                    name: file.name,
+                    size: (file.size / 1024).toFixed(1) + " KB",
+                    url: e.target.result
+                };
+                statusDisplay.innerHTML = `<i class="fa-solid fa-check"></i> ${file.name}`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Publish Notice
+        async function publishNotice() {
+            const title = document.getElementById('noticeTitle').value.trim();
+            const type = document.getElementById('noticeType').value;
+            const targetClass = document.getElementById('noticeClass').value;
+            const isSenior = targetClass.includes('11') || targetClass.includes('12');
+            const targetStream = isSenior ? document.getElementById('noticeStream').value : "All";
+            const description = document.getElementById('noticeDescription').value.trim();
+
+            if (!title || !description) {
+                alert("Please fill both Title and Description!");
+                return;
+            }
+
+            const publishBtn = document.getElementById('publishBtn');
+            publishBtn.disabled = true;
+            publishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publishing...`;
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
+            const newNotice = {
+                title: title,
+                type: type,
+                class: targetClass,
+                stream: targetStream,
+                description: description,
+                author: loggedInTeacher,
+                date: dateStr,
+                time: timeStr,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                isNew: true,
+                attachment: attachmentObj
+            };
+
+            try {
+                await db.collection('notices').add(newNotice);
+                alert("✅ Notice published successfully!");
+                
+                document.getElementById('noticeTitle').value = '';
+                document.getElementById('noticeDescription').value = '';
+                document.getElementById('noticeFile').value = '';
+                document.getElementById('noticeFileStatus').innerHTML = '<i class="fa-solid fa-upload"></i> Tap to select PDF File';
+                attachmentObj = null;
+                
+                closeModal('addNoticeModal');
+            } catch (err) {
+                console.error("Notice save error:", err);
+                alert("Error publishing notice! Check internet connection.");
+            }
+
+            publishBtn.disabled = false;
+            publishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish Now';
+        }
+
+        // Real-time Fetching (Prevents Indexing Crash)
+        function fetchAllNotices() {
+            db.collection('notices').onSnapshot(snapshot => {
+                let tempCache = [];
+                snapshot.forEach(doc => {
+                    tempCache.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Sort Descending by Timestamp
+                tempCache.sort((a, b) => {
+                    let timeA = a.createdAt?.seconds || 0;
+                    let timeB = b.createdAt?.seconds || 0;
+                    return timeB - timeA; 
+                });
+
+                allNoticesCache = tempCache;
+                filterManageNotices();
+            }, err => {
+                console.error("Error fetching notices:", err);
+                document.getElementById('teacherNoticesContainer').innerHTML = '<div class="no-data" style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Error loading data.</div>';
             });
-          }
-        });
+        }
 
-        renderNoticesList();
-        updateSeeMoreButton();
-      }).catch((err) => {
-        console.error("Error loading notices:", err);
-      });
-    }
+        // Client-Side Search
+        function filterManageNotices() {
+            const inputElem = document.getElementById('manageSearchInput');
+            const q = inputElem ? inputElem.value.toLowerCase().trim() : '';
+            
+            let filteredList = allNoticesCache;
+            if (q) {
+                filteredList = allNoticesCache.filter(n => 
+                    (n.title && n.title.toLowerCase().includes(q)) || 
+                    (n.description && n.description.toLowerCase().includes(q)) ||
+                    (n.class && n.class.toLowerCase().includes(q))
+                );
+            }
+            renderNoticesList(filteredList);
+        }
 
-    function loadMoreNotices() {
-      if (hasMoreNotices) {
-        fetchNoticesBatch(true);
-      }
-    }
+        function renderNoticesList(list) {
+            const container = document.getElementById('teacherNoticesContainer');
+            if (list.length === 0) {
+                container.innerHTML = '<div class="no-data"><i class="fa-solid fa-folder-open"></i> No matching notices found.</div>';
+                return;
+            }
 
-    function updateSeeMoreButton() {
-      const btn = document.getElementById('seeMoreBtn');
-      if (!btn) return;
-      btn.style.display = hasMoreNotices ? 'inline-block' : 'none';
-    }
+            container.innerHTML = '';
 
-    function renderNoticesList() {
-      const container = document.getElementById('teacherNoticesContainer');
-      if (!container) return;
+            list.forEach((notice) => {
+                const badgeClass = `badge-${(notice.type || 'general').toLowerCase()}`;
+                
+                // Safe PDF Handlers
+                let attachmentHTML = '<span>No File Attached</span>';
+                if (notice.attachment && notice.attachment.url) {
+                    const isBase64 = notice.attachment.url.startsWith('data:');
+                    const safeTitle = notice.title.replace(/'/g, "\\'");
+                    const clickAction = isBase64 ? `onclick="openSafePDF('${notice.attachment.url}')"` : `href="${notice.attachment.url}" target="_blank"`;
+                    attachmentHTML = `<a ${clickAction} style="color:var(--primary); text-decoration:none; font-weight:600; cursor:pointer;"><i class="fa-solid fa-file-pdf"></i> View PDF</a>`;
+                }
 
-      if (myNoticesData.length === 0) {
-        container.innerHTML = `<div class="no-data">No notices published yet.</div>`;
-        return;
-      }
+                container.innerHTML += `
+                    <div class="notice-card">
+                        <div class="n-header">
+                            <div class="n-title">${notice.title}</div>
+                        </div>
+                        <div class="n-meta">
+                            <span class="badge ${badgeClass}">${notice.type || 'GENERAL'}</span>
+                            <span class="badge badge-info"><i class="fa-solid fa-users"></i> ${notice.class || 'All'} (${notice.stream || 'All'})</span>
+                            <span class="badge badge-info"><i class="fa-regular fa-calendar"></i> ${notice.date || ''}</span>
+                        </div>
+                        <div class="n-desc">${notice.description}</div>
+                        <div class="n-footer">
+                            ${attachmentHTML}
+                            <button class="btn-delete" onclick="deleteNotice('${notice.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-      container.innerHTML = '';
+        async function deleteNotice(id) {
+            if (confirm("Are you sure you want to permanently delete this notice?")) {
+                try {
+                    await db.collection('notices').doc(id).delete();
+                } catch (err) {
+                    alert("Error deleting notice.");
+                }
+            }
+        }
 
-      myNoticesData.forEach((notice) => {
-        const badgeClass = `badge-${(notice.type || 'general').toLowerCase()}`;
-
-        const card = document.createElement('div');
-        card.className = 'notice-card';
-
-        card.innerHTML = `
-          <div class="notice-header">
-            <div class="notice-title">${notice.title}</div>
-            <button class="btn-delete" onclick="deleteNotice('${notice.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
-          </div>
-          <div class="notice-meta">
-            <span class="badge ${badgeClass}">${notice.type || 'GENERAL'}</span>
-            <span class="badge badge-info"><i class="fa-solid fa-users"></i> ${notice.class || 'All'} (${notice.stream || 'All'})</span>
-            <span class="badge badge-info"><i class="fa-regular fa-calendar"></i> ${notice.date || ''}</span>
-          </div>
-          <div class="notice-desc">${notice.description}</div>
-          <div class="notice-footer">
-            <span>By: ${notice.author || 'Teacher'}</span>
-            ${notice.attachment ? `<a href="${notice.attachment.url}" target="_blank" style="color:#38bdf8; text-decoration:none;"><i class="fa-solid fa-file-pdf"></i> View PDF (${notice.attachment.size})</a>` : '<span>No File Attached</span>'}
-          </div>
-        `;
-
-        container.appendChild(card);
-      });
-    }
-
-    function deleteNotice(id) {
-      if (confirm("Are you sure you want to delete this notice?")) {
-        db.collection('notices').doc(id).delete().then(() => {
-          alert("Notice deleted successfully!");
-          loadInitialNotices();
-        }).catch((err) => console.error("Error deleting notice:", err));
-      }
-    }
-
-    window.onload = loadInitialNotices;
-  </script>
+        // Mobile Safe PDF Handler
+        function openSafePDF(base64Data) {
+            try {
+                const parts = base64Data.split(',');
+                const mime = parts[0].match(/:(.*?);/)[1];
+                const bstr = atob(parts[1]);
+                let n = bstr.length; const u8arr = new Uint8Array(n);
+                while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+                const blob = new Blob([u8arr], { type: mime });
+                window.open(URL.createObjectURL(blob), '_blank');
+            } catch(e) { window.open(base64Data, '_blank'); }
+        }
+    </script>
 </body>
 </html>
