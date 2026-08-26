@@ -1,4 +1,4 @@
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,7 +35,7 @@
         .brand i { color: var(--primary); font-size: 18px; }
         .btn-home { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; }
 
-        /* Type XYZ Menu Strips (Pattiya) */
+        /* Menu Strips */
         .strip { display: flex; align-items: center; background: var(--card); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 18px 15px; margin-bottom: 15px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .strip:active { transform: scale(0.98); background: rgba(56, 189, 248, 0.05); }
         
@@ -44,7 +44,7 @@
         .strip-text p { font-size: 11px; color: var(--subtext); }
         .strip-arrow { margin-left: auto; color: var(--primary); font-size: 16px; }
 
-        /* Modals (Popups) */
+        /* Modals */
         .modal { display: none; position: fixed; inset: 0; background: rgba(7, 13, 25, 0.9); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(4px); }
         .modal.active { display: flex; animation: popIn 0.2s ease-out; }
         @keyframes popIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -100,12 +100,12 @@
             </a>
         </div>
 
-        <!-- TYPE XYZ STRIPS -->
+        <!-- STRIPS -->
         <div class="strip" onclick="openAddModal()">
             <div class="strip-icon"><i class="fa-solid fa-user-plus"></i></div>
             <div class="strip-text">
                 <h3>Add New Student</h3>
-                <p>Register a student profile with class and roll no</p>
+                <p>Register a student profile with phone, email & roll no</p>
             </div>
             <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
@@ -114,13 +114,13 @@
             <div class="strip-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
             <div class="strip-text">
                 <h3>Search Students</h3>
-                <p>Find students by name, roll no or class</p>
+                <p>Find by name, phone, email, or roll no</p>
             </div>
             <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
 
         <div class="strip" onclick="openModal('manageModal')">
-            <div class="strip-icon"><i class="fa-solid id-card"></i><i class="fa-solid fa-address-book"></i></div>
+            <div class="strip-icon"><i class="fa-solid fa-address-book"></i></div>
             <div class="strip-text">
                 <h3>Manage Profiles Directory</h3>
                 <p>View, edit or delete existing student records</p>
@@ -130,7 +130,7 @@
 
     </div>
 
-    <!-- ================= MODALS (POP-UPS) ================= -->
+    <!-- ================= MODALS ================= -->
 
     <!-- 1. Add / Edit Student Modal -->
     <div class="modal" id="studentModal">
@@ -148,6 +148,10 @@
                 <div>
                     <label>Email Address (Mandatory)</label>
                     <input type="email" id="stEmail" class="input-box" placeholder="student@gmail.com">
+                </div>
+                <div>
+                    <label>Phone Number (Optional / Future Search)</label>
+                    <input type="tel" id="stPhone" class="input-box" placeholder="e.g. 9876543210">
                 </div>
                 <div class="form-row">
                     <div>
@@ -194,8 +198,8 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <label>Type Name or Roll No</label>
-                    <input type="text" id="searchInput" class="input-box" placeholder="Search..." oninput="filterStudentsDirectory()">
+                    <label>Search by Name, Phone, Email or Roll No</label>
+                    <input type="text" id="searchInput" class="input-box" placeholder="Type query to search..." oninput="filterStudentsDirectory()">
                 </div>
                 <div id="searchResultsList" style="max-height: 250px; overflow-y: auto;">
                     <div class="no-data">Type above to search...</div>
@@ -227,7 +231,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
             authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
- ProjectId: "SS-Kanhaiyalal-Agrawal",
+            projectId: "ss-kanhaiyalal-agrawal",
             storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
             messagingSenderId: "776171239833",
             appId: "1:776171239833:web:39eea44420db97384b3b08"
@@ -251,6 +255,7 @@
             document.getElementById('editDocId').value = '';
             document.getElementById('stName').value = '';
             document.getElementById('stEmail').value = '';
+            document.getElementById('stPhone').value = '';
             document.getElementById('stClass').value = '11';
             document.getElementById('stStream').value = 'PCM';
             document.getElementById('stSection').value = 'B';
@@ -264,7 +269,6 @@
             document.getElementById('streamBox').style.display = (cls === '11' || cls === '12') ? 'block' : 'none';
         }
 
-        // Fetch students in real-time for cache & UI updates
         function fetchAllStudents() {
             db.collection('students').onSnapshot(snapshot => {
                 allStudentsCache = [];
@@ -281,6 +285,7 @@
             const docId = document.getElementById('editDocId').value.trim();
             const name = document.getElementById('stName').value.trim();
             const email = document.getElementById('stEmail').value.trim().toLowerCase();
+            const phone = document.getElementById('stPhone').value.trim();
             const cls = document.getElementById('stClass').value;
             const isSenior = (cls === '11' || cls === '12');
             const stream = isSenior ? document.getElementById('stStream').value : "General";
@@ -300,6 +305,7 @@
                 const profileData = {
                     name: name,
                     email: email,
+                    phone: phone,
                     class: cls,
                     stream: stream,
                     section: section,
@@ -308,11 +314,9 @@
                 };
 
                 if (docId) {
-                    // Update existing
                     await db.collection('students').doc(docId).update(profileData);
                     alert("✅ Student Profile Updated Successfully!");
                 } else {
-                    // Create new
                     profileData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
                     await db.collection('students').add(profileData);
                     alert("✅ New Student Added Successfully!");
@@ -341,7 +345,7 @@
                     <div class="student-item">
                         <div class="student-info">
                             <h4>${st.name} <span style="font-size:10px; color:var(--primary);">(${st.email})</span></h4>
-                            <p>Class: ${st.class} (${st.stream || 'Gen'}) • Sec: ${st.section || 'B'} • Roll: ${st.rollNo || 'N/A'}</p>
+                            <p>Phone: ${st.phone || 'N/A'} • Class: ${st.class} (${st.stream || 'Gen'}) • Roll: ${st.rollNo || 'N/A'}</p>
                         </div>
                         <div class="btn-group">
                             <button class="edit-btn" onclick="editStudent('${st.id}')"><i class="fa-solid fa-pen"></i></button>
@@ -360,11 +364,13 @@
             document.getElementById('editDocId').value = st.id;
             document.getElementById('stName').value = st.name || '';
             document.getElementById('stEmail').value = st.email || '';
+            document.getElementById('stPhone').value = st.phone || '';
             document.getElementById('stClass').value = st.class || '11';
             document.getElementById('stStream').value = st.stream || 'PCM';
             document.getElementById('stSection').value = st.section || 'B';
             document.getElementById('stRoll').value = st.rollNo || '';
             
+                        
             toggleStreamField();
             closeModal('manageModal');
             openModal('studentModal');
@@ -393,6 +399,7 @@
             const filtered = allStudentsCache.filter(st => 
                 (st.name && st.name.toLowerCase().includes(q)) || 
                 (st.email && st.email.toLowerCase().includes(q)) ||
+                (st.phone && String(st.phone).toLowerCase().includes(q)) ||
                 (st.rollNo && String(st.rollNo).toLowerCase().includes(q))
             );
 
@@ -407,7 +414,7 @@
                     <div class="student-item">
                         <div class="student-info">
                             <h4>${st.name}</h4>
-                            <p>Class: ${st.class} (${st.stream || 'Gen'}) • Roll: ${st.rollNo || 'N/A'}</p>
+                            <p>Phone: ${st.phone || 'N/A'} • Roll: ${st.rollNo || 'N/A'} • Class: ${st.class}</p>
                         </div>
                         <div class="btn-group">
                             <button class="edit-btn" onclick="closeModal('searchModal'); editStudent('${st.id}');"><i class="fa-solid fa-pen"></i></button>
