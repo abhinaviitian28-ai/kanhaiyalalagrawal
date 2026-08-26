@@ -17,7 +17,7 @@
             --border: rgba(56, 189, 248, 0.25);
         }
 
-        /* Front-End Security */
+        /* Front-End Security: Disable Text Selection & Dragging */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
             font-family: 'Poppins', sans-serif; 
@@ -104,7 +104,7 @@
         .modal.active { display: flex; opacity: 1; }
         
         .modal-content { 
-            background: var(--card); width: 100%; max-width: 600px; 
+            background: var(--card); width: 100%; max-width: 650px; 
             border-radius: 20px; border: 1px solid var(--border); overflow: hidden; 
             display: flex; flex-direction: column; max-height: 85vh; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.7); transform: scale(0.95); 
@@ -156,7 +156,7 @@
         .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 30px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.2); }
 
         @media (max-width: 600px) {
-            .form-row { grid-template-columns: 1fr; gap: 14px; }
+            .form-row { grid-template-columns: 1px; gap: 14px; }
             .container { max-width: 100%; }
         }
     </style>
@@ -183,8 +183,7 @@
                 <i class="fa-solid fa-book-open"></i>
                 <span>Manage E-Library</span>
             </div>
-            <!-- Exact file link name -->
-            <a href="database.html" class="btn-home">
+            <a href="teacher_dashboard.html" class="btn-home">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
         </div>
@@ -558,7 +557,7 @@
                                 <p>Class: ${data.class || 'All'} • Stream: ${data.stream || 'All'}</p>
                             </div>
                             <button class="btn-delete" onclick="deleteCategory('${data.id}')">
-                                <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash"></i> Delete
                             </button>
                         </div>
                     `;
@@ -587,7 +586,7 @@
                             </div>
                             <div class="btn-group">
                                 ${safeUrl ? `<button class="btn-view" onclick="openSafePDF('${safeUrl}')"><i class="fa-solid fa-eye"></i> View</button>` : ''}
-                                <button class="btn-delete" onclick="deleteFile('${data.id}')"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-delete" onclick="deleteFile('${data.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
                             </div>
                         </div>
                     `;
