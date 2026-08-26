@@ -488,13 +488,10 @@
         let activeCategoryName = "";
         let allFilesData = [];
         let showBookmarksOnly = false;
-        
-        // ⚡ 5-5 Pagination Variables
-        let lastFileDoc = null;
-        let hasMoreFiles = true;
 
         let categoryUnsubscribe = null;
         let userBookmarks = JSON.parse(localStorage.getItem(`bookmarks_${loggedInUser}`)) || [];
+        let isInitialLoad = true;
 
         function getAutoIcon(categoryName) {
             const name = (categoryName || '').toLowerCase();
@@ -502,10 +499,10 @@
             if (name.includes('chem')) return 'fa-flask';
             if (name.includes('math') || name.includes('calc')) return 'fa-calculator';
             if (name.includes('bio')) return 'fa-dna';
-            if (name.includes('eng') || name.includes('hindi') || name.includes('literature')) return 'fa-book-open';
-            if (name.includes('computer') || name.includes('it')) return 'fa-laptop-code';
+            if (name.includes('eng') || name.includes('hindi') || name.includes('lit')) return 'fa-book-open';
+            if (name.includes('computer') || name.includes('it') || name.includes('cs')) return 'fa-laptop-code';
             if (name.includes('history') || name.includes('sst') || name.includes('geo')) return 'fa-landmark';
-            if (name.includes('econ') || name.includes('commerce')) return 'fa-chart-pie';
+            if (name.includes('econ') || name.includes('commerce') || name.includes('acc')) return 'fa-chart-pie';
             return 'fa-book';
         }
 
@@ -548,10 +545,7 @@
                     let streamMatch = !cat.stream || cat.stream === "All" || cat.stream === "General" || cat.stream === currentStream;
 
                     if (classMatch && streamMatch) {
-                        categoriesList.push({
-                            id: doc.id,
-                            ...cat
-                        });
+                        categoriesList.push({ id: doc.id, ...cat });
                     }
                 });
 
@@ -562,6 +556,15 @@
                 }
 
                 renderCategories(categoriesList);
+
+                // Refresh Bug Fix: Pura refresh hone ke baad wapas usi category me bhejna
+                if (isInitialLoad) {
+                    const savedCategory = sessionStorage.getItem('activeElibCategory');
+                    if (savedCategory) {
+                        openCategory(savedCategory);
+                    }
+                    isInitialLoad = false;
+                }
             }, (err) => {
                 console.error("Categories fetch error:", err);
                 gridContainer.innerHTML = `<div class="no-data">Unable to connect to database.</div>`;
@@ -571,10 +574,8 @@
         function renderCategories(categoriesList) {
             const gridContainer = document.getElementById('categoriesGridContainer');
             gridContainer.innerHTML = '';
-            let count = 0;
-
+            
             categoriesList.forEach(cat => {
-                count++;
                 const catName = cat.name || cat.title || 'Subject';
                 const iconClass = cat.icon || getAutoIcon(catName);
 
@@ -585,24 +586,25 @@
                                 <i class="fa-solid ${iconClass}"></i>
                             </div>
                             <div class="category-name">${catName}</div>
-                            <div class="category-desc" style="font-size:12px; color:#94a3b8; margin-top:4px;">${cat.description || 'Tap to view study materials'}</div>
+                            <div class="category-desc" style="font-size:11.5px; color:#94a3b8; margin-top:6px;">${cat.description || 'Tap to view study materials'}</div>
                         </div>
-                        <div class="category-count" style="margin-top: 12px; display:flex; justify-content:space-between; align-items:center;">
-                            <span><i class="fa-solid fa-file-pdf" style="color:#f87171;"></i> Resources available</span>
-                            <i class="fa-solid fa-chevron-right" style="font-size:11px; color:#eab308;"></i>
+                        <div class="category-count" style="margin-top: 14px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px; color:#94a3b8;"><i class="fa-solid fa-folder" style="color:#38bdf8;"></i> View Files</span>
+                            <i class="fa-solid fa-chevron-right" style="font-size:11px; color:#38bdf8;"></i>
                         </div>
                     </div>
                 `;
                 gridContainer.innerHTML += cardHTML;
             });
 
-            document.getElementById('categoryCountNum').innerText = count;
+            document.getElementById('categoryCountNum').innerText = categoriesList.length;
         }
 
         function openCategory(categoryName) {
             activeCategoryName = categoryName;
-            document.getElementById('currentCategoryTitle').innerHTML = `<i class="fa-solid fa-book"></i> ${categoryName} Materials`;
+            sessionStorage.setItem('activeElibCategory', categoryName);
             
+            document.getElementById('currentCategoryTitle').innerHTML = `<i class="fa-solid fa-book"></i> ${categoryName} Materials`;
             document.getElementById('categoriesView').classList.add('hidden');
             document.getElementById('filesView').classList.remove('hidden');
             document.getElementById('backToCategoriesBtn').classList.remove('hidden');
@@ -611,108 +613,77 @@
             showBookmarksOnly = false;
             document.getElementById('bookmarkFilterBtn').classList.remove('active');
 
-            // Reset 5-5 Batch Variables
             allFilesData = [];
-            lastFileDoc = null;
-            hasMoreFiles = true;
-
-            fetchFilesBatch(false);
+            fetchAllFilesForCategory();
         }
 
         function showCategoriesView() {
+            sessionStorage.removeItem('activeElibCategory');
             document.getElementById('filesView').classList.add('hidden');
             document.getElementById('categoriesView').classList.remove('hidden');
             document.getElementById('backToCategoriesBtn').classList.add('hidden');
         }
 
-        // ⚡ 5-5 Paginated Batch Fetcher for Files
-        function fetchFilesBatch(isAppend = false) {
+        // JS Sorting to prevent Firebase Crash
+        function fetchAllFilesForCategory() {
             const filesContainer = document.getElementById('filesListContainer');
-            
-            if (!isAppend) {
-                filesContainer.innerHTML = `<div class="no-data">Loading files for ${activeCategoryName}...</div>`;
-                allFilesData = [];
-            }
+            filesContainer.innerHTML = `<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading files...</div>`;
 
-            let query = db.collection('library_files')
+            db.collection('library_files')
                 .where('category', '==', activeCategoryName)
-                .orderBy('timestamp', 'desc');
-
-            if (isAppend && lastFileDoc) {
-                query = query.startAfter(lastFileDoc);
-            }
-
-            query.limit(5).get().then((snapshot) => {
-                if (snapshot.empty) {
-                    hasMoreFiles = false;
-                    updateSeeMoreFilesButton();
-                    if (!isAppend && allFilesData.length === 0) {
-                        filesContainer.innerHTML = `<div class="no-data">Aapki Class/Stream ke liye koi file nahi hai.</div>`;
+                .get()
+                .then((snapshot) => {
+                    if (snapshot.empty) {
+                        filesContainer.innerHTML = `<div class="no-data">Iss category mein koi file upload nahi ki gayi hai.</div>`;
+                        // See More button ko manually hide kar diya (Kyunki ab pagination nhi hai)
+                        const btn = document.getElementById('seeMoreFilesBtn');
+                        if(btn) btn.style.display = 'none';
+                        return;
                     }
-                    return;
-                }
 
-                lastFileDoc = snapshot.docs[snapshot.docs.length - 1];
+                    let tempFiles = [];
 
-                if (snapshot.docs.length < 5) {
-                    hasMoreFiles = false;
-                }
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        let classMatch = !data.class || data.class === "All" || data.class === currentClass;
+                        let streamMatch = !data.stream || data.stream === "All" || data.stream === "General" || data.stream === currentStream;
 
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    let classMatch = !data.class || data.class === "All" || data.class === currentClass;
-                    let streamMatch = !data.stream || data.stream === "All" || data.stream === "General" || data.stream === currentStream;
-
-                    if (classMatch && streamMatch) {
-                        if (!allFilesData.some(f => f.id === doc.id)) {
-                            allFilesData.push({
+                        if (classMatch && streamMatch) {
+                            tempFiles.push({
                                 id: doc.id,
                                 title: data.title || data.heading || 'Untitled Document',
                                 description: data.description || data.desc || 'Study Material PDF',
                                 fileUrl: data.fileUrl || data.url || '#',
                                 timestamp: data.timestamp ? data.timestamp.seconds : 0,
-                                date: data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : 'Recent'
+                                date: data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString('en-GB') : 'Recent'
                             });
                         }
+                    });
+
+                    // JS mein sort kar rhe hain error se bachne ke liye
+                    tempFiles.sort((a, b) => b.timestamp - a.timestamp);
+                    allFilesData = tempFiles;
+
+                    if (allFilesData.length === 0) {
+                        filesContainer.innerHTML = `<div class="no-data">Aapki Class/Stream ke liye matching file nahi mili.</div>`;
+                    } else {
+                        renderFilesList();
                     }
+
+                    // See More button hidden
+                    const btn = document.getElementById('seeMoreFilesBtn');
+                    if(btn) btn.style.display = 'none';
+
+                }).catch((err) => {
+                    console.error("Error fetching files:", err);
+                    filesContainer.innerHTML = `<div class="no-data">Database connection error.</div>`;
                 });
-
-                if (allFilesData.length === 0 && hasMoreFiles) {
-                    fetchFilesBatch(true);
-                    return;
-                }
-
-                renderFilesList(allFilesData);
-                updateSeeMoreFilesButton();
-
-            }).catch((err) => {
-                console.error("Error fetching files:", err);
-                filesContainer.innerHTML = `<div class="no-data">Unable to fetch files from database.</div>`;
-            });
         }
 
-        function loadMoreFiles() {
-            if (hasMoreFiles) {
-                fetchFilesBatch(true);
-            }
-        }
-
-        function updateSeeMoreFilesButton() {
-            const btn = document.getElementById('seeMoreFilesBtn');
-            if (!btn) return;
-            const searchVal = document.getElementById('fileSearchInput') ? document.getElementById('fileSearchInput').value.trim() : '';
-
-            if (hasMoreFiles && !showBookmarksOnly && searchVal === '') {
-                btn.style.display = 'inline-block';
-            } else {
-                btn.style.display = 'none';
-            }
-        }
-
-        function renderFilesList(files) {
+        function renderFilesList() {
             const filesContainer = document.getElementById('filesListContainer');
             
-            let filtered = files;
+            let filtered = allFilesData;
             const searchKeyword = document.getElementById('fileSearchInput').value.toLowerCase().trim();
 
             if (searchKeyword) {
@@ -729,7 +700,7 @@
             document.getElementById('fileCountBadge').innerText = `${filtered.length} Files`;
 
             if (filtered.length === 0) {
-                filesContainer.innerHTML = `<div class="no-data">Aapki Class/Stream ke liye koi matching file nahi mili.</div>`;
+                filesContainer.innerHTML = `<div class="no-data">Koi matching file nahi mili.</div>`;
                 return;
             }
 
@@ -738,6 +709,12 @@
             filtered.forEach(file => {
                 const isBookmarked = userBookmarks.includes(file.id);
                 const bookmarkClass = isBookmarked ? 'bookmarked fa-solid' : 'fa-regular';
+
+                const isBase64 = file.fileUrl.startsWith('data:');
+                const safeTitle = file.title.replace(/'/g, "\\'");
+                const viewAction = isBase64 ? `onclick="openSafePDF('${file.fileUrl}')"` : `href="${file.fileUrl}" target="_blank"`;
+                const downloadHref = isBase64 ? '#' : file.fileUrl;
+                const downloadAction = isBase64 ? `onclick="downloadSafePDF('${file.fileUrl}', '${safeTitle}.pdf')"` : `download`;
 
                 const fileHTML = `
                     <div class="file-card">
@@ -750,18 +727,18 @@
                                 <p>${file.description}</p>
                                 <div class="file-meta">
                                     <span><i class="fa-regular fa-calendar"></i> ${file.date}</span>
-                                    <span><i class="fa-solid fa-shield-halved" style="color:#eab308;"></i> Verified PDF</span>
+                                    <span><i class="fa-solid fa-shield-halved" style="color:#eab308;"></i> Verified</span>
                                 </div>
                             </div>
                         </div>
                         <div class="file-actions">
                             <button class="bookmark-btn" onclick="toggleBookmark('${file.id}')" title="Bookmark File">
-                                <i class="${bookmarkClass} fa-bookmark"></i>
+                                <i class="${bookmarkClass} fa-star"></i>
                             </button>
-                            <a href="${file.fileUrl}" target="_blank" class="action-btn" title="View PDF">
+                            <a ${viewAction} class="action-btn" title="View PDF" style="cursor:pointer;">
                                 <i class="fa-solid fa-eye"></i> View
                             </a>
-                            <a href="${file.fileUrl}" download class="action-btn download" title="Download PDF">
+                            <a href="${downloadHref}" ${downloadAction} class="action-btn download" title="Download PDF" style="cursor:pointer;">
                                 <i class="fa-solid fa-download"></i> Download
                             </a>
                         </div>
@@ -772,36 +749,65 @@
         }
 
         function filterFiles() {
-            renderFilesList(allFilesData);
-            updateSeeMoreFilesButton();
+            renderFilesList();
         }
 
         function toggleBookmarkFilter() {
             showBookmarksOnly = !showBookmarksOnly;
             const btn = document.getElementById('bookmarkFilterBtn');
-            if (showBookmarksOnly) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-            renderFilesList(allFilesData);
-            updateSeeMoreFilesButton();
+            if (showBookmarksOnly) btn.classList.add('active');
+            else btn.classList.remove('active');
+            
+            renderFilesList();
         }
 
         function toggleBookmark(fileId) {
             const index = userBookmarks.indexOf(fileId);
-            if (index > -1) {
-                userBookmarks.splice(index, 1);
-            } else {
-                userBookmarks.push(fileId);
-            }
+            if (index > -1) userBookmarks.splice(index, 1);
+            else userBookmarks.push(fileId);
+            
             localStorage.setItem(`bookmarks_${loggedInUser}`, JSON.stringify(userBookmarks));
-            renderFilesList(allFilesData);
+            renderFilesList();
+        }
+
+        // Mobile Safe Handlers for PDF (No change)
+        function openSafePDF(base64Data) {
+            try {
+                const parts = base64Data.split(',');
+                const mime = parts[0].match(/:(.*?);/)[1];
+                const bstr = atob(parts[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+                const blob = new Blob([u8arr], { type: mime });
+                const blobUrl = URL.createObjectURL(blob);
+                window.open(blobUrl, '_blank');
+            } catch(e) { window.open(base64Data, '_blank'); }
+        }
+
+        function downloadSafePDF(base64Data, fileName) {
+            try {
+                const parts = base64Data.split(',');
+                const mime = parts[0].match(/:(.*?);/)[1];
+                const bstr = atob(parts[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+                const blob = new Blob([u8arr], { type: mime });
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch(e) { alert("Download failed. Try opening instead."); }
         }
 
         window.onload = function() {
             initLibrary();
         };
     </script>
+
 </body>
 </html>
