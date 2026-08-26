@@ -319,6 +319,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Syllabus View -->
         <div id="syllabusView" class="hidden fade-in">
             <div class="breadcrumb" id="syllabusBreadcrumb">
@@ -405,8 +406,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Firebase Scripts -->
+        <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -414,7 +414,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
             authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
- ProjectId: "SS-Kanhaiyalal-Agrawal",
+            projectId: "ss-kanhaiyalal-agrawal",
             storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
             messagingSenderId: "776171239833",
             appId: "1:776171239833:web:39eea44420db97384b3b08"
@@ -454,7 +454,6 @@
                 } catch (err) { console.error(err); }
             }
 
-            
             loadAnnouncementBar();
             loadCategoriesFromFirebase();
             loadExamsFromFirebase();
@@ -588,7 +587,7 @@
             });
         }
 
-        // ⚡ SAFE PDF HANDLING 
+              // ⚡ SAFE PDF HANDLING 
         function generatePDFButtons(fileUrl, title) {
             if(!fileUrl) return '';
             const safeTitle = title ? title.replace(/'/g, "\\'") : 'Document';
@@ -646,7 +645,7 @@
 
         function closeSubjectModal() { document.getElementById('subjectModal').classList.remove('active'); }
 
-        // EXAMS LOGIC (Firebase Crash Fix via JS JS Filter)
+        // EXAMS LOGIC (Firebase Crash Fix via JS Filter)
         async function loadExamsFromFirebase() {
             const container = document.getElementById('examsListContainer');
             try {
@@ -736,7 +735,6 @@
             let upcomingExam = null;
             const now = new Date().getTime();
 
-            // Find nearest future exam
             for (let i = allExamsData.length - 1; i >= 0; i--) {
                 const exam = allExamsData[i];
                 if (exam.dateText && exam.dateText !== 'TBA') {
