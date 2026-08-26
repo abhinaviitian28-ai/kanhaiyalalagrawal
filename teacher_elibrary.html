@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Manage E-Library - SS KanhaiyaLal Agrawal</title>
+    <title>Manage Exams & Syllabus - SS KanhaiyaLal Agrawal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -22,7 +22,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 16px 12px 30px;
+            padding: 14px 12px 30px;
             position: relative;
             overflow-x: hidden;
         }
@@ -127,9 +127,7 @@
             letter-spacing: 0.3px;
         }
 
-        .section-title i.purple { color: #a855f7; }
-        .section-title i.emerald { color: #10b981; }
-        .section-title i.blue { color: #38bdf8; }
+        .section-title i { color: #38bdf8; }
 
         /* Form Grid */
         .form-grid {
@@ -156,6 +154,13 @@
             letter-spacing: 0.4px;
         }
 
+        .optional-tag {
+            font-size: 9px;
+            color: #64748b;
+            text-transform: none;
+            font-weight: 400;
+        }
+
         .form-control {
             background: #0f172a;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -166,6 +171,8 @@
             outline: none;
             transition: all 0.2s ease;
             width: 100%;
+            /* For Calendar & Time Icons */
+            color-scheme: dark; 
         }
 
         .form-control:focus {
@@ -173,10 +180,13 @@
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
         }
 
-        select.form-control { cursor: pointer; }
+        select.form-control, input[type="date"].form-control, input[type="time"].form-control { 
+            cursor: pointer; 
+        }
+        
         textarea.form-control { min-height: 70px; resize: vertical; line-height: 1.5; }
 
-        /* File Upload Zone */
+        /* File Upload */
         .upload-container {
             display: flex;
             flex-direction: column;
@@ -210,16 +220,16 @@
         .file-status {
             display: none;
             font-size: 11.5px;
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             padding: 6px 10px;
             border-radius: 6px;
             align-items: center;
             gap: 6px;
         }
 
-        /* Action Buttons */
+        /* Submit Button */
         .btn-submit {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
             color: #ffffff;
@@ -243,13 +253,6 @@
             background: #0284c7;
             transform: translateY(-1px);
         }
-
-        .btn-submit.purple-btn { 
-            background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%); 
-            box-shadow: 0 4px 15px rgba(126, 34, 206, 0.25); 
-            border-color: rgba(168, 85, 247, 0.3); 
-        }
-        .btn-submit.purple-btn:hover { background: #7e22ce; }
         .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         /* Manage Lists */
@@ -257,7 +260,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 280px;
+            max-height: 250px;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -278,10 +281,6 @@
             transition: all 0.2s ease;
         }
 
-        .list-item:hover {
-            border-color: rgba(56, 189, 248, 0.3);
-        }
-
         .item-info {
             display: flex;
             flex-direction: column;
@@ -299,10 +298,7 @@
             text-overflow: ellipsis;
         }
 
-        .item-meta {
-            font-size: 11px;
-            color: #94a3b8;
-        }
+        .item-meta { font-size: 11px; color: #94a3b8; }
 
         .btn-delete {
             background: rgba(239, 68, 68, 0.1);
@@ -320,116 +316,82 @@
             transition: all 0.2s ease;
         }
 
-        .btn-delete:hover {
-            background: #ef4444;
-            color: #ffffff;
-        }
+        .btn-delete:hover { background: #ef4444; color: #ffffff; }
+        .no-data { color: #64748b; font-size: 12.5px; text-align: center; padding: 16px; }
 
-        .no-data {
-            color: #64748b;
-            font-size: 12.5px;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* Mobile Adjustments */
         @media (max-width: 600px) {
             .form-grid { grid-template-columns: 1fr; gap: 12px; }
-            .section-card { padding: 16px 12px; }
-            .top-bar { padding: 12px; flex-direction: column; align-items: flex-start; gap: 12px; }
-            .btn-dashboard { width: 100%; justify-content: center; }
-            .manage-list { max-height: 240px; }
+            .section-card { padding: 16px 14px; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Top Navigation -->
+        <!-- Top Bar -->
         <div class="top-bar">
             <div class="brand">
-                <i class="fa-solid fa-book-open"></i>
-                <span>Library Management</span>
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Manage Exams & Syllabus</span>
             </div>
-            <a href="teacher_dashboard.html" class="btn-dashboard">
+            <a href="database.html" class="btn-dashboard">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
         </div>
 
-        <!-- 1. Create Category / Subject Folder -->
+        <!-- 1. Global Exam Announcement -->
         <div class="section-card">
             <div class="section-title">
-                <i class="fa-solid fa-folder-plus purple"></i> Create Subject Category
+                <i class="fa-solid fa-bullhorn"></i> Global Announcement
             </div>
-            <div class="form-grid">
-                <div class="form-group full-width">
-                    <label>Category / Subject Name</label>
-                    <input type="text" id="catName" class="form-control" placeholder="e.g. Physics Chapter-Wise Notes">
-                </div>
-                
-                <div class="form-group">
-                    <label>Target Class</label>
-                    <select id="catClass" class="form-control" onchange="toggleCatStream()">
-                        <option value="All" selected>All Classes</option>
-                        <option value="Nursery">Nursery</option>
-                        <option value="LKG">LKG</option>
-                        <option value="UKG">UKG</option>
-                        <option value="1">Class 1st</option>
-                        <option value="2">Class 2nd</option>
-                        <option value="3">Class 3rd</option>
-                        <option value="4">Class 4th</option>
-                        <option value="5">Class 5th</option>
-                        <option value="6">Class 6th</option>
-                        <option value="7">Class 7th</option>
-                        <option value="8">Class 8th</option>
-                        <option value="9">Class 9th</option>
-                        <option value="10">Class 10th</option>
-                        <option value="11">Class 11th</option>
-                        <option value="12">Class 12th</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="catStreamGroup">
-                    <label>Target Stream</label>
-                    <select id="catStream" class="form-control">
-                        <option value="All" selected>All Streams</option>
-                        <option value="PCM">Science (PCM)</option>
-                        <option value="PCB">Science (PCB)</option>
-                        <option value="Commerce">Commerce</option>
-                        <option value="Arts">Humanities / Arts</option>
-                        <option value="General">General</option>
-                    </select>
-                </div>
-                <div class="form-group full-width">
-                    <label>Short Description (Optional)</label>
-                    <input type="text" id="catDesc" class="form-control" placeholder="Brief info about this folder...">
-                </div>
+            <div class="form-group">
+                <label>Scrolling Marquee Text <span class="optional-tag">(Optional)</span></label>
+                <input type="text" id="marqueeText" class="form-control" placeholder="e.g. Half-Yearly Exams starting from 15th October...">
             </div>
-            <button class="btn-submit purple-btn" id="btnSaveCat" onclick="createCategory()">
-                <i class="fa-solid fa-layer-group"></i> Create Category Folder
+            <button class="btn-submit" onclick="updateAnnouncement()" style="margin-top: 10px;">
+                <i class="fa-solid fa-rotate"></i> Update Notice
             </button>
         </div>
 
-        <!-- 2. Upload Document / File -->
+        <!-- 2. Create Syllabus Category -->
         <div class="section-card">
             <div class="section-title">
-                <i class="fa-solid fa-cloud-arrow-up emerald"></i> Upload Study Material
+                <i class="fa-solid fa-folder-plus"></i> 1. Create Exam Category
             </div>
             <div class="form-grid">
                 <div class="form-group full-width">
-                    <label>Select Category Folder</label>
-                    <select id="fileCategory" class="form-control">
+                    <label>Category Name</label>
+                    <input type="text" id="catName" class="form-control" placeholder="e.g. Half Yearly Examination 2026">
+                </div>
+                <div class="form-group full-width">
+                    <label>Description <span class="optional-tag">(Optional)</span></label>
+                    <input type="text" id="catDesc" class="form-control" placeholder="Brief info about this exam category...">
+                </div>
+            </div>
+            <button class="btn-submit" id="btnSaveCat" onclick="createCategory()">
+                <i class="fa-solid fa-folder-open"></i> Create Category
+            </button>
+        </div>
+
+        <!-- 3. Upload Syllabus PDF -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fa-solid fa-book-bookmark"></i> 2. Upload Syllabus
+            </div>
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Select Exam Category</label>
+                    <select id="sylCategory" class="form-control">
                         <option value="" disabled selected>Loading categories...</option>
                     </select>
                 </div>
                 <div class="form-group full-width">
-                    <label>Document Title / Heading</label>
-                    <input type="text" id="fileTitle" class="form-control" placeholder="e.g. Thermodynamics Part 1 PDF">
+                    <label>Syllabus Title</label>
+                    <input type="text" id="sylTitle" class="form-control" placeholder="e.g. Complete Class 11th Syllabus PDF">
                 </div>
-                
                 <div class="form-group">
                     <label>Target Class</label>
-                    <select id="fileClass" class="form-control" onchange="toggleFileStream()">
+                    <select id="sylClass" class="form-control" onchange="toggleSylStream()">
                         <option value="All" selected>All Classes</option>
                         <option value="Nursery">Nursery</option>
                         <option value="LKG">LKG</option>
@@ -448,9 +410,9 @@
                         <option value="12">Class 12th</option>
                     </select>
                 </div>
-                <div class="form-group" id="fileStreamGroup">
+                <div class="form-group" id="sylStreamGroup">
                     <label>Target Stream</label>
-                    <select id="fileStream" class="form-control">
+                    <select id="sylStream" class="form-control">
                         <option value="All" selected>All Streams</option>
                         <option value="PCM">Science (PCM)</option>
                         <option value="PCB">Science (PCB)</option>
@@ -459,48 +421,139 @@
                         <option value="General">General</option>
                     </select>
                 </div>
-
                 <div class="form-group full-width">
-                    <label>Description / Note for Students</label>
-                    <textarea id="fileDesc" class="form-control" placeholder="Write any instructions regarding this file..."></textarea>
+                    <label>Expected Date <span class="optional-tag">(Optional)</span></label>
+                    <input type="date" id="sylDate" class="form-control">
                 </div>
-
                 <div class="form-group full-width">
-                    <label>Attach PDF / Document (Max 1MB or Drive Link)</label>
+                    <label>Teacher's Note / Instructions <span class="optional-tag">(Optional)</span></label>
+                    <textarea id="sylNote" class="form-control" placeholder="Write any specific instructions regarding this syllabus..."></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label>Attach Syllabus PDF (Max 1MB or Drive Link)</label>
                     <div class="upload-container">
                         <div class="file-upload-btn">
-                            <i class="fa-solid fa-file-arrow-up"></i> Select Document File
-                            <input type="file" id="fileInput" accept="application/pdf,image/*,.doc,.docx" onchange="handleFileSelect(event)">
+                            <i class="fa-solid fa-file-arrow-up"></i> Select Syllabus PDF
+                            <input type="file" id="sylFileInput" accept="application/pdf,image/*" onchange="handleFileSelect(event, 'sylStatus')">
                         </div>
-                        <div id="fileStatus" class="file-status"></div>
-                        <input type="url" id="fileLinkInput" class="form-control" placeholder="Or paste external Google Drive link here...">
+                        <div id="sylStatus" class="file-status"></div>
+                        <input type="url" id="sylLinkInput" class="form-control" placeholder="Or paste external Google Drive link...">
                     </div>
                 </div>
             </div>
-            <button class="btn-submit" id="btnUploadFile" onclick="uploadMaterial()">
-                <i class="fa-solid fa-paper-plane"></i> Publish Material
+            <button class="btn-submit" id="btnUploadSyl" onclick="uploadSyllabus()">
+                <i class="fa-solid fa-paper-plane"></i> Publish Syllabus
             </button>
         </div>
 
-        <!-- 3. Manage Library -->
+        <!-- 4. Upload Exam Timetable -->
         <div class="section-card">
             <div class="section-title">
-                <i class="fa-solid fa-list-check blue"></i> Manage Published Resources
+                <i class="fa-solid fa-calendar-days"></i> 3. Publish Exam Timetable
+            </div>
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Exam / Timetable Title</label>
+                    <input type="text" id="examTitle" class="form-control" placeholder="e.g. Half-Yearly Exam Timetable">
+                </div>
+                <div class="form-group">
+                    <label>Target Class</label>
+                    <select id="examClass" class="form-control" onchange="toggleExamStream()">
+                        <option value="All" selected>All Classes</option>
+                        <option value="Nursery">Nursery</option>
+                        <option value="LKG">LKG</option>
+                        <option value="UKG">UKG</option>
+                        <option value="1">Class 1st</option>
+                        <option value="2">Class 2nd</option>
+                        <option value="3">Class 3rd</option>
+                        <option value="4">Class 4th</option>
+                        <option value="5">Class 5th</option>
+                        <option value="6">Class 6th</option>
+                        <option value="7">Class 7th</option>
+                        <option value="8">Class 8th</option>
+                        <option value="9">Class 9th</option>
+                        <option value="10">Class 10th</option>
+                        <option value="11">Class 11th</option>
+                        <option value="12">Class 12th</option>
+                    </select>
+                </div>
+                <div class="form-group" id="examStreamGroup">
+                    <label>Target Stream</label>
+                    <select id="examStream" class="form-control">
+                        <option value="All" selected>All Streams</option>
+                        <option value="PCM">Science (PCM)</option>
+                        <option value="PCB">Science (PCB)</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Arts">Humanities / Arts</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Start Date <span class="optional-tag">(Optional)</span></label>
+                    <input type="date" id="examDate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Exam Timing <span class="optional-tag">(Optional)</span></label>
+                    <input type="time" id="examTime" class="form-control">
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Status</label>
+                    <select id="examStatus" class="form-control">
+                        <option value="Upcoming" selected>Upcoming</option>
+                        <option value="Rescheduled">Rescheduled</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Instructions <span class="optional-tag">(Optional)</span></label>
+                    <textarea id="examDesc" class="form-control" placeholder="Important notes for students regarding this exam..."></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Attach Timetable PDF (Max 1MB or Link)</label>
+                    <div class="upload-container">
+                        <div class="file-upload-btn">
+                            <i class="fa-solid fa-file-arrow-up"></i> Select Timetable PDF
+                            <input type="file" id="examFileInput" accept="application/pdf,image/*" onchange="handleFileSelect(event, 'examStatusBadge')">
+                        </div>
+                        <div id="examStatusBadge" class="file-status"></div>
+                        <input type="url" id="examLinkInput" class="form-control" placeholder="Or paste external Google Drive link...">
+                    </div>
+                </div>
+            </div>
+            <button class="btn-submit" id="btnUploadExam" onclick="uploadExam()">
+                <i class="fa-solid fa-calendar-check"></i> Publish Timetable
+            </button>
+        </div>
+
+        <!-- 5. Manage Data -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fa-solid fa-list-check"></i> Manage Database
             </div>
             
-            <label style="display:block; margin-bottom:8px; color:#ffffff;">Active Categories</label>
-            <div class="manage-list" id="manageCategoriesList" style="margin-bottom: 24px;">
+            <label style="display:block; margin-bottom:6px; color:#ffffff; font-size:12px;">Active Categories</label>
+            <div class="manage-list" id="manageCategoriesList" style="margin-bottom: 20px;">
                 <div class="no-data">Loading...</div>
             </div>
 
-            <label style="display:block; margin-bottom:8px; color:#ffffff;">Recently Uploaded Files</label>
-            <div class="manage-list" id="manageFilesList">
+            <label style="display:block; margin-bottom:6px; color:#ffffff; font-size:12px;">Published Syllabus</label>
+            <div class="manage-list" id="manageSyllabusList" style="margin-bottom: 20px;">
+                <div class="no-data">Loading...</div>
+            </div>
+
+            <label style="display:block; margin-bottom:6px; color:#ffffff; font-size:12px;">Published Timetables</label>
+            <div class="manage-list" id="manageExamsList">
                 <div class="no-data">Loading...</div>
             </div>
         </div>
 
     </div>
 
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -518,117 +571,266 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let uploadedFileDataUrl = '';
-        let globalCategories = [];
+        let uploadedSylFile = '';
+        let uploadedExamFile = '';
 
         window.onload = function() {
-            toggleCatStream();
-            toggleFileStream();
+            toggleSylStream();
+            toggleExamStream();
+            loadCurrentAnnouncement();
             listenCategories();
-            listenFiles();
+            listenSyllabus();
+            listenExams();
         };
 
-        function toggleCatStream() {
-            const cls = document.getElementById('catClass').value;
-            document.getElementById('catStreamGroup').style.display = (cls === '11' || cls === '12') ? 'flex' : 'none';
+        function toggleSylStream() {
+            const cls = document.getElementById('sylClass').value;
+            document.getElementById('sylStreamGroup').style.display = (cls === '11' || cls === '12') ? 'flex' : 'none';
+        }
+        function toggleExamStream() {
+            const cls = document.getElementById('examClass').value;
+            document.getElementById('examStreamGroup').style.display = (cls === '11' || cls === '12') ? 'flex' : 'none';
         }
 
-        function toggleFileStream() {
-            const cls = document.getElementById('fileClass').value;
-            document.getElementById('fileStreamGroup').style.display = (cls === '11' || cls === '12') ? 'flex' : 'none';
+        // Auto Date Formatter (e.g. 2026-10-15 -> 15 Oct 2026)
+        function formatReadableDate(dateString) {
+            if (!dateString) return 'TBA';
+            const d = new Date(dateString);
+            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
         }
 
+        // Auto Time Formatter (e.g. 14:30 -> 2:30 PM)
+        function formatReadableTime(timeString) {
+            if (!timeString) return 'TBA';
+            let [h, m] = timeString.split(':');
+            let ampm = 'AM';
+            h = parseInt(h);
+            if (h >= 12) { ampm = 'PM'; if (h > 12) h -= 12; }
+            if (h === 0) h = 12;
+            return `${h}:${m} ${ampm}`;
+        }
+
+        // File Handler Logic
+        function handleFileSelect(event, statusElementId) {
+            const file = event.target.files[0];
+            const statusBox = document.getElementById(statusElementId);
+            
+            if (!file) {
+                if(statusElementId === 'sylStatus') uploadedSylFile = '';
+                else uploadedExamFile = '';
+                statusBox.style.display = 'none';
+                return;
+            }
+
+            if (file.size > 1024 * 1024) {
+                alert("File size exceeds 1MB. Please compress or use a Drive link.");
+                event.target.value = '';
+                statusBox.style.display = 'none';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if(statusElementId === 'sylStatus') uploadedSylFile = e.target.result;
+                else uploadedExamFile = e.target.result;
+                statusBox.style.display = 'flex';
+                statusBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${file.name} attached.`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // --- 1. Announcement ---
+        async function loadCurrentAnnouncement() {
+            try {
+                const doc = await db.collection('portal_settings').doc('exam_announcement').get();
+                if (doc.exists) document.getElementById('marqueeText').value = doc.data().text || '';
+            } catch(e) {}
+        }
+        async function updateAnnouncement() {
+            const txt = document.getElementById('marqueeText').value.trim();
+            await db.collection('portal_settings').doc('exam_announcement').set({ text: txt });
+            alert("Announcement updated!");
+        }
+
+        // --- 2. Category ---
         async function createCategory() {
             const name = document.getElementById('catName').value.trim();
             const desc = document.getElementById('catDesc').value.trim();
-            const cls = document.getElementById('catClass').value;
-                       const isSenior = (cls === '11' || cls === '12');
-            const stream = isSenior ? document.getElementById('fileStream').value : "General";
-            const linkInput = document.getElementById('fileLinkInput').value.trim();
+            if (!name) return alert("Category Name is mandatory.");
+            
+            const btn = document.getElementById('btnSaveCat');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Creating...`;
+            try {
+                await db.collection('exam_categories').add({
+                    name: name,
+                    description: desc || 'View syllabus & PDFs.',
+                    icon: 'fa-folder-open',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('catName').value = '';
+                document.getElementById('catDesc').value = '';
+                alert("Category Created.");
+            } catch(e) { alert("Error!"); }
+            btn.innerHTML = `<i class="fa-solid fa-folder-open"></i> Create Category`;
+        }
 
-            if (!category || !title) {
-                alert("Category and Document Title are mandatory!");
-                return;
-            }
+        // --- 3. Syllabus ---
+        async function uploadSyllabus() {
+            const category = document.getElementById('sylCategory').value;
+            const title = document.getElementById('sylTitle').value.trim();
+            const cls = document.getElementById('sylClass').value;
+            const stream = (cls === '11' || cls === '12') ? document.getElementById('sylStream').value : "All";
+            
+            const rawDate = document.getElementById('sylDate').value;
+            const note = document.getElementById('sylNote').value.trim();
+            const linkInput = document.getElementById('sylLinkInput').value.trim();
 
-            const finalFileUrl = uploadedFileDataUrl || linkInput;
-            if (!finalFileUrl) {
-                alert("Please select a file or provide an external drive link.");
-                return;
-            }
+            if (!category || !title) return alert("Category and Syllabus Title are mandatory!");
+            
+            const finalUrl = uploadedSylFile || linkInput;
+            if (!finalUrl) return alert("Please attach a PDF or provide a drive link.");
 
-            const btn = document.getElementById('btnUploadFile');
-            btn.disabled = true;
+            const btn = document.getElementById('btnUploadSyl');
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading...`;
 
             try {
-                await db.collection('library_files').add({
+                await db.collection('exam_syllabus').add({
                     category: category,
-                    title: title,
-                    description: desc,
+                    name: title,
+                    description: "Complete Syllabus PDF",
                     class: cls,
                     stream: stream,
-                    fileUrl: finalFileUrl,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    dateText: formatReadableDate(rawDate),
+                    teacherNoteHeading: note ? "Important Instructions" : "",
+                    teacherNote: note || "",
+                    showNote: !!note,
+                    fileUrl: finalUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
-                document.getElementById('fileTitle').value = '';
-                document.getElementById('fileDesc').value = '';
-                document.getElementById('fileLinkInput').value = '';
-                document.getElementById('fileInput').value = '';
-                document.getElementById('fileStatus').style.display = 'none';
-                uploadedFileDataUrl = '';
-
-                alert("✅ Material Uploaded Successfully!");
-            } catch (error) {
-                console.error("Error uploading file:", error);
-                alert("Failed to upload file.");
-            }
-
-            btn.disabled = false;
-            btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publish Material`;
+                
+                document.getElementById('sylTitle').value = '';
+                document.getElementById('sylDate').value = '';
+                document.getElementById('sylNote').value = '';
+                document.getElementById('sylLinkInput').value = '';
+                document.getElementById('sylFileInput').value = '';
+                document.getElementById('sylStatus').style.display = 'none';
+                uploadedSylFile = '';
+                alert("Syllabus Published!");
+            } catch(e) { alert("Error!"); }
+            btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publish Syllabus`;
         }
 
-        function listenFiles() {
-            db.collection('library_files').orderBy('timestamp', 'desc').limit(15).onSnapshot(snapshot => {
-                const manageList = document.getElementById('manageFilesList');
-                manageList.innerHTML = '';
+        // --- 4. Exam Schedule ---
+        async function uploadExam() {
+            const title = document.getElementById('examTitle').value.trim();
+            const cls = document.getElementById('examClass').value;
+            const stream = (cls === '11' || cls === '12') ? document.getElementById('examStream').value : "All";
+            
+            const rawDate = document.getElementById('examDate').value;
+            const rawTime = document.getElementById('examTime').value;
+            const status = document.getElementById('examStatus').value;
+            const desc = document.getElementById('examDesc').value.trim();
+            const linkInput = document.getElementById('examLinkInput').value.trim();
 
-                if (snapshot.empty) {
-                    manageList.innerHTML = `<div class="no-data">No files uploaded recently.</div>`;
-                    return;
-                }
+            if (!title) return alert("Timetable Title is mandatory!");
+            
+            const finalUrl = uploadedExamFile || linkInput;
+            if (!finalUrl) return alert("Please attach a Timetable PDF or link.");
 
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const id = doc.id;
-                    const dateStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : 'Just now';
+            const btn = document.getElementById('btnUploadExam');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publishing...`;
 
-                    manageList.innerHTML += `
+            try {
+                await db.collection('exams').add({
+                    title: title,
+                    class: cls,
+                    stream: stream,
+                    dateText: formatReadableDate(rawDate),
+                    timeText: formatReadableTime(rawTime),
+                    status: status,
+                    isRescheduled: (status === 'Rescheduled'),
+                    description: desc || "No additional instructions provided.",
+                    timetableUrl: finalUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                document.getElementById('examTitle').value = '';
+                document.getElementById('examDate').value = '';
+                document.getElementById('examTime').value = '';
+                document.getElementById('examDesc').value = '';
+                document.getElementById('examLinkInput').value = '';
+                document.getElementById('examFileInput').value = '';
+                document.getElementById('examStatusBadge').style.display = 'none';
+                uploadedExamFile = '';
+                alert("Timetable Published!");
+            } catch(e) { alert("Error!"); }
+            btn.innerHTML = `<i class="fa-solid fa-calendar-check"></i> Publish Timetable`;
+        }
+
+        // --- 5. Listeners & Deletion ---
+        function listenCategories() {
+            db.collection('exam_categories').orderBy('createdAt', 'desc').onSnapshot(snap => {
+                const sel = document.getElementById('sylCategory');
+                const list = document.getElementById('manageCategoriesList');
+                sel.innerHTML = '<option value="" disabled selected>Select Category...</option>';
+                list.innerHTML = '';
+                if(snap.empty) { list.innerHTML = '<div class="no-data">No categories.</div>'; return; }
+                
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    sel.innerHTML += `<option value="${d.name}">${d.name}</option>`;
+                    list.innerHTML += `
                         <div class="list-item">
                             <div class="item-info">
-                                <div class="item-title" style="color:#38bdf8;">
-                                    <i class="fa-solid fa-file-pdf" style="color:#f43f5e; margin-right:4px;"></i> ${data.title || 'Document'}
-                                </div>
-                                <div class="item-meta">Cat: ${data.category} • Class: ${data.class || 'All'}</div>
-                                <div class="item-meta" style="font-size:10px; margin-top:2px;">Uploaded: ${dateStr}</div>
+                                <div class="item-title">${d.name}</div>
                             </div>
-                            <button class="btn-delete" onclick="deleteFile('${id}')">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                            <button class="btn-delete" onclick="db.collection('exam_categories').doc('${doc.id}').delete()"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     `;
                 });
-            }, err => console.error(err));
+            });
         }
 
-        async function deleteFile(id) {
-            if (!confirm("Are you sure you want to delete this material?")) return;
-            try {
-                await db.collection('library_files').doc(id).delete();
-            } catch (e) {
-                alert("Error deleting file.");
-            }
+        function listenSyllabus() {
+            db.collection('exam_syllabus').orderBy('createdAt', 'desc').limit(10).onSnapshot(snap => {
+                const list = document.getElementById('manageSyllabusList');
+                list.innerHTML = '';
+                if(snap.empty) { list.innerHTML = '<div class="no-data">No syllabus uploaded.</div>'; return; }
+                
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    list.innerHTML += `
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-title">${d.name}</div>
+                                <div class="item-meta">Cat: ${d.category} • Class: ${d.class}</div>
+                            </div>
+                            <button class="btn-delete" onclick="db.collection('exam_syllabus').doc('${doc.id}').delete()"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function listenExams() {
+            db.collection('exams').orderBy('createdAt', 'desc').limit(10).onSnapshot(snap => {
+                const list = document.getElementById('manageExamsList');
+                list.innerHTML = '';
+                if(snap.empty) { list.innerHTML = '<div class="no-data">No timetables published.</div>'; return; }
+                
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    list.innerHTML += `
+                        <div class="list-item">
+                            <div class="item-info">
+                                <div class="item-title">${d.title}</div>
+                                <div class="item-meta">Class: ${d.class} • Date: ${d.dateText}</div>
+                            </div>
+                            <button class="btn-delete" onclick="db.collection('exams').doc('${doc.id}').delete()"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+            });
         }
     </script>
 </body>
