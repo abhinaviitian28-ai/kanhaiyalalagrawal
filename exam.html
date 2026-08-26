@@ -2,60 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Exam & Syllabus Hub - SS KanhaiyaLal Agrawal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        :root {
+            --bg: #070d19;
+            --card: #0f172a;
+            --primary: #38bdf8;
+            --text: #ffffff;
+            --subtext: #94a3b8;
+            --border: rgba(56, 189, 248, 0.25);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #0f172a;
-            color: #f8fafc;
+            background-color: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             padding: 15px;
+            position: relative;
         }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
+            z-index: -1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
 
         .container {
             width: 100%;
             max-width: 950px;
+            padding-bottom: 30px;
         }
 
-        /* --- BUTTONS & CARDS ANIMATIONS --- */
-        .animated-btn {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-        .animated-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.15);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.35);
-        }
-        .animated-btn:active {
-            transform: scale(0.96);
-        }
+        /* --- ANIMATIONS --- */
+        .animated-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .animated-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2); }
+        .animated-btn:active { transform: scale(0.96); }
 
-        .fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Running Announcement Bar */
         .announcement-bar {
-            background: linear-gradient(135deg, #0284c7, #0369a1);
-            color: #f8fafc;
-            padding: 10px 15px;
+            background: rgba(30, 41, 59, 0.6);
+            color: var(--text);
+            padding: 12px 16px;
             border-radius: 12px;
             font-size: 13px;
             font-weight: 500;
@@ -63,691 +77,194 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             overflow: hidden;
-            border: 1px solid #38bdf855;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(8px);
         }
 
         .announcement-bar i {
-            color: #38bdf8;
+            color: var(--primary);
             font-size: 16px;
             animation: pulseIcon 1.5s infinite;
             flex-shrink: 0;
         }
 
-        @keyframes pulseIcon {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
+        @keyframes pulseIcon { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            width: 100%;
-        }
-
-        .marquee-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 22s linear infinite;
-        }
-
-        @keyframes marquee {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-100%, 0); }
-        }
+        .marquee-container { overflow: hidden; white-space: nowrap; width: 100%; }
+        .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 22s linear infinite; }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
 
         /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #1e293b;
+            background: rgba(30, 41, 59, 0.5);
             padding: 14px 20px;
             border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
-            border: 1px solid #334155;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(8px);
             flex-wrap: wrap;
             gap: 12px;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #38bdf8;
-        }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--text); }
+        .brand i { background: rgba(56, 189, 248, 0.1); padding: 9px; border-radius: 10px; color: var(--primary); font-size: 16px; border: 1px solid rgba(56, 189, 248, 0.2); }
 
-        .brand i {
-            background: rgba(56, 189, 248, 0.15);
-            padding: 9px;
-            border-radius: 10px;
-            color: #38bdf8;
-            font-size: 16px;
-        }
-
-        .header-right-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .profile-badge {
-            background: #0f172a;
-            border: 1px solid #38bdf855;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: #38bdf8;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-        }
-
+        .header-right-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .profile-badge { background: var(--card); border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 12px; color: var(--primary); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+        
         .btn-dashboard {
-            background: #334155;
-            color: #f8fafc;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
             text-decoration: none;
             padding: 8px 16px;
             border-radius: 9px;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
-            border: 1px solid #475569;
-            white-space: nowrap;
+            border: 1px solid var(--border);
         }
+        .btn-dashboard:hover { background: var(--primary); color: var(--bg); }
 
-        .btn-dashboard:hover {
-            background: #475569;
-            color: #ffffff;
-            border-color: #38bdf8;
-        }
-
-        /* Countdown Widget Bar */
+        /* Countdown Widget */
         .countdown-card {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 1px solid #38bdf855;
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid var(--border);
             border-radius: 14px;
             padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 15px;
+            backdrop-filter: blur(5px);
         }
 
-        .countdown-info h4 {
-            font-size: 12px;
-            color: #38bdf8;
-            margin-bottom: 3px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .countdown-info h4 { font-size: 12px; color: var(--primary); margin-bottom: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .countdown-info p { font-size: 15px; color: var(--text); font-weight: 600; }
 
-        .countdown-info p {
-            font-size: 15px;
-            color: #f8fafc;
-            font-weight: 600;
-        }
-
-        .timer-digits {
-            display: flex;
-            gap: 10px;
-            text-align: center;
-        }
-
-        .timer-box {
-            background: #334155;
-            padding: 6px 10px;
-            border-radius: 8px;
-            min-width: 48px;
-            border: 1px solid #475569;
-        }
-
-        .timer-box span {
-            display: block;
-            font-size: 15px;
-            font-weight: 700;
-            color: #38bdf8;
-        }
-
-        .timer-box small {
-            font-size: 9px;
-            color: #94a3b8;
-            text-transform: uppercase;
-        }
+        .timer-digits { display: flex; gap: 10px; text-align: center; }
+        .timer-box { background: var(--card); padding: 8px 12px; border-radius: 8px; min-width: 55px; border: 1px solid rgba(255,255,255,0.08); }
+        .timer-box span { display: block; font-size: 16px; font-weight: 700; color: var(--primary); }
+        .timer-box small { font-size: 9px; color: var(--subtext); text-transform: uppercase; }
 
         /* Main Hub Cards */
-        .main-hubs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 25px;
-        }
+        .main-hubs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 25px; }
+        .hub-main-card { background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 15px; position: relative; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.2); backdrop-filter: blur(5px); }
+        .hub-main-card:hover { border-color: var(--primary); transform: translateY(-5px); background: rgba(30, 41, 59, 0.6); }
+        
+        .hub-main-icon { width: 50px; height: 50px; background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .hub-main-content h3 { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .hub-main-content p { font-size: 12px; color: var(--subtext); line-height: 1.5; }
+        .hub-main-footer { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--primary); font-weight: 600; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
 
-        .hub-main-card {
-            background: linear-gradient(145deg, #1e293b, #172033);
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-        }
+        /* Section Header & Search */
+        .section-header { background: rgba(30, 41, 59, 0.4); padding: 14px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; backdrop-filter: blur(5px); }
+        .section-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--primary); text-transform: uppercase; }
 
-        .hub-main-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #0284c7, #38bdf8);
-        }
+        .search-bar-wrapper { position: relative; flex-grow: 1; max-width: 280px; }
+        .search-bar-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--subtext); font-size: 13px; }
+        .search-input { width: 100%; background: var(--card); border: 1px solid rgba(255,255,255,0.1); border-radius: 9px; padding: 10px 14px 10px 36px; color: var(--text); font-size: 13px; outline: none; transition: 0.2s; }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
 
-        .hub-main-card:hover {
-            border-color: #38bdf8;
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.2);
-        }
+        /* Breadcrumb */
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--subtext); margin-bottom: 15px; flex-wrap: wrap; }
+        .breadcrumb span { color: var(--primary); cursor: pointer; font-weight: 500; }
+        .breadcrumb span:hover { text-decoration: underline; }
 
-        .hub-main-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-        }
+        /* Grid Cards (Categories & Subjects) */
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .sub-card { background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px; transition: 0.2s; backdrop-filter: blur(4px); }
+        .sub-card:hover { border-color: var(--primary); background: rgba(30, 41, 59, 0.6); }
+        
+        .sub-card-icon { width: 40px; height: 40px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); color: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; margin-bottom: 12px; }
+        .sub-card-title { font-size: 14.5px; font-weight: 600; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sub-card-desc { font-size: 11.5px; color: var(--subtext); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .sub-card-footer { margin-top: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--primary); font-weight: 500; }
+        
+        /* Exam List Strips */
+        .exams-list { display: flex; flex-direction: column; gap: 14px; }
+        .exam-card { background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; backdrop-filter: blur(5px); }
+        .exam-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--primary); }
+        
+        .exam-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .exam-title h3 { font-size: 15.5px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+        .exam-title h3 i { color: var(--primary); }
+        
+        .badge-date { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 5px 12px; border-radius: 7px; font-size: 11.5px; font-weight: 600; }
+        .badge-status { padding: 5px 12px; border-radius: 7px; font-size: 11.5px; font-weight: 600; border: 1px solid; }
 
-        .hub-main-content h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #f8fafc;
-            margin-bottom: 4px;
-        }
-
-        .hub-main-content p {
-            font-size: 13px;
-            color: #94a3b8;
-            line-height: 1.4;
-        }
-
-        .hub-main-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            color: #38bdf8;
-            font-weight: 600;
-            padding-top: 10px;
-            border-top: 1px solid #334155;
-        }
-
-        /* Section Header & Search Bar */
-        .section-header {
-            background: #1e293b;
-            padding: 14px 20px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #38bdf8;
-        }
-
-        .search-bar-wrapper {
-            position: relative;
-            flex-grow: 1;
-            max-width: 280px;
-        }
-
-        .search-bar-wrapper i {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        .search-input {
-            width: 100%;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 9px;
-            padding: 8px 12px 8px 36px;
-            color: #f8fafc;
-            font-size: 13px;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .search-input:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
-        }
-
-        /* Breadcrumb Navigation */
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .breadcrumb span {
-            color: #38bdf8;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .breadcrumb span:hover {
-            text-decoration: underline;
-        }
-
-        /* Cards Grid Layout */
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
-
-        .sub-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 14px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 140px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sub-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: #38bdf8;
-        }
-        .sub-card:hover {
-            border-color: #38bdf8;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 22px rgba(56, 189, 248, 0.15);
-        }
-
-        .sub-card-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 17px;
-            margin-bottom: 12px;
-        }
-
-        .sub-card-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #f8fafc;
-            margin-bottom: 4px;
-        }
-
-        .sub-card-desc {
-            font-size: 12px;
-            color: #94a3b8;
-            line-height: 1.4;
-        }
-
-        .sub-card-footer {
-            margin-top: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: #38bdf8;
-        }
-        /* Exam Schedule Cards List */
-        .exams-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .exam-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 14px;
-            padding: 22px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-            position: relative;
-            overflow: hidden;
-            border-left: 4px solid #0284c7;
-        }
-
-        .exam-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .exam-title h3 {
-            font-size: 17px;
-            font-weight: 600;
-            color: #f8fafc;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .badge-date {
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 5px 12px;
-            border-radius: 7px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .exam-desc-box {
-            background: #0f172a;
-            border: 1px solid #334155;
-            padding: 14px 18px;
-            border-radius: 10px;
-            font-size: 13.5px;
-            color: #cbd5e1;
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .exam-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #334155;
-            padding-top: 14px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .exam-time {
-            font-size: 13px;
-            color: #94a3b8;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .exam-desc-box { background: var(--card); border: 1px solid rgba(255,255,255,0.05); padding: 14px; border-radius: 10px; font-size: 12.5px; color: #cbd5e1; margin-bottom: 14px; line-height: 1.5; }
+        .exam-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 14px; flex-wrap: wrap; gap: 10px; }
+        .exam-time { font-size: 12px; color: var(--subtext); display: flex; align-items: center; gap: 6px; }
+        .exam-time strong { color: var(--text); }
 
         /* Action Buttons */
-        .action-btn {
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #cbd5e1;
-            padding: 8px 14px;
-            border-radius: 9px;
-            font-size: 13px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-        }
+        .action-btn { background: var(--card); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px; text-decoration: none; cursor: pointer; }
+        .action-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: var(--primary); color: var(--primary); }
+        
+        .action-btn.download { background: rgba(56, 189, 248, 0.1); color: var(--primary); border-color: var(--border); }
+        .action-btn.download:hover { background: var(--primary); color: var(--bg); }
 
-        .action-btn:hover {
-            background: #334155;
-            color: #ffffff;
-            border-color: #38bdf8;
-        }
+        /* Modal / Popups */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 25, 0.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; opacity: 0; pointer-events: none; transition: 0.2s; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
-        .action-btn.download {
-            background: rgba(56, 189, 248, 0.12);
-            color: #38bdf8;
-            border-color: rgba(56, 189, 248, 0.3);
-        }
+        .modal-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 500px; padding: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); transform: scale(0.95); transition: 0.2s; }
+        .modal-overlay.active .modal-card { transform: scale(1); }
 
-        .action-btn.download:hover {
-            background: rgba(56, 189, 248, 0.25);
-        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; }
+        .modal-header h3 { font-size: 16px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        
+        .modal-close { background: transparent; border: none; color: var(--subtext); font-size: 22px; cursor: pointer; transition: 0.2s; }
+        .modal-close:hover { color: #ef4444; }
 
-        /* Subject Modal Popup */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 15px;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .modal-body { display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
+        .modal-field { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 14px; border-radius: 10px; }
+        .modal-field label { font-size: 11px; color: var(--subtext); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 6px; }
+        .modal-field .val { font-size: 13.5px; color: var(--text); font-weight: 500; line-height: 1.5; }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 30px; background: rgba(30, 41, 59, 0.4); border: 1px dashed rgba(255,255,255,0.1); border-radius: 14px; width: 100%; }
+        .hidden { display: none !important; }
 
-        .modal-card {
-            background: #1e293b;
-            border: 1px solid #38bdf855;
-            border-radius: 18px;
-            width: 100%;
-            max-width: 520px;
-            padding: 24px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            transform: scale(0.92);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .modal-overlay.active .modal-card {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 14px;
-        }
-
-        .modal-header h3 {
-            font-size: 17px;
-            color: #38bdf8;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-close {
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #94a3b8;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-close:hover {
-            background: #ef4444;
-            color: #fff;
-            border-color: #ef4444;
-        }
-
-        .modal-body {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-bottom: 22px;
-        }
-
-        .modal-field {
-            background: #0f172a;
-            border: 1px solid #334155;
-            padding: 14px 16px;
-            border-radius: 10px;
-        }
-
-        .modal-field label {
-            font-size: 11px;
-            color: #94a3b8;
-            text-transform: uppercase;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .modal-field .val {
-            font-size: 14px;
-            color: #f8fafc;
-            font-weight: 500;
-        }
-
-        .no-data {
-            color: #64748b;
-            font-size: 13px;
-            text-align: center;
-            padding: 35px;
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 14px;
-            width: 100%;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* --- MOBILE RESPONSIVE FIXES --- */
+        /* Mobile Fixes */
         @media (max-width: 650px) {
-            body {
-                padding: 10px;
-            }
-
-            .top-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-                padding: 12px 15px;
-            }
-
-            .header-right-group {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .profile-badge {
-                font-size: 11px;
-                padding: 5px 10px;
-                max-width: 60%;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .btn-dashboard {
-                font-size: 12px;
-                padding: 6px 12px;
-            }
-
-            .brand {
-                font-size: 15px;
-            }
-
-            .countdown-card {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .timer-digits {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .timer-box {
-                flex: 1;
-                min-width: 0;
-            }
-
-            .search-bar-wrapper {
-                max-width: 100%;
-                width: 100%;
-            }
-
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .header-right-group { width: 100%; justify-content: space-between; }
+            .profile-badge { font-size: 11px; max-width: 60%; overflow: hidden; text-overflow: ellipsis; }
+            .countdown-card { flex-direction: column; align-items: flex-start; }
+            .timer-digits { width: 100%; justify-content: space-between; }
+            .timer-box { flex: 1; min-width: 0; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .search-bar-wrapper { max-width: 100%; width: 100%; }
         }
     </style>
 </head>
-    <body>
+<body>
 
     <div class="container">
+        
+        <!-- Marquee Bar -->
         <div class="announcement-bar animated-btn" id="announcementBar">
             <i class="fa-solid fa-bullhorn"></i>
             <div class="marquee-container">
                 <div class="marquee-text" id="marqueeTextContent">
-                    📢 Welcome to Exam & Syllabus Portal. Check notifications and schedules below.
+                    Loading latest exam announcements...
                 </div>
             </div>
         </div>
 
+        <!-- Top Bar -->
         <div class="top-bar">
             <div class="brand">
                 <i class="fa-solid fa-graduation-cap"></i>
@@ -763,10 +280,11 @@
             </div>
         </div>
 
+        <!-- Countdown -->
         <div class="countdown-card fade-in">
             <div class="countdown-info">
                 <h4><i class="fa-solid fa-hourglass-start"></i> Next Exam Countdown</h4>
-                <p id="countdownTitle">Upcoming Examination</p>
+                <p id="countdownTitle">Searching Schedule...</p>
             </div>
             <div class="timer-digits">
                 <div class="timer-box"><span id="daysCount">--</span><small>Days</small></div>
@@ -775,87 +293,77 @@
             </div>
         </div>
 
+        <!-- Main Hubs -->
         <div id="mainHubsView" class="fade-in">
             <div class="main-hubs-grid">
                 <div class="hub-main-card animated-btn" onclick="openMainHub('syllabus')">
-                    <div class="hub-main-icon">
-                        <i class="fa-solid fa-book-bookmark"></i>
-                    </div>
+                    <div class="hub-main-icon"><i class="fa-solid fa-book-bookmark"></i></div>
                     <div class="hub-main-content">
                         <h3>Syllabus Hub</h3>
-                        <p>Access subject-wise course syllabi categorized across unit tests, half-yearly and final exams.</p>
+                        <p>Access subject-wise course syllabi categorized for unit tests and final exams.</p>
                     </div>
                     <div class="hub-main-footer">
-                        <span>Explore Syllabus</span>
-                        <i class="fa-solid fa-arrow-right"></i>
+                        <span>Explore Syllabus</span><i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
 
                 <div class="hub-main-card animated-btn" onclick="openMainHub('exams')">
-                    <div class="hub-main-icon">
-                        <i class="fa-solid fa-calendar-days"></i>
-                    </div>
+                    <div class="hub-main-icon"><i class="fa-solid fa-calendar-days"></i></div>
                     <div class="hub-main-content">
-                        <h3>Exam Schedule & Timetable</h3>
-                        <p>View upcoming examination dates, timings, teacher notes, and download master timetable PDFs.</p>
+                        <h3>Exam Timetables</h3>
+                        <p>View upcoming examination dates, timings, instructions, and download PDFs.</p>
                     </div>
                     <div class="hub-main-footer">
-                        <span>View Timetable</span>
-                        <i class="fa-solid fa-arrow-right"></i>
+                        <span>View Timetable</span><i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
             </div>
         </div>
-
+        <!-- Syllabus View -->
         <div id="syllabusView" class="hidden fade-in">
             <div class="breadcrumb" id="syllabusBreadcrumb">
                 <span onclick="goToMainHubs()"><i class="fa-solid fa-house"></i> Portal Hub</span> 
                 <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> 
-                <strong style="color:#f8fafc;">Syllabus Categories</strong>
+                <strong style="color:var(--text);">Syllabus Categories</strong>
             </div>
 
             <div id="syllabusLayerCategories">
                 <div class="section-header">
-                    <div class="section-title">
-                        <i class="fa-solid fa-folder-open"></i> Select Exam Category
-                    </div>
+                    <div class="section-title"><i class="fa-solid fa-folder-open"></i> Select Category</div>
                     <div class="search-bar-wrapper">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" id="categorySearchInput" class="search-input" placeholder="Search categories..." onkeyup="filterCategories()">
                     </div>
                 </div>
                 <div class="grid-cards" id="categoriesGridContainer">
-                    <div class="no-data">Loading Exam Categories from Database...</div>
+                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
                 </div>
             </div>
 
             <div id="syllabusLayerSubjects" class="hidden">
                 <div class="section-header">
-                    <div class="section-title" id="subjectsHeaderTitle">
-                        <i class="fa-solid fa-book"></i> Subjects
-                    </div>
+                    <div class="section-title" id="subjectsHeaderTitle"><i class="fa-solid fa-book"></i> Syllabus Documents</div>
                     <div class="search-bar-wrapper">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="subjectSearchInput" class="search-input" placeholder="Search subjects..." onkeyup="filterSubjects()">
+                        <input type="text" id="subjectSearchInput" class="search-input" placeholder="Search syllabus..." onkeyup="filterSubjects()">
                     </div>
                 </div>
                 <div class="grid-cards" id="subjectsGridContainer">
-                    <div class="no-data">Loading Subjects...</div>
+                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
                 </div>
             </div>
         </div>
 
+        <!-- Exams View -->
         <div id="examsView" class="hidden fade-in">
             <div class="breadcrumb">
                 <span onclick="goToMainHubs()"><i class="fa-solid fa-house"></i> Portal Hub</span> 
                 <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> 
-                <strong style="color:#f8fafc;">Exam Schedule & Timetable</strong>
+                <strong style="color:var(--text);">Exam Schedules</strong>
             </div>
 
             <div class="section-header">
-                <div class="section-title">
-                    <i class="fa-solid fa-clock"></i> Upcoming Examinations & Timetable
-                </div>
+                <div class="section-title"><i class="fa-solid fa-clock"></i> Upcoming Examinations</div>
                 <div class="search-bar-wrapper">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" id="examSearchInput" class="search-input" placeholder="Search exams..." onkeyup="filterExams()">
@@ -863,46 +371,42 @@
             </div>
 
             <div class="exams-list" id="examsListContainer">
-                <div class="no-data">Loading Exam Schedule from Database...</div>
+                <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
             </div>
 
-            <!-- 🔘 5-5 Exams Load Karne Ke Liye See More Button -->
-            <div style="text-align: center; margin: 25px 0;">
-                <button id="seeMoreExamsBtn" onclick="loadMoreExams()" style="display: none; padding: 12px 26px; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px;">
-                    <i class="fa-solid fa-chevron-down"></i> See More Exams
+            <div style="text-align: center; margin: 20px 0;">
+                <button id="seeMoreExamsBtn" class="action-btn" onclick="loadMoreExams()" style="display:none; justify-content:center; margin: 0 auto;">
+                    <i class="fa-solid fa-chevron-down"></i> See More
                 </button>
             </div>
         </div>
 
     </div>
 
+    <!-- Modal for Syllabus View -->
     <div class="modal-overlay" id="subjectModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 id="modalSubjectTitle"><i class="fa-solid fa-book"></i> Subject Syllabus</h3>
+                <h3 id="modalSubjectTitle"><i class="fa-solid fa-book"></i> Syllabus Details</h3>
                 <button class="modal-close animated-btn" onclick="closeSubjectModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
                 <div class="modal-field">
-                    <label>Real Exam Date & Timing</label>
-                    <div class="val" id="modalExamDate"><i class="fa-regular fa-calendar"></i> Loading...</div>
+                    <label>Description & Info</label>
+                    <div class="val" id="modalDesc">Loading...</div>
                 </div>
                 <div class="modal-field" id="modalTeacherNoteField">
-                    <label id="modalCustomHeading">Teacher's Note / Instructions</label>
+                    <label id="modalCustomHeading">Instructions</label>
                     <div class="val" id="modalTeacherDescription">Loading...</div>
                 </div>
             </div>
-            <div style="display: flex; gap: 12px;">
-                <a href="#" id="modalViewPdfBtn" target="_blank" class="action-btn animated-btn" style="flex:1; justify-content:center; padding: 11px;">
-                    <i class="fa-solid fa-eye"></i> View PDF
-                </a>
-                <a href="#" id="modalDownloadPdfBtn" download class="action-btn download animated-btn" style="flex:1; justify-content:center; padding: 11px;">
-                    <i class="fa-solid fa-download"></i> Download PDF
-                </a>
+            <div style="display: flex; gap: 12px;" id="modalActionButtons">
+                <!-- Buttons injected via JS -->
             </div>
         </div>
     </div>
 
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -910,16 +414,13 @@
         const firebaseConfig = {
             apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
             authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
-            projectId: "ss-kanhaiyalal-agrawal",
+ ProjectId: "SS-Kanhaiyalal-Agrawal",
             storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
             messagingSenderId: "776171239833",
-            appId: "1:776171239833:web:39eea44420db97384b3b08",
-            measurementId: "G-TQKTRTKBEJ"
+            appId: "1:776171239833:web:39eea44420db97384b3b08"
         };
         
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         let currentCategoryName = null;
@@ -927,63 +428,47 @@
         let allSubjectsData = [];
         let allExamsData = [];
 
-        // ⚡ 5-5 Exams Pagination Variables
-        let lastExamDoc = null;
-        let hasMoreExams = true;
+        let visibleExamsCount = 5;
 
-        let loggedInUser = localStorage.getItem('loggedInUser');
+        const loggedInUser = localStorage.getItem('loggedInUser') || '';
+        const userEmail = localStorage.getItem('user_email') || '';
         let studentProfile = {};
+
+        async function initPortal() {
+            const badge = document.getElementById('studentStreamDisplay');
+            if (!loggedInUser && !userEmail) {
+                if (badge) badge.innerText = "Guest Mode";
+            } else {
+                try {
+                    let snap = await db.collection('students').where('name', '==', loggedInUser).get();
+                    if(snap.empty && userEmail) snap = await db.collection('students').where('email', '==', userEmail).get();
+                    
+                    if (!snap.empty) {
+                        studentProfile = snap.docs[0].data();
+                        let cls = studentProfile.class || studentProfile.classSection || "";
+                        let stm = studentProfile.stream || "General";
+                        if (badge) badge.innerText = `${cls} (${stm})`;
+                    } else {
+                        if (badge) badge.innerText = `${loggedInUser}`;
+                    }
+                } catch (err) { console.error(err); }
+            }
+
+            
+            loadAnnouncementBar();
+            loadCategoriesFromFirebase();
+            loadExamsFromFirebase();
+        }
 
         async function loadAnnouncementBar() {
             try {
                 const noticeDoc = await db.collection('portal_settings').doc('exam_announcement').get();
                 if (noticeDoc.exists && noticeDoc.data().text) {
                     document.getElementById('marqueeTextContent').innerText = noticeDoc.data().text;
-                }
-            } catch (err) {
-                console.log("No announcement banner found in DB.");
-            }
-        }
-
-        async function initPortal() {
-            const badge = document.getElementById('studentStreamDisplay');
-            
-            if (!loggedInUser) {
-                if (badge) badge.innerText = "Please Login First";
-                loadAnnouncementBar();
-                loadCategoriesFromFirebase();
-                loadExamsFromFirebase();
-                return;
-            }
-
-            if (badge) badge.innerText = loggedInUser;
-
-            try {
-                const querySnapshot = await db.collection('students').where('name', '==', loggedInUser).get();
-                
-                if (!querySnapshot.empty) {
-                    studentProfile = querySnapshot.docs[0].data();
-                    let cls = studentProfile.class || studentProfile.classSection || "";
-                    let stm = studentProfile.stream || "";
-
-                    if (badge) {
-                        if (cls || stm) {
-                            badge.innerText = `${cls} (${stm})`;
-                        } else {
-                            badge.innerText = `${loggedInUser}`;
-                        }
-                    }
                 } else {
-                    if (badge) badge.innerText = `${loggedInUser}`;
+                    document.getElementById('marqueeTextContent').innerText = "Welcome to the Official Exam Portal. Check datesheets regularly.";
                 }
-            } catch (err) {
-                console.log("Error loading profile:", err);
-                if (badge) badge.innerText = loggedInUser;
-            }
-
-            loadAnnouncementBar();
-            loadCategoriesFromFirebase();
-            loadExamsFromFirebase();
+            } catch (err) {}
         }
 
         function openMainHub(hubName) {
@@ -1004,140 +489,145 @@
             document.getElementById('examsView').classList.add('hidden');
         }
 
+        // SYLLABUS LOGIC
         async function loadCategoriesFromFirebase() {
             const container = document.getElementById('categoriesGridContainer');
             try {
-                const snapshot = await db.collection('exam_categories').get();
+                const snapshot = await db.collection('exam_categories').orderBy('createdAt', 'desc').get();
                 if (snapshot.empty) {
-                    container.innerHTML = '<div class="no-data">No exam categories added yet.</div>';
-                    allCategoriesData = [];
+                    container.innerHTML = '<div class="no-data">No exam categories available yet.</div>';
                     return;
                 }
                 allCategoriesData = [];
-                snapshot.forEach(doc => {
-                    allCategoriesData.push({ id: doc.id, ...doc.data() });
-                });
+                snapshot.forEach(doc => { allCategoriesData.push({ id: doc.id, ...doc.data() }); });
                 renderCategories(allCategoriesData);
-            } catch (err) {
-                console.error(err);
-                container.innerHTML = '<div class="no-data">Failed to load categories.</div>';
-            }
+            } catch (err) { container.innerHTML = '<div class="no-data">Failed to load categories.</div>'; }
         }
 
         function renderCategories(list) {
             const container = document.getElementById('categoriesGridContainer');
-            if (list.length === 0) {
-                container.innerHTML = '<div class="no-data">No categories available.</div>';
-                return;
-            }
+            if (list.length === 0) { container.innerHTML = '<div class="no-data">No categories found.</div>'; return; }
             container.innerHTML = '';
             list.forEach(cat => {
-                const icon = cat.icon || 'fa-file-lines';
+                const icon = cat.icon || 'fa-folder';
                 container.innerHTML += `
                     <div class="sub-card animated-btn" onclick="openCategory('${cat.name.replace(/'/g, "\\'")}')">
                         <div>
                             <div class="sub-card-icon"><i class="fa-solid ${icon}"></i></div>
                             <div class="sub-card-title">${cat.name}</div>
-                            <div class="sub-card-desc">${cat.description || 'View subjects syllabus & PDFs.'}</div>
+                            <div class="sub-card-desc">${cat.description || 'View syllabus documents.'}</div>
                         </div>
                         <div class="sub-card-footer">
-                            <span><i class="fa-solid fa-folder-open"></i> Tap to View Subjects</span>
+                            <span><i class="fa-regular fa-folder-open"></i> Tap to open</span>
                             <i class="fa-solid fa-chevron-right" style="font-size:11px;"></i>
                         </div>
                     </div>
                 `;
             });
         }
+
         async function openCategory(categoryName) {
             currentCategoryName = categoryName;
             document.getElementById('syllabusLayerCategories').classList.add('hidden');
             document.getElementById('syllabusLayerSubjects').classList.remove('hidden');
             
-            let studentClass = studentProfile.class || studentProfile.classSection || "";
-            let studentStream = studentProfile.stream || "";
+            let cls = studentProfile.class || studentProfile.classSection || "All";
+            let stm = studentProfile.stream || "General";
 
             document.getElementById('syllabusBreadcrumb').innerHTML = `
                 <span onclick="goToMainHubs()"><i class="fa-solid fa-house"></i> Portal Hub</span> 
                 <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> 
                 <span onclick="resetSyllabusView()">Syllabus Categories</span>
                 <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> 
-                <strong style="color:#f8fafc;">${categoryName}</strong>
+                <strong style="color:var(--text);">${categoryName}</strong>
             `;
-            document.getElementById('subjectsHeaderTitle').innerHTML = `<i class="fa-solid fa-book"></i> Subjects in ${categoryName} (${studentClass} - ${studentStream})`;
+            document.getElementById('subjectsHeaderTitle').innerHTML = `<i class="fa-solid fa-book-open"></i> Documents (${cls})`;
             
             const container = document.getElementById('subjectsGridContainer');
-            container.innerHTML = '<div class="no-data">Loading subjects...</div>';
+            container.innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
 
             try {
-                let queryRef = db.collection('exam_syllabus').where('category', '==', categoryName);
-                const snapshot = await queryRef.get();
+                const snapshot = await db.collection('exam_syllabus').where('category', '==', categoryName).get();
+                if (snapshot.empty) { container.innerHTML = '<div class="no-data">No documents added for this category yet.</div>'; return; }
 
-                if (snapshot.empty) {
-                    container.innerHTML = '<div class="no-data">No subjects added for this category yet.</div>';
-                    allSubjectsData = [];
-                    return;
-                }
-
-                allSubjectsData = [];
+                let temp = [];
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    if (!data.stream || data.stream === 'All' || data.stream === studentStream) {
-                        allSubjectsData.push({ id: doc.id, ...data });
-                    }
+                    let cMatch = !data.class || data.class === "All" || data.class === cls;
+                    let sMatch = !data.stream || data.stream === "All" || data.stream === "General" || data.stream === stm;
+                    if(cMatch && sMatch) temp.push({ id: doc.id, ...data });
                 });
 
-                if (allSubjectsData.length === 0) {
-                    container.innerHTML = `<div class="no-data">No syllabus found specifically for ${studentStream} stream in ${categoryName}.</div>`;
-                    return;
-                }
+                temp.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+                allSubjectsData = temp;
 
+                if (allSubjectsData.length === 0) { container.innerHTML = `<div class="no-data">No specific documents found for your class/stream.</div>`; return; }
                 renderSubjects(allSubjectsData);
-            } catch (err) {
-                console.error(err);
-                container.innerHTML = '<div class="no-data">Failed to load subjects.</div>';
-            }
+            } catch (err) { container.innerHTML = '<div class="no-data">Failed to load syllabus.</div>'; }
         }
 
         function renderSubjects(list) {
             const container = document.getElementById('subjectsGridContainer');
-            if (list.length === 0) {
-                container.innerHTML = '<div class="no-data">No subjects found.</div>';
-                return;
-            }
+            if (list.length === 0) { container.innerHTML = '<div class="no-data">No matches found.</div>'; return; }
             container.innerHTML = '';
             list.forEach(sub => {
-                const safeSubStr = JSON.stringify(sub).replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                const safeObj = encodeURIComponent(JSON.stringify(sub));
                 container.innerHTML += `
-                    <div class="sub-card animated-btn" onclick='openSubjectModalFromStr(${safeSubStr})'>
+                    <div class="sub-card animated-btn" onclick="openSubjectModalFromStr('${safeObj}')">
                         <div>
-                            <div class="sub-card-icon"><i class="fa-solid fa-book-open"></i></div>
+                            <div class="sub-card-icon"><i class="fa-solid fa-file-pdf"></i></div>
                             <div class="sub-card-title">${sub.name}</div>
-                            <div class="sub-card-desc">${sub.description || 'Subject syllabus details & PDF.'}</div>
+                            <div class="sub-card-desc">${sub.description || 'Syllabus PDF document.'}</div>
                         </div>
                         <div class="sub-card-footer">
-                            <span><i class="fa-regular fa-calendar"></i> ${sub.dateText || 'Date TBA'}</span>
-                            <span class="action-btn download" style="padding: 4px 10px; font-size: 11px;"><i class="fa-solid fa-file-pdf"></i> View</span>
+                            <span><i class="fa-regular fa-clock"></i> ${sub.dateText || 'Recently Added'}</span>
+                            <span class="action-btn download" style="padding: 4px 10px; font-size: 11px;"><i class="fa-solid fa-eye"></i> View</span>
                         </div>
                     </div>
                 `;
             });
         }
 
-        function openSubjectModalFromStr(sub) {
-            document.getElementById('modalSubjectTitle').innerHTML = `<i class="fa-solid fa-book"></i> ${sub.name} Syllabus`;
-            document.getElementById('modalExamDate').innerHTML = `<i class="fa-regular fa-calendar"></i> ${sub.dateText || 'Scheduled soon'}`;
+        // ⚡ SAFE PDF HANDLING 
+        function generatePDFButtons(fileUrl, title) {
+            if(!fileUrl) return '';
+            const safeTitle = title ? title.replace(/'/g, "\\'") : 'Document';
+            if (fileUrl.startsWith('data:')) {
+                return `
+                    <button onclick="openSafePDF('${fileUrl}')" class="action-btn animated-btn" style="flex:1; justify-content:center; padding: 11px;">
+                        <i class="fa-solid fa-eye"></i> View PDF
+                    </button>
+                    <button onclick="downloadSafePDF('${fileUrl}', '${safeTitle}.pdf')" class="action-btn download animated-btn" style="flex:1; justify-content:center; padding: 11px;">
+                        <i class="fa-solid fa-download"></i> Download
+                    </button>
+                `;
+            } else {
+                return `
+                    <a href="${fileUrl}" target="_blank" class="action-btn animated-btn" style="flex:1; justify-content:center; padding: 11px;">
+                        <i class="fa-solid fa-eye"></i> View PDF
+                    </a>
+                    <a href="${fileUrl}" download class="action-btn download animated-btn" style="flex:1; justify-content:center; padding: 11px;">
+                        <i class="fa-solid fa-download"></i> Download
+                    </a>
+                `;
+            }
+        }
+
+        function openSubjectModalFromStr(encodedObj) {
+            const sub = JSON.parse(decodeURIComponent(encodedObj));
+            document.getElementById('modalSubjectTitle').innerHTML = `<i class="fa-solid fa-file-pdf"></i> ${sub.name}`;
+            document.getElementById('modalDesc').innerHTML = sub.description || 'No description provided.';
             
             const noteField = document.getElementById('modalTeacherNoteField');
-            if (sub.showNote !== false && sub.teacherNote) {
+            if (sub.showNote && sub.teacherNote && sub.teacherNote.trim() !== '') {
                 noteField.classList.remove('hidden');
-                document.getElementById('modalCustomHeading').innerText = sub.teacherNoteHeading || "Teacher's Note / Instructions";
+                document.getElementById('modalCustomHeading').innerText = sub.teacherNoteHeading || "Instructions";
                 document.getElementById('modalTeacherDescription').innerText = sub.teacherNote;
             } else {
                 noteField.classList.add('hidden');
             }
 
-            document.getElementById('modalViewPdfBtn').href = sub.fileUrl || '#';
-            document.getElementById('modalDownloadPdfBtn').href = sub.fileUrl || '#';
+            document.getElementById('modalActionButtons').innerHTML = generatePDFButtons(sub.fileUrl, sub.name);
             document.getElementById('subjectModal').classList.add('active');
         }
 
@@ -1148,164 +638,179 @@
             document.getElementById('syllabusBreadcrumb').innerHTML = `
                 <span onclick="goToMainHubs()"><i class="fa-solid fa-house"></i> Portal Hub</span> 
                 <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> 
-                <strong style="color:#f8fafc;">Syllabus Categories</strong>
+                <strong style="color:var(--text);">Syllabus Categories</strong>
             `;
             document.getElementById('categorySearchInput').value = '';
             renderCategories(allCategoriesData);
         }
 
-        function closeSubjectModal() {
-            document.getElementById('subjectModal').classList.remove('active');
-        }
+        function closeSubjectModal() { document.getElementById('subjectModal').classList.remove('active'); }
 
-        // ⚡ 5-5 Paginated Exams Fetching Logic
+        // EXAMS LOGIC (Firebase Crash Fix via JS JS Filter)
         async function loadExamsFromFirebase() {
-            allExamsData = [];
-            lastExamDoc = null;
-            hasMoreExams = true;
-            await fetchExamsBatch(false);
-        }
-
-        async function fetchExamsBatch(isAppend = false) {
             const container = document.getElementById('examsListContainer');
-            
             try {
-                let query = db.collection('exams').orderBy('createdAt', 'desc');
-
-                if (isAppend && lastExamDoc) {
-                    query = query.startAfter(lastExamDoc);
-                }
-
-                const snapshot = await query.limit(5).get();
-
-                if (snapshot.empty) {
-                    hasMoreExams = false;
-                    updateSeeMoreExamsButton();
-                    if (!isAppend && allExamsData.length === 0) {
-                        if (container) container.innerHTML = '<div class="no-data">No Exams Found</div>';
-                    }
-                    return;
-                }
-
-                lastExamDoc = snapshot.docs[snapshot.docs.length - 1];
-
-                if (snapshot.docs.length < 5) {
-                    hasMoreExams = false;
-                }
-
-                let studentClass = studentProfile.class || studentProfile.classSection || "";
-                let studentStream = studentProfile.stream || "";
+                const snapshot = await db.collection('exams').get();
+                let temp = [];
+                let cls = studentProfile.class || studentProfile.classSection || "";
+                let stm = studentProfile.stream || "General";
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    let classMatch = !data.class || data.class === "All" || data.class === studentClass;
-                    let streamMatch = !data.stream || data.stream === "All" || data.stream === "General" || data.stream === studentStream;
-
-                    if (classMatch && streamMatch) {
-                        if (!allExamsData.some(e => e.id === doc.id)) {
-                            allExamsData.push({ id: doc.id, ...data });
-                        }
-                    }
+                    let cMatch = !data.class || data.class === "All" || data.class === cls;
+                    let sMatch = !data.stream || data.stream === "All" || data.stream === "General" || data.stream === stm;
+                    if (cMatch && sMatch) temp.push({ id: doc.id, ...data });
                 });
 
-                if (allExamsData.length === 0 && hasMoreExams) {
-                    fetchExamsBatch(true);
-                    return;
-                }
+                temp.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+                allExamsData = temp;
+                visibleExamsCount = 5;
 
-                renderExams(allExamsData);
-                updateSeeMoreExamsButton();
-
-            } catch (err) {
-                console.log("Error loading filtered exams:", err);
-            }
+                renderExams();
+                setupCountdown(); // Connect countdown
+            } catch (err) { container.innerHTML = '<div class="no-data">Error loading schedules.</div>'; }
         }
 
-        function loadMoreExams() {
-            if (hasMoreExams) {
-                fetchExamsBatch(true);
-            }
-        }
-
-        function updateSeeMoreExamsButton() {
-            const btn = document.getElementById('seeMoreExamsBtn');
-            if (!btn) return;
-            const searchVal = document.getElementById('examSearchInput') ? document.getElementById('examSearchInput').value.trim() : '';
-            if (hasMoreExams && searchVal === '') {
-                btn.style.display = 'inline-block';
-            } else {
-                btn.style.display = 'none';
-            }
-        }
-
-        function renderExams(list) {
+        function renderExams() {
             const container = document.getElementById('examsListContainer');
-            if (!container) return;
+            let q = document.getElementById('examSearchInput').value.toLowerCase();
+            let filtered = allExamsData.filter(e => e.title.toLowerCase().includes(q));
 
-            if (list.length === 0) {
-                container.innerHTML = '<div class="no-data">No exams listed.</div>';
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="no-data">No upcoming exams found.</div>';
+                document.getElementById('seeMoreExamsBtn').style.display = 'none';
                 return;
             }
+
             container.innerHTML = '';
-            list.forEach(exam => {
+            let visibleList = filtered.slice(0, visibleExamsCount);
+
+            visibleList.forEach(exam => {
                 const isResc = exam.isRescheduled || false;
                 const statusText = exam.status || (isResc ? 'Rescheduled' : 'Upcoming');
-                const tUrl = exam.timetableUrl || exam.fileUrl || '#';
+                
+                let bColor = isResc ? 'rgba(239,68,68,0.1)' : 'rgba(56, 189, 248, 0.1)';
+                let tColor = isResc ? '#ef4444' : 'var(--primary)';
+                let brColor = isResc ? 'rgba(239,68,68,0.3)' : 'var(--border)';
+
+                const buttonsHTML = generatePDFButtons(exam.timetableUrl || exam.fileUrl, exam.title);
 
                 container.innerHTML += `
                     <div class="exam-card fade-in">
                         <div class="exam-header">
                             <div class="exam-title">
-                                <h3><i class="fa-solid fa-file-lines" style="color:#38bdf8;"></i> ${exam.title}</h3>
+                                <h3><i class="fa-solid fa-file-signature"></i> ${exam.title}</h3>
                             </div>
                             <div style="display:flex; gap:8px; align-items:center;">
-                                <span class="badge-date"><i class="fa-regular fa-calendar"></i> ${exam.dateText || 'Scheduled'}</span>
-                                <span class="badge-date" style="background:${isResc?'rgba(239,68,68,0.15)':'rgba(34,197,94,0.15)'}; color:${isResc?'#f87171':'#4ade80'}; border-color:${isResc?'rgba(239,68,68,0.3)':'rgba(34,197,94,0.3)'};">${statusText}</span>
+                                <span class="badge-date"><i class="fa-regular fa-calendar"></i> ${exam.dateText || 'TBA'}</span>
+                                <span class="badge-status" style="background:${bColor}; color:${tColor}; border-color:${brColor};">${statusText}</span>
                             </div>
                         </div>
                         <div class="exam-desc-box">
-                            ${exam.description || 'No instructions provided.'}
+                            ${exam.description || 'No additional instructions provided for this exam.'}
                         </div>
                         <div class="exam-footer">
                             <div class="exam-time">
-                                <i class="fa-regular fa-clock"></i> Timing: <strong>${exam.timeText || 'Morning Session'}</strong>
+                                <i class="fa-regular fa-clock"></i> Timing: <strong>${exam.timeText || 'TBA'}</strong>
                             </div>
                             <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                                <a href="${tUrl}" target="_blank" class="action-btn animated-btn">
-                                    <i class="fa-solid fa-eye"></i> View Timetable PDF
-                                </a>
-                                <a href="${tUrl}" download class="action-btn download animated-btn">
-                                    <i class="fa-solid fa-download"></i> Download PDF
-                                </a>
+                                ${buttonsHTML}
                             </div>
                         </div>
                     </div>
                 `;
             });
+
+            document.getElementById('seeMoreExamsBtn').style.display = (filtered.length > visibleExamsCount) ? 'flex' : 'none';
+        }
+
+        function loadMoreExams() {
+            visibleExamsCount += 5;
+            renderExams();
+        }
+
+        // Timer Logic
+        let timerInterval;
+        function setupCountdown() {
+            clearInterval(timerInterval);
+            let upcomingExam = null;
+            const now = new Date().getTime();
+
+            // Find nearest future exam
+            for (let i = allExamsData.length - 1; i >= 0; i--) {
+                const exam = allExamsData[i];
+                if (exam.dateText && exam.dateText !== 'TBA') {
+                    const examDate = new Date(exam.dateText).getTime();
+                    if (examDate > now) { upcomingExam = { title: exam.title, time: examDate }; break; }
+                }
+            }
+
+            if (!upcomingExam) {
+                document.getElementById('countdownTitle').innerText = "No Upcoming Exams";
+                document.getElementById('daysCount').innerText = "00";
+                document.getElementById('hoursCount').innerText = "00";
+                document.getElementById('minsCount').innerText = "00";
+                return;
+            }
+
+            document.getElementById('countdownTitle').innerText = upcomingExam.title;
+
+            timerInterval = setInterval(() => {
+                const dist = upcomingExam.time - new Date().getTime();
+                if (dist < 0) { clearInterval(timerInterval); return; }
+                
+                const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+                const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById('daysCount').innerText = d < 10 ? '0'+d : d;
+                document.getElementById('hoursCount').innerText = h < 10 ? '0'+h : h;
+                document.getElementById('minsCount').innerText = m < 10 ? '0'+m : m;
+            }, 1000);
+        }
+
+        // Base64 Safe Handlers
+        function openSafePDF(base64Data) {
+            try {
+                const parts = base64Data.split(',');
+                const mime = parts[0].match(/:(.*?);/)[1];
+                const bstr = atob(parts[1]);
+                let n = bstr.length; const u8arr = new Uint8Array(n);
+                while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+                const blob = new Blob([u8arr], { type: mime });
+                window.open(URL.createObjectURL(blob), '_blank');
+            } catch(e) { window.open(base64Data, '_blank'); }
+        }
+
+        function downloadSafePDF(base64Data, fileName) {
+            try {
+                const parts = base64Data.split(',');
+                const mime = parts[0].match(/:(.*?);/)[1];
+                const bstr = atob(parts[1]);
+                let n = bstr.length; const u8arr = new Uint8Array(n);
+                while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+                const blob = new Blob([u8arr], { type: mime });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = fileName;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            } catch(e) { alert("Download failed."); }
         }
 
         function filterCategories() {
             const q = document.getElementById('categorySearchInput').value.toLowerCase();
-            const filtered = allCategoriesData.filter(c => c.name.toLowerCase().includes(q) || (c.description && c.description.toLowerCase().includes(q)));
-            renderCategories(filtered);
+            renderCategories(allCategoriesData.filter(c => c.name.toLowerCase().includes(q)));
         }
-
         function filterSubjects() {
             const q = document.getElementById('subjectSearchInput').value.toLowerCase();
-            const filtered = allSubjectsData.filter(s => s.name.toLowerCase().includes(q) || (s.description && s.description.toLowerCase().includes(q)));
-            renderSubjects(filtered);
+            renderSubjects(allSubjectsData.filter(s => s.name.toLowerCase().includes(q)));
         }
-
         function filterExams() {
-            const q = document.getElementById('examSearchInput').value.toLowerCase();
-            const filtered = allExamsData.filter(e => e.title.toLowerCase().includes(q) || (e.description && e.description.toLowerCase().includes(q)));
-            renderExams(filtered);
-            updateSeeMoreExamsButton();
+            visibleExamsCount = 5;
+            renderExams();
         }
 
-        window.onload = function() {
-            initPortal();
-        };
+        window.onload = initPortal;
     </script>
 </body>
 </html>
