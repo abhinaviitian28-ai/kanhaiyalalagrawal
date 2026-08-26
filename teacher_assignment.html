@@ -1,890 +1,734 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Teacher Assignment Portal - SSKL</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Teacher Attendance Portal - SSKL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    body { 
-      background-color: #070d19; 
-      min-height: 100vh; 
-      color: #ffffff; 
-      padding: 14px 10px; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      position: relative; 
-    }
+    <style>
+        :root {
+            --bg: #070d19;
+            --card: #0f172a;
+            --primary: #38bdf8;
+            --text: #ffffff;
+            --subtext: #94a3b8;
+            --border: rgba(56, 189, 248, 0.25);
+        }
 
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 75%);
-      z-index: -1;
-    }
+        /* Front-End Security: Disable Text Selection & Dragging */
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+            user-select: none; 
+            -webkit-user-drag: none; 
+        }
 
-    .container {
-      width: 100%;
-      max-width: 760px;
-      animation: softFadeIn 0.25s ease-out;
-    }
+        input, textarea, select { user-select: auto; }
 
-    @keyframes softFadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        /* Mobile White-Bar & Scroll Glitch Fix */
+        html, body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100dvh;
+            overscroll-behavior-y: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 12px;
+            position: relative;
+        }
 
-    /* Top Bar */
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(30, 41, 59, 0.75);
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      margin-bottom: 14px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-      gap: 8px;
-    }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 75%);
+            z-index: -1;
+        }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #38bdf8;
-    }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-    .brand i {
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.15);
-      padding: 7px;
-      border-radius: 8px;
-      font-size: 13px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      flex-shrink: 0;
-    }
+        .container { 
+            width: 100%; 
+            max-width: 740px; 
+            animation: softFadeIn 0.3s ease-out; 
+        }
 
-    .btn-dashboard {
-      text-decoration: none;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 7px 12px;
-      border-radius: 9px;
-      font-weight: 600;
-      font-size: 11.5px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      flex-shrink: 0;
-      transition: all 0.2s ease;
-    }
+        @keyframes softFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .btn-dashboard:hover { background: rgba(56, 189, 248, 0.25); }
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.75);
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            gap: 10px;
+        }
 
-    /* Card Containers */
-    .card {
-      background: rgba(30, 41, 59, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
-      padding: 16px 14px;
-      margin-bottom: 14px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-    }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 14.5px; font-weight: 700; color: var(--primary); }
+        .brand i { background: rgba(56, 189, 248, 0.15); padding: 8px; border-radius: 8px; font-size: 14px; border: 1px solid rgba(56, 189, 248, 0.3); flex-shrink: 0; }
 
-    .card-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #38bdf8;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+        .btn-dashboard {
+            text-decoration: none;
+            color: var(--primary);
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
 
-    /* Form Fields */
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 10px;
-    }
+        .btn-dashboard:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); }
 
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px 16px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
 
-    .input-group label {
-      font-size: 10.5px;
-      font-weight: 600;
-      color: #cbd5e1;
-    }
+        .card-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      padding: 9px 10px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      color: #ffffff;
-      font-size: 12px;
-      outline: none;
-      transition: border-color 0.15s ease;
-    }
+        /* Filter Section Grid */
+        .date-search-row { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; margin-bottom: 14px; }
+        .filter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
 
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: #38bdf8;
-    }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 11px; font-weight: 600; color: var(--subtext); text-transform: uppercase; }
 
-    .form-textarea {
-      resize: vertical;
-      min-height: 65px;
-    }
+        .form-input, .form-select {
+            width: 100%;
+            padding: 11px 12px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 12.5px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
 
-    /* Date row with quick offset pills */
-    .date-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
+        .form-input:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.15); }
+        select.form-select option { background-color: var(--card); color: var(--text); }
 
-    .date-pills {
-      display: flex;
-      gap: 4px;
-      margin-top: 2px;
-    }
+        .date-quick-btn {
+            padding: 11px 12px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--subtext);
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
 
-    .pill-btn {
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      color: #38bdf8;
-      border-radius: 6px;
-      padding: 2px 7px;
-      font-size: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
+        .date-quick-btn:hover { border-color: var(--primary); color: var(--primary); }
 
-    .pill-btn:hover { background: rgba(56, 189, 248, 0.25); }
+        .btn-fetch {
+            width: 100%;
+            padding: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            color: var(--primary);
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
 
-    /* PDF / File Attachment Dropzone */
-    .pdf-upload-box {
-      border: 1px dashed rgba(56, 189, 248, 0.4);
-      background: rgba(15, 23, 42, 0.6);
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-      margin-bottom: 8px;
-      transition: all 0.2s ease;
-    }
+        .btn-fetch:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); }
 
-    .pdf-upload-box:hover {
-      border-color: #38bdf8;
-      background: rgba(56, 189, 248, 0.08);
-    }
+        /* Lock Notice */
+        .lock-notice { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 10px 12px; font-size: 11.5px; color: var(--primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
 
-    .pdf-preview-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11.5px;
-      color: #4ade80;
-      margin-top: 4px;
-    }
+        /* Sheet & Stats */
+        .sheet-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 12.5px; color: var(--primary); font-weight: 600; }
+        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+        
+        .stat-box { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px 4px; text-align: center; }
+        .stat-val { font-size: 16px; font-weight: 700; }
+        .stat-label { font-size: 9.5px; color: var(--subtext); text-transform: uppercase; font-weight: 600; margin-top: 2px; }
 
-    /* Submit Button */
-    .btn-submit {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.35) 100%);
-      border: 1px solid rgba(52, 211, 153, 0.4);
-      border-radius: 11px;
-      color: #6ee7b7;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-      transition: all 0.2s ease;
-    }
+        .val-total { color: var(--primary); }
+        .val-present { color: #4ade80; }
+        .val-absent { color: #f87171; }
+        .val-neutral { color: var(--subtext); }
 
-    .btn-submit:hover {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.38) 0%, rgba(5, 150, 105, 0.48) 100%);
-      border-color: rgba(52, 211, 153, 0.7);
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
+        /* Quick Actions Grid */
+        .quick-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+        .btn-quick { padding: 10px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s ease; border: 1px solid transparent; }
+        .btn-quick:active { transform: scale(0.97); }
 
-    .btn-submit:active { transform: scale(0.98); }
+        .btn-all-p { background: rgba(74, 222, 128, 0.1); color: #4ade80; border-color: rgba(74, 222, 128, 0.3); }
+        .btn-all-a { background: rgba(239, 68, 68, 0.1); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+        .btn-all-clear { background: rgba(148, 163, 184, 0.1); color: var(--subtext); border-color: rgba(148, 163, 184, 0.3); }
+        .btn-copy-mail { background: rgba(56, 189, 248, 0.1); color: var(--primary); border-color: rgba(56, 189, 248, 0.3); }
 
-    /* Assignment Items */
-    .assignment-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
+        /* Student List Elements */
+        .attendance-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; max-height: 400px; overflow-y: auto; padding-right: 4px; }
+        .student-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); padding: 10px 12px; border-radius: 12px; gap: 8px; transition: background 0.2s ease; }
+        .student-item:hover { background: rgba(30, 41, 59, 0.8); }
 
-    .assignment-card {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 12px;
-      transition: all 0.2s ease;
-    }
+        .student-info { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; cursor: pointer; }
+        .roll-badge { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 700; flex-shrink: 0; text-align: center; }
+        .sec-badge { background: rgba(168, 85, 247, 0.1); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); padding: 3px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+        .student-name { font-size: 12.5px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .assignment-card:hover {
-      border-color: rgba(56, 189, 248, 0.35);
-      transform: translateY(-1px);
-    }
+        /* Toggles */
+        .toggle-group { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
+        .toggle-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(15, 23, 42, 0.8); color: var(--subtext); font-weight: 700; font-size: 11.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .toggle-btn:active { transform: scale(0.9); }
+        
+        .toggle-btn.active-p { background: #22c55e; color: #ffffff; border-color: #22c55e; }
+        .toggle-btn.active-a { background: #ef4444; color: #ffffff; border-color: #ef4444; }
+        .toggle-btn.active-l { background: #eab308; color: #ffffff; border-color: #eab308; }
 
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-      gap: 8px;
-    }
+        .locked-badge { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
 
-    .sub-badge {
-      background: rgba(56, 189, 248, 0.15);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 2px 7px;
-      border-radius: 6px;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
+        .btn-save-smooth { width: 100%; padding: 13px; background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 12px; color: #10b981; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; }
+        .btn-save-smooth:hover { background: #10b981; color: #ffffff; transform: translateY(-2px); }
+        .btn-save-smooth:active { transform: scale(0.97); }
+        .no-data { text-align: center; padding: 25px; color: var(--subtext); font-size: 12.5px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
 
-    .due-pill {
-      font-size: 10.5px;
-      color: #fbbf24;
-      background: rgba(234, 179, 8, 0.15);
-      border: 1px solid rgba(234, 179, 8, 0.3);
-      padding: 2px 7px;
-      border-radius: 6px;
-      font-weight: 600;
-    }
+        /* Modal Popup */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 25, 0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        
+        .modal-content { background: var(--card); border: 1px solid var(--border); border-radius: 18px; width: 100%; max-width: 360px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.95); transition: transform 0.3s ease; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
 
-    .assignment-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 4px;
-    }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; margin-bottom: 14px; font-size: 14px; font-weight: 700; color: var(--primary); }
+        .modal-close { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 28px; height: 28px; border-radius: 50%; color: var(--subtext); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .modal-close:hover { background: #ef4444; color: #ffffff; border-color: #ef4444; }
 
-    .assignment-desc {
-      font-size: 11.5px;
-      color: #94a3b8;
-      line-height: 1.4;
-      margin-bottom: 10px;
-    }
+        .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; }
+        .detail-label { color: var(--subtext); font-weight: 500; }
+        .detail-value { color: var(--text); font-weight: 600; text-align: right; }
 
-    .card-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 8px;
-      gap: 6px;
-    }
-
-    .action-group-left {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-link-action {
-      color: #38bdf8;
-      text-decoration: none;
-      font-size: 11px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(56, 189, 248, 0.1);
-      padding: 4px 7px;
-      border-radius: 5px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-    }
-
-    .btn-view-subs {
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #38bdf8;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-del {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #f87171;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-del:hover {
-      background: #ef4444;
-      color: #fff;
-    }
-
-    /* See More Button */
-    .btn-see-more {
-      width: 100%;
-      padding: 9px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: #38bdf8;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .btn-see-more:hover {
-      background: rgba(56, 189, 248, 0.2);
-    }
-
-    .no-data {
-      text-align: center;
-      padding: 20px 8px;
-      color: #94a3b8;
-      font-size: 12px;
-    }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      padding: 14px;
-      backdrop-filter: blur(4px);
-    }
-
-    .modal-content {
-      background: #0f172a;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 16px;
-      width: 100%;
-      max-width: 440px;
-      padding: 16px;
-      max-height: 80vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #334155;
-      padding-bottom: 8px;
-      margin-bottom: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #38bdf8;
-    }
-
-    .modal-close {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    .subs-list {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      overflow-y: auto;
-    }
-
-    .sub-item {
-      background: rgba(30, 41, 59, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 9px;
-      padding: 8px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-open-work {
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.35);
-      color: #4ade80;
-      padding: 4px 7px;
-      border-radius: 5px;
-      font-size: 10.5px;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    @media (max-width: 480px) {
-      .form-grid { grid-template-columns: 1fr 1fr; }
-      #streamGroup { grid-column: span 2; }
-    }
-  </style>
+        @media (max-width: 480px) {
+            .filter-grid { grid-template-columns: 1fr 1fr; }
+            #streamBox { grid-column: span 2; }
+            .quick-actions { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    
-    <!-- Top Bar -->
-    <div class="top-bar">
-      <div class="brand">
-        <i class="fa-solid fa-book-open-reader"></i>
-        <span>Teacher Assignment</span>
-      </div>
-      <a href="teacher_dashboard.html" class="btn-dashboard">
-        <i class="fa-solid fa-house"></i> Dashboard
-      </a>
-    </div>
+    <!-- Security Script (Anti-Inspect & Anti-Copy) -->
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+        }
+    </script>
 
-    <!-- Create Assignment Form -->
-    <div class="card">
-      <div class="card-title">
-        <i class="fa-solid fa-plus-circle"></i> Create New Assignment
-      </div>
-
-      <!-- Class, Sec, Stream Selectors -->
-      <div class="form-grid">
-        <div class="input-group">
-          <label>Class</label>
-          <select id="asClass" class="form-select" onchange="handleClassChange()">
-            <option value="Nursery">Nursery</option>
-            <option value="LKG">LKG</option>
-            <option value="UKG">UKG</option>
-            <option value="1">Class 1st</option>
-            <option value="2">Class 2nd</option>
-            <option value="3">Class 3rd</option>
-            <option value="4">Class 4th</option>
-            <option value="5">Class 5th</option>
-            <option value="6">Class 6th</option>
-            <option value="7">Class 7th</option>
-            <option value="8">Class 8th</option>
-            <option value="9">Class 9th</option>
-            <option value="10">Class 10th</option>
-            <option value="11" selected>Class 11th</option>
-            <option value="12">Class 12th</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label>Section</label>
-          <select id="asSection" class="form-select">
-            <option value="ALL">All Sec</option>
-            <option value="A">Sec A</option>
-            <option value="B" selected>Sec B</option>
-            <option value="C">Sec C</option>
-            <option value="D">Sec D</option>
-          </select>
-        </div>
-
-        <div class="input-group" id="streamGroup">
-          <label>Stream</label>
-          <select id="asStream" class="form-select" onchange="populateSubjects()">
-            <option value="PCM" selected>PCM</option>
-            <option value="PCB">PCB</option>
-            <option value="Commerce">Commerce</option>
-            <option value="Arts">Arts</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Subject & Due Date -->
-      <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 10px;">
-        <div class="input-group">
-          <label>Subject</label>
-          <select id="asSubject" class="form-select" onchange="handleSubjectSelect()"></select>
-          <input type="text" id="asCustomSubject" class="form-input" placeholder="Type Subject Name..." style="display:none; margin-top: 4px;">
-        </div>
-
-        <div class="input-group date-wrapper">
-          <label>Due Date</label>
-          <input type="date" id="asDueDate" class="form-input">
-          <div class="date-pills">
-            <button type="button" class="pill-btn" onclick="addDueDays(3)">+3 Days</button>
-            <button type="button" class="pill-btn" onclick="addDueDays(7)">+1 Week</button>
-            <button type="button" class="pill-btn" onclick="addDueDays(15)">+15 Days</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Assignment Title -->
-      <div class="input-group" style="margin-bottom: 10px;">
-        <label>Assignment Title</label>
-        <input type="text" id="asTitle" class="form-input" placeholder="e.g. Chapter 4 Practice Sheet">
-      </div>
-
-      <!-- PDF / Document Direct Upload -->
-      <div class="input-group" style="margin-bottom: 8px;">
-        <label>Attach PDF / Image Document (Max 1MB)</label>
-        <div class="pdf-upload-box" onclick="document.getElementById('asFileInput').click()">
-          <i class="fa-solid fa-file-pdf" style="color: #38bdf8; font-size: 16px;"></i>
-          <span style="font-size: 11.5px; color: #cbd5e1; margin-left: 6px;">Click to select File / PDF</span>
-          <input type="file" id="asFileInput" accept=".pdf,image/*" style="display: none;" onchange="handleFileSelected(event)">
-          <div id="filePreview" class="pdf-preview-tag" style="display: none;"></div>
-        </div>
-      </div>
-
-      <!-- Google Drive / Cloud URL -->
-      <div class="input-group" style="margin-bottom: 10px;">
-        <label>Or Google Drive / Web Link (Optional)</label>
-        <input type="url" id="asLink" class="form-input" placeholder="https://drive.google.com/...">
-      </div>
-
-      <!-- Description -->
-      <div class="input-group" style="margin-bottom: 12px;">
-        <label>Instructions & Description</label>
-        <textarea id="asDesc" class="form-textarea" placeholder="Enter questions or guidelines for students..."></textarea>
-      </div>
-
-      <button id="postBtn" class="btn-submit" onclick="postAssignment()">
-        <i class="fa-solid fa-cloud-arrow-up"></i> Publish Assignment
-      </button>
-    </div>
-
-    <!-- Active Assignments Card with +3 Pagination -->
-    <div class="card">
-      <div class="card-title">
-        <i class="fa-solid fa-list-check"></i> Published Assignments
-      </div>
-
-      <div id="assignmentList" class="assignment-list">
-        <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading assignments...</div>
-      </div>
-
-      <button id="seeMoreBtn" class="btn-see-more" style="display: none;" onclick="showMoreAssignments()">
-        <i class="fa-solid fa-angles-down"></i> See More (+3)
-      </button>
-    </div>
-
-  </div>
-
-  <!-- Submissions Modal -->
-  <div class="modal-overlay" id="subsModal" onclick="this.style.display='none'">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <span id="subsModalTitle"><i class="fa-solid fa-users"></i> Submissions</span>
-        <button class="modal-close" onclick="document.getElementById('subsModal').style.display='none'">&times;</button>
-      </div>
-      <div id="subsList" class="subs-list"></div>
-    </div>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-  <script>
-    const loggedInTeacher = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || "Teacher";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
-      authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
-      projectId: "ss-kanhaiyalal-agrawal",
-      storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
-      messagingSenderId: "776171239833",
-      appId: "1:776171239833:web:39eea44420db97384b3b08",
-      measurementId: "G-TQKTRTKBEJ"
-    };
-
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    const subjectPresets = {
-      primary: ["English", "Hindi", "Mathematics", "EVS", "Art & Craft", "General Knowledge", "Custom / Other..."],
-      middle: ["English", "Hindi", "Mathematics", "Science", "Social Science", "Sanskrit", "Computer", "Custom / Other..."],
-      secondary: ["English", "Hindi Course-A", "Mathematics", "Science", "Social Science", "Information Technology", "Custom / Other..."],
-      pcm: ["Physics", "Chemistry", "Mathematics", "English Core", "Physical Education", "Computer Science", "Hindi", "Custom / Other..."],
-      pcb: ["Physics", "Chemistry", "Biology", "English Core", "Physical Education", "Hindi", "Custom / Other..."],
-      commerce: ["Accountancy", "Business Studies", "Economics", "English Core", "Mathematics", "Physical Education", "Hindi", "Custom / Other..."],
-      arts: ["History", "Political Science", "Geography", "Economics", "English Core", "Hindi", "Sociology", "Custom / Other..."]
-    };
-
-    let uploadedFileDataUrl = '';
-    let allPublishedAssignments = [];
-    let visibleLimit = 3;
-
-    window.onload = () => {
-      addDueDays(3);
-      handleClassChange();
-      loadPublishedAssignments();
-    };
-
-    function addDueDays(days) {
-      const d = new Date();
-      d.setDate(d.getDate() + days);
-      const localDate = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
-      document.getElementById('asDueDate').value = localDate;
-    }
-
-    function handleClassChange() {
-      const cls = document.getElementById('asClass').value;
-      const isSenior = (cls === '11' || cls === '12');
-      document.getElementById('streamGroup').style.display = isSenior ? 'flex' : 'none';
-      populateSubjects();
-    }
-
-  function populateSubjects() {
-      const cls = document.getElementById('asClass').value;
-      const stream = document.getElementById('asStream').value;
-      const subSelect = document.getElementById('asSubject');
-      subSelect.innerHTML = '';
-
-      let list = [];
-      if (['Nursery','LKG','UKG','1','2','3','4','5'].includes(cls)) {
-        list = subjectPresets.primary;
-      } else if (['6','7','8'].includes(cls)) {
-        list = subjectPresets.middle;
-      } else if (['9','10'].includes(cls)) {
-        list = subjectPresets.secondary;
-      } else if (cls === '11' || cls === '12') {
-        if (stream === 'PCM') list = subjectPresets.pcm;
-        else if (stream === 'PCB') list = subjectPresets.pcb;
-        else if (stream === 'Commerce') list = subjectPresets.commerce;
-        else list = subjectPresets.arts;
-      }
-
-      list.forEach(sub => {
-        const opt = document.createElement('option');
-        opt.value = sub;
-        opt.innerText = sub;
-        subSelect.appendChild(opt);
-      });
-
-      handleSubjectSelect();
-    }
-
-    function handleSubjectSelect() {
-      const sub = document.getElementById('asSubject').value;
-      const customBox = document.getElementById('asCustomSubject');
-      customBox.style.display = (sub === 'Custom / Other...') ? 'block' : 'none';
-    }
-
-    function handleFileSelected(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      if (file.size > 1024 * 1024) {
-        alert("⚠️ फ़ाइल 1MB से बड़ी है! कृपया Google Drive लिंक का उपयोग करें।");
-        event.target.value = '';
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        uploadedFileDataUrl = e.target.result;
-        const prev = document.getElementById('filePreview');
-        prev.style.display = 'inline-flex';
-        prev.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${file.name}`;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function postAssignment() {
-      const classNum = document.getElementById('asClass').value;
-      const section = document.getElementById('asSection').value;
-      const stream = (classNum === '11' || classNum === '12') ? document.getElementById('asStream').value : 'General';
-      
-      let subject = document.getElementById('asSubject').value;
-      if (subject === 'Custom / Other...') {
-        subject = document.getElementById('asCustomSubject').value.trim() || 'General';
-      }
-
-      const dueDate = document.getElementById('asDueDate').value;
-      const title = document.getElementById('asTitle').value.trim();
-      const directLink = document.getElementById('asLink').value.trim();
-      const description = document.getElementById('asDesc').value.trim();
-
-      if (!title || !dueDate) {
-        return alert("कृपया Title और Due Date अवश्य भरें!");
-      }
-
-      const finalResource = uploadedFileDataUrl || directLink || '';
-
-      const btn = document.getElementById('postBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
-
-      try {
-        await db.collection('assignments').add({
-          classNum,
-          section,
-          stream,
-          subject,
-          dueDate,
-          title,
-          link: finalResource,
-          description,
-          teacherName: loggedInTeacher,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        alert("✅ असाइनमेंट सफलतापूर्वक पब्लिश हो गया!");
-        document.getElementById('asTitle').value = '';
-        document.getElementById('asLink').value = '';
-        document.getElementById('asDesc').value = '';
-        document.getElementById('asFileInput').value = '';
-        document.getElementById('filePreview').style.display = 'none';
-        uploadedFileDataUrl = '';
-      } catch(e) {
-        console.error("Assignment create error:", e);
-        alert("असाइनमेंट पब्लिश करने में त्रुटि हुई!");
-      }
-
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish Assignment';
-    }
-
-    function loadPublishedAssignments() {
-      db.collection('assignments').orderBy('createdAt', 'desc').onSnapshot(snap => {
-        allPublishedAssignments = [];
-        snap.forEach(doc => {
-          allPublishedAssignments.push({ id: doc.id, ...doc.data() });
-        });
-        renderAssignments();
-      });
-    }
-
-    function renderAssignments() {
-      const list = document.getElementById('assignmentList');
-      const seeMoreBtn = document.getElementById('seeMoreBtn');
-
-      if (allPublishedAssignments.length === 0) {
-        list.innerHTML = '<div class="no-data">अभी तक कोई असाइनमेंट पब्लिश नहीं किया गया है।</div>';
-        seeMoreBtn.style.display = 'none';
-        return;
-      }
-
-      const visibleBatch = allPublishedAssignments.slice(0, visibleLimit);
-      list.innerHTML = '';
-
-      visibleBatch.forEach(d => {
-        const card = document.createElement('div');
-        card.className = 'assignment-card';
-        card.innerHTML = `
-          <div class="card-top">
-            <span class="sub-badge">${d.subject || 'General'} • Class ${d.classNum} (${d.section === 'ALL' ? 'All Sec' : 'Sec ' + d.section})</span>
-            <span class="due-pill"><i class="fa-solid fa-hourglass-half"></i> Due: ${d.dueDate}</span>
-          </div>
-          <div class="assignment-title">${d.title}</div>
-          <div class="assignment-desc">${d.description || 'No instructions provided.'}</div>
-          <div class="card-actions">
-            <div class="action-group-left">
-              ${d.link ? `<a href="${d.link}" target="_blank" download="Assignment_File" class="btn-link-action"><i class="fa-solid fa-paperclip"></i> Open File</a>` : ''}
-              <button class="btn-view-subs" onclick="viewSubmissions('${d.id}', '${(d.title || '').replace(/'/g, "\\'")}')">
-                <i class="fa-solid fa-clipboard-check"></i> Submissions
-              </button>
+    <div class="container">
+        
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="brand">
+                <i class="fa-solid fa-clipboard-user"></i>
+                <span>Teacher Attendance</span>
             </div>
-            <button class="btn-del" onclick="deleteAssignment('${d.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
-          </div>
-        `;
-        list.appendChild(card);
-      });
+            <!-- Untouched Linking -->
+            <a href="teacher_dashboard.html" class="btn-dashboard">
+                <i class="fa-solid fa-house"></i> Dashboard
+            </a>
+        </div>
 
-      if (allPublishedAssignments.length > visibleLimit) {
-        seeMoreBtn.style.display = 'flex';
-        seeMoreBtn.innerHTML = `<i class="fa-solid fa-angles-down"></i> See More (+3) • Remaining: ${allPublishedAssignments.length - visibleLimit}`;
-      } else {
-        seeMoreBtn.style.display = 'none';
-      }
-    }
+        <!-- Filter Card -->
+        <div class="card">
+            <div class="card-title">
+                <i class="fa-solid fa-calendar-days"></i> Select Date & Criteria
+            </div>
 
-    function showMoreAssignments() {
-      visibleLimit += 3;
-      renderAssignments();
-    }
+            <div class="date-search-row">
+                <input type="date" id="attDate" class="form-input">
+                <button class="date-quick-btn" onclick="setQuickDate(0)"><i class="fa-solid fa-bolt"></i> Today</button>
+                <button class="date-quick-btn" onclick="setQuickDate(-1)"><i class="fa-solid fa-clock-rotate-left"></i> Y'day</button>
+            </div>
 
-    async function viewSubmissions(asId, title) {
-      const modal = document.getElementById('subsModal');
-      const titleSpan = document.getElementById('subsModalTitle');
-      const list = document.getElementById('subsList');
+            <div class="filter-grid">
+                <div class="input-group">
+                    <label>Class</label>
+                    <select id="attClass" class="form-select" onchange="toggleStream()">
+                        <option value="9">Class 9th</option>
+                        <option value="10">Class 10th</option>
+                        <option value="11" selected>Class 11th</option>
+                        <option value="12">Class 12th</option>
+                    </select>
+                </div>
 
-      titleSpan.innerHTML = `<i class="fa-solid fa-clipboard-check"></i> Submissions: ${title}`;
-      list.innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> लोड हो रहा है...</div>';
-      modal.style.display = 'flex';
+                <div class="input-group">
+                    <label>Section</label>
+                    <select id="attSection" class="form-select">
+                        <option value="ALL">All Sec</option>
+                        <option value="A">Sec A</option>
+                        <option value="B" selected>Sec B</option>
+                        <option value="C">Sec C</option>
+                        <option value="D">Sec D</option>
+                    </select>
+                </div>
 
-      try {
-        const snap = await db.collection('assignment_submissions').where('assignmentId', '==', asId).get();
-        if (snap.empty) {
-          list.innerHTML = '<div class="no-data">किसी छात्र ने अभी तक सबमिट नहीं किया है।</div>';
-          return;
+                <div class="input-group" id="streamBox">
+                    <label>Stream</label>
+                    <select id="attStream" class="form-select">
+                        <option value="PCM" selected>PCM</option>
+                        <option value="PCB">PCB</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Arts">Arts</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-fetch" onclick="loadList()">
+                <i class="fa-solid fa-users-viewfinder"></i> Load Student Sheet
+            </button>
+        </div>
+
+        <!-- Attendance Sheet Container -->
+        <div id="sheetCard" class="card" style="display: none;">
+            <div class="sheet-meta">
+                <span id="sheetTitle"><i class="fa-solid fa-layer-group"></i> Class Sheet</span>
+                <span id="sheetDate" style="color: var(--subtext); font-size: 11px;"></span>
+            </div>
+
+            <!-- Lock Notice -->
+            <div class="lock-notice" id="lockNotice" style="display: none;">
+                <i class="fa-solid fa-lock"></i>
+                <span>पहले से <b>Present (P)</b> छात्रों का रिकॉर्ड सुरक्षित (Locked) है।</span>
+            </div>
+
+            <!-- Stats Boxes -->
+            <div class="stats-bar">
+                <div class="stat-box">
+                    <div class="stat-val val-total" id="stTotal">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val val-present" id="stP">0</div>
+                    <div class="stat-label">Present</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val val-absent" id="stA">0</div>
+                    <div class="stat-label">Absent</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val val-neutral" id="stUnset">0</div>
+                    <div class="stat-label">General</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button type="button" class="btn-quick btn-all-p" onclick="markRemaining('P')">
+                    <i class="fa-solid fa-check"></i> Mark Remaining Present
+                </button>
+                <button type="button" class="btn-quick btn-all-a" onclick="markRemaining('A')">
+                    <i class="fa-solid fa-xmark"></i> Mark Remaining Absent
+                </button>
+                <button type="button" class="btn-quick btn-all-clear" onclick="resetToGeneral()">
+                    <i class="fa-solid fa-rotate-left"></i> Reset to General
+                </button>
+                <button type="button" class="btn-quick btn-copy-mail" onclick="copyAllEmails()">
+                    <i class="fa-solid fa-envelope"></i> Copy Emails
+                </button>
+            </div>
+
+            <!-- Student List -->
+            <div id="studentList" class="attendance-list"></div>
+
+            <!-- Save Button -->
+            <button id="saveBtn" class="btn-save-smooth" onclick="saveRecord()">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Save & Submit Attendance
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Smooth Student Info Modal -->
+    <div class="modal-overlay" id="studentModal" onclick="closeModal('studentModal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span><i class="fa-solid fa-id-card"></i> Student Details</span>
+                <button class="modal-close" onclick="closeModal('studentModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const loggedInTeacher = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || "Teacher";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
+            authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
+            projectId: "ss-kanhaiyalal-agrawal",
+            storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
+            messagingSenderId: "776171239833",
+            appId: "1:776171239833:web:39eea44420db97384b3b08"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let students = [];
+
+        window.onload = () => {
+            setQuickDate(0);
+            toggleStream();
+        };
+
+        function setQuickDate(offsetDays) {
+            const d = new Date();
+            d.setDate(d.getDate() + offsetDays);
+            const localDate = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+            document.getElementById('attDate').value = localDate;
         }
 
-        let html = '';
-        snap.forEach(doc => {
-          const s = doc.data();
-          html += `
-            <div class="sub-item">
-              <div>
-                <div style="font-size: 12px; font-weight: 600; color: #ffffff;">${s.userName || 'Student'}</div>
-                <div style="font-size: 10.5px; color: #94a3b8;">${s.userEmail || ''}</div>
-              </div>
-              <a href="${s.solutionLink}" target="_blank" class="btn-open-work">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> View Work
-              </a>
-            </div>
-          `;
-        });
-        list.innerHTML = html;
-      } catch(e) {
-        list.innerHTML = '<div class="no-data">सबमिशन लोड करने में त्रुटि हुई!</div>';
-      }
-    }
+        function toggleStream() {
+            const clsNum = document.getElementById('attClass').value;
+            document.getElementById('streamBox').style.display = (clsNum === '11' || clsNum === '12') ? 'flex' : 'none';
+        }
 
-    async function deleteAssignment(docId) {
-      if (!confirm("क्या आप वाकई इस असाइनमेंट को हटाना चाहते हैं?")) return;
-      try {
-        await db.collection('assignments').doc(docId).delete();
-        alert("✅ असाइनमेंट हटा दिया गया!");
-      } catch (e) {
-        alert("डिलीट करने में त्रुटि हुई!");
-      }
-    }
-  </script>
+        function extractNum(val) {
+            if (!val) return '';
+            const m = val.toString().match(/\d+/);
+            return m ? m[0] : '';
+        }
+
+        function extractSec(d) {
+            const raw = (d.section || d.sec || d.studentClass || d.class || '').toString().toUpperCase();
+            const match = raw.match(/\b([A-D])\b/);
+            return match ? match[1] : 'A';
+        }
+
+        function matchStream(d, targetStream) {
+            if (targetStream === 'ALL' || targetStream === 'GENERAL') return true;
+            const raw = (d.stream || d.curriculum || d.subject || '').toString().toUpperCase();
+            if (!raw) return true;
+            if (raw.includes(targetStream)) return true;
+            if (targetStream === 'PCM' && (raw === 'SCIENCE' || raw.includes('PCM'))) return true;
+            if (targetStream === 'PCB' && (raw === 'SCIENCE' || raw.includes('PCB'))) return true;
+            if (targetStream === 'COMMERCE' && raw.includes('COMMERCE')) return true;
+            if (targetStream === 'ARTS' && raw.includes('ARTS')) return true;
+            return false;
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        async function loadList() {
+            const date = document.getElementById('attDate').value;
+            const selectedClassNum = extractNum(document.getElementById('attClass').value);
+            const selectedSec = document.getElementById('attSection').value;
+            const selectedStream = (selectedClassNum === '11' || selectedClassNum === '12') 
+                                   ? document.getElementById('attStream').value.trim().toUpperCase() 
+                                   : 'GENERAL';
+
+            if (!date) return alert("⚠️ Date Selection is required!");
+
+            const sheetCard = document.getElementById('sheetCard');
+            sheetCard.style.display = 'block';
+
+            document.getElementById('sheetTitle').innerHTML = `<i class="fa-solid fa-layer-group"></i> Class ${selectedClassNum}th ${selectedSec !== 'ALL' ? '- Sec ' + selectedSec : ''}`;
+            document.getElementById('sheetDate').innerText = `Date: ${date}`;
+
+            const container = document.getElementById('studentList');
+            container.innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Fetching records...</div>';
+
+            const docId = `Class${selectedClassNum}_${selectedSec}_${selectedStream}_${date}`;
+            let oldData = {};
+            let hasOld = false;
+
+            try {
+                const snap = await db.collection('attendance').doc(docId).get();
+                if (snap.exists && snap.data().students) {
+                    oldData = snap.data().students;
+                    hasOld = true;
+                }
+            } catch(e) {}
+
+            document.getElementById('lockNotice').style.display = hasOld ? 'flex' : 'none';
+
+            let rawUsers = [];
+            try {
+                // Future Ready: Fetches both 'users' and 'students' collection for max coverage
+                const uSnap = await db.collection('students').get();
+                uSnap.forEach(d => rawUsers.push({ id: d.id, ...d.data() }));
+            } catch (err) {}
+
+            students = [];
+
+            rawUsers.forEach(d => {
+                const role = (d.role || d.user_role || '').toString().toLowerCase();
+                if (role === 'teacher' || role === 'admin') return;
+
+                const userClassStr = (d.studentClass || d.class || d.className || '').toString();
+                const userClassNum = extractNum(userClassStr);
+                if (userClassNum && userClassNum !== selectedClassNum) return;
+
+                const userSec = extractSec(d);
+                if (selectedSec !== 'ALL' && userSec !== selectedSec) return;
+
+                if (selectedClassNum === '11' || selectedClassNum === '12') {
+                    if (!matchStream(d, selectedStream)) return;
+                }
+
+                const roll = parseInt(d.rollNo || d.rollNumber || d.roll || 0);
+                const name = d.username || d.fullName || d.name || `Student ${roll || ''}`;
+                const prevStatus = oldData[d.id] || oldData[d.email] || oldData[d.phone] || oldData[roll];
+
+                const finalStatus = prevStatus ? prevStatus : '';
+                const isLocked = (prevStatus === 'P');
+
+                students.push({
+                    id: d.id,
+                    name: name,
+                    email: d.email || 'N/A',
+                    phone: d.phone || d.mobile || d.phoneNumber || 'N/A',
+                    class: `Class ${selectedClassNum}th`,
+                    section: userSec,
+                    stream: d.stream || selectedStream,
+                    roll: roll,
+                    status: finalStatus,
+                    locked: isLocked
+                });
+            });
+
+            if (students.length === 0) {
+                container.innerHTML = `<div class="no-data"><i class="fa-solid fa-circle-exclamation" style="font-size:16px; color:#f87171; display:block; margin-bottom:5px;"></i> No students found for this criteria.</div>`;
+                calc();
+                return;
+            }
+
+            students.sort((a, b) => {
+                if (a.section === b.section) return a.roll - b.roll;
+                return a.section.localeCompare(b.section);
+            });
+
+            render();
+        }
+
+        function render() {
+            const container = document.getElementById('studentList');
+            container.innerHTML = '';
+
+            students.forEach((s, idx) => {
+                const div = document.createElement('div');
+                div.className = 'student-item';
+
+                let toggleHtml = '';
+                if (s.locked) {
+                    toggleHtml = `<div class="locked-badge"><i class="fa-solid fa-lock"></i> P</div>`;
+                } else {
+                    toggleHtml = `
+                        <div class="toggle-group">
+                            <button class="toggle-btn ${s.status === 'P' ? 'active-p' : ''}" onclick="toggleSt(${idx},'P')">P</button>
+                            <button class="toggle-btn ${s.status === 'A' ? 'active-a' : ''}" onclick="toggleSt(${idx},'A')">A</button>
+                            <button class="toggle-btn ${s.status === 'L' ? 'active-l' : ''}" onclick="toggleSt(${idx},'L')">L</button>
+                        </div>
+                    `;
+                }
+
+                div.innerHTML = `
+                    <div class="student-info" onclick="showInfo(${idx})">
+                        <span class="roll-badge">${s.roll < 10 ? '0' + s.roll : s.roll}</span>
+                        <span class="sec-badge">Sec ${s.section}</span>
+                        <span class="student-name">${s.name}</span>
+                        <i class="fa-solid fa-circle-info btn-info-icon"></i>
+                    </div>
+                    ${toggleHtml}
+                `;
+                container.appendChild(div);
+            });
+
+            calc();
+        }
+
+        function toggleSt(idx, st) {
+            if (students[idx].locked) return;
+            students[idx].status = (students[idx].status === st) ? '' : st;
+            render();
+        }
+
+        function markRemaining(st) {
+            students.forEach(s => { if (!s.locked && !s.status) s.status = st; });
+            render();
+        }
+
+        function resetToGeneral() {
+            students.forEach(s => { if (!s.locked) s.status = ''; });
+            render();
+        }
+
+        function calc() {
+            const total = students.length;
+            const p = students.filter(s => s.status === 'P').length;
+            const a = students.filter(s => s.status === 'A').length;
+            const unset = students.filter(s => !s.status).length;
+
+            document.getElementById('stTotal').innerText = total;
+            document.getElementById('stP').innerText = p;
+            document.getElementById('stA').innerText = a;
+            document.getElementById('stUnset').innerText = unset;
+        }
+
+        function showInfo(idx) {
+            const s = students[idx];
+            let displayStatus = 'General (Unmarked)';
+            if (s.status === 'P') displayStatus = 'Present';
+            else if (s.status === 'A') displayStatus = 'Absent';
+            else if (s.status === 'L') displayStatus = 'Leave';
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="detail-row"><span>Full Name</span><b style="color:var(--primary)">${s.name}</b></div>
+                <div class="detail-row"><span>Roll Number</span><b>${s.roll}</b></div>
+                <div class="detail-row"><span>Class & Sec</span><b>${s.class} (Sec ${s.section})</b></div>
+                <div class="detail-row"><span>Phone Number</span><b>${s.phone}</b></div>
+                <div class="detail-row"><span>Status</span><b>${displayStatus}</b></div>
+                <div class="detail-row" style="background: rgba(56, 189, 248, 0.08); padding: 8px; border-radius: 8px; margin-top: 8px; justify-content:space-between;">
+                    <span>Email</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <b>${s.email}</b>
+                        ${s.email !== 'N/A' ? `<button class="copy-tag" onclick="copy('${s.email}')"><i class="fa-regular fa-copy"></i></button>` : ''}
+                    </div>
+                </div>
+            `;
+            openModal('studentModal');
+        }
+
+        function copy(text) {
+            navigator.clipboard.writeText(text);
+            alert("✅ Copied: " + text);
+        }
+
+        function copyAllEmails() {
+            const list = students.map(s => s.email).filter(e => e && e !== 'N/A');
+            if (!list.length) return alert("⚠️ No valid emails found!");
+            navigator.clipboard.writeText(list.join(', '));
+            alert(`✅ ${list.length} emails copied successfully!`);
+        }
+
+        async function saveRecord() {
+            const date = document.getElementById('attDate').value;
+            const selectedClassNum = extractNum(document.getElementById('attClass').value);
+            const selectedSec = document.getElementById('attSection').value;
+            const selectedStream = (selectedClassNum === '11' || selectedClassNum === '12') 
+                                   ? document.getElementById('attStream').value 
+                                   : 'General';
+
+            if (!students.length) return alert("⚠️ Student list is empty!");
+
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true; 
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving to Database...';
+
+            const map = {};
+            students.forEach(s => {
+                if (s.status) {
+                    map[s.id] = s.status;
+                    if (s.email && s.email !== 'N/A') map[s.email] = s.status;
+                    if (s.phone && s.phone !== 'N/A') map[s.phone] = s.status; // Future-proof Phone Sync
+                    if (s.roll) map[s.roll] = s.status;
+                }
+            });
+
+            const p = students.filter(s => s.status === 'P').length;
+            const a = students.filter(s => s.status === 'A').length;
+            const l = students.filter(s => s.status === 'L').length;
+
+            const docId = `Class${selectedClassNum}_${selectedSec}_${selectedStream}_${date}`;
+
+            try {
+                await db.collection('attendance').doc(docId).set({
+                    date, 
+                    class: `Class ${selectedClassNum}th`, 
+                    section: selectedSec, 
+                    stream: selectedStream,
+                    teacher: loggedInTeacher,
+                    total: students.length, 
+                    present: p,
+                    absent: a,
+                    leave: l,
+                    percentage: students.length ? Math.round((p / students.length) * 100) : 0,
+                    students: map,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                alert("✅ Attendance record saved successfully!");
+                loadList();
+            } catch(e) {
+                console.error("Save error:", e);
+                alert("❌ Failed to save attendance. Check your connection.");
+            }
+
+            btn.disabled = false; 
+            btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save & Submit Attendance';
+        }
+    </script>
 </body>
 </html>
