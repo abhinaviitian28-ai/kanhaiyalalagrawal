@@ -209,19 +209,27 @@
     </div>
 
     <!-- 3. Manage / List All Students Modal -->
-    <div class="modal" id="manageModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fa-solid fa-list-check"></i> All Students Directory</h2>
-                <button class="close-btn" onclick="closeModal('manageModal')"><i class="fa-solid fa-xmark"></i></button>
+  <!-- 3. Manage / List All Students Modal (Ye wala section update karein) -->
+<div class="modal" id="manageModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fa-solid fa-list-check"></i> All Students Directory</h2>
+            <button class="close-btn" onclick="closeModal('manageModal')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body" style="background: rgba(0,0,0,0.15);">
+            <!-- Naya Search Bar yahan add kiya gaya hai -->
+            <div>
+                <label>Filter Directory</label>
+                <input type="text" id="manageSearchInput" class="input-box" placeholder="Search by name, phone, email or roll..." oninput="filterManageDirectory()">
             </div>
-            <div class="modal-body" style="background: rgba(0,0,0,0.15); max-height: 350px; overflow-y: auto;">
-                <div id="allStudentsList">
-                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading students...</div>
-                </div>
+            
+            <div id="allStudentsList" style="max-height: 280px; overflow-y: auto;">
+                <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading students...</div>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -269,16 +277,36 @@
             document.getElementById('streamBox').style.display = (cls === '11' || cls === '12') ? 'block' : 'none';
         }
 
+             let currentFilteredList = [];
+
         function fetchAllStudents() {
             db.collection('students').onSnapshot(snapshot => {
                 allStudentsCache = [];
                 snapshot.forEach(doc => {
                     allStudentsCache.push({ id: doc.id, ...doc.data() });
                 });
-                renderManageList(allStudentsCache);
+                filterManageDirectory();
             }, err => {
                 console.error("Error fetching students:", err);
+                document.getElementById('allStudentsList').innerHTML = '<div class="no-data" style="color:#f87171;">Failed to load data from database.</div>';
             });
+        }
+
+        function filterManageDirectory() {
+            const inputElem = document.getElementById('manageSearchInput');
+            const q = inputElem ? inputElem.value.toLowerCase().trim() : '';
+            
+            if (!q) {
+                currentFilteredList = allStudentsCache;
+            } else {
+                currentFilteredList = allStudentsCache.filter(st => 
+                    (st.name && st.name.toLowerCase().includes(q)) || 
+                    (st.email && st.email.toLowerCase().includes(q)) ||
+                    (st.phone && String(st.phone).toLowerCase().includes(q)) ||
+                    (st.rollNo && String(st.rollNo).toLowerCase().includes(q))
+                );
+            }
+            renderManageList(currentFilteredList);
         }
 
         async function saveStudentProfile() {
