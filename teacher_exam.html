@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<! DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,16 +21,22 @@
         
         body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 15px; }
 
+        /* Custom Scrollbar Fix */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
         .container { width: 100%; max-width: 600px; padding-bottom: 30px; }
 
         /* Top Bar */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 25px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .brand { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--text); }
         .brand i { color: var(--primary); font-size: 18px; }
         .btn-home { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; }
 
-        /* Menu Strips (Pattiya) */
-        .strip { display: flex; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 15px; margin-bottom: 15px; cursor: pointer; transition: 0.2s; }
+        /* Menu Strips (Type XYZ) */
+        .strip { display: flex; align-items: center; background: var(--card); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 18px 15px; margin-bottom: 15px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .strip:active { transform: scale(0.98); background: rgba(56, 189, 248, 0.05); }
         
         .strip-icon { width: 45px; height: 45px; background: rgba(56, 189, 248, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px; margin-right: 15px; flex-shrink: 0; }
@@ -43,34 +49,46 @@
         .modal.active { display: flex; animation: popIn 0.2s ease-out; }
         @keyframes popIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .modal-content { background: var(--card); width: 100%; max-width: 450px; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; }
+        .modal-content { background: var(--card); width: 100%; max-width: 450px; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
         
         .modal-header { padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.03); }
         .modal-header h2 { font-size: 15px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .close-btn { background: none; border: none; color: var(--subtext); font-size: 22px; cursor: pointer; }
+        .close-btn { background: none; border: none; color: var(--subtext); font-size: 22px; cursor: pointer; transition: 0.2s; }
+        .close-btn:hover { color: #ef4444; }
 
         .modal-body { padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
 
         /* Forms inside Modal */
         label { font-size: 11.5px; font-weight: 500; color: var(--subtext); margin-bottom: 5px; display: block; }
         .input-box { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 14px; border-radius: 10px; font-size: 13px; outline: none; color-scheme: dark; }
-        .input-box:focus { border-color: var(--primary); }
-        select.input-box { padding-right: 30px; }
+        .input-box:focus { border-color: var(--primary); background: rgba(30, 41, 59, 0.8); }
+        
+        /* Dropdown Options Bug Fix */
+        select.input-box option { background-color: var(--card); color: var(--text); font-size: 13px; }
+        
         textarea.input-box { min-height: 80px; resize: none; }
 
-        .file-box { border: 1px dashed var(--primary); background: rgba(56, 189, 248, 0.05); padding: 15px; border-radius: 10px; text-align: center; position: relative; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .file-box { border: 1px dashed var(--primary); background: rgba(56, 189, 248, 0.05); padding: 15px; border-radius: 10px; text-align: center; position: relative; cursor: pointer; }
+        .file-box:hover { background: rgba(56, 189, 248, 0.1); }
         .file-box input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
         .file-msg { color: var(--primary); font-size: 12.5px; font-weight: 500; }
         
         .action-btn { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 600; text-align: center; width: 100%; cursor: pointer; margin-top: 5px; transition: 0.2s; }
-        .action-btn:active { background: var(--primary); color: var(--bg); }
+        .action-btn:active { transform: scale(0.98); background: var(--primary); color: var(--bg); }
         .action-btn:disabled { opacity: 0.5; pointer-events: none; }
 
         /* Manage List */
         .list-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .list-info h4 { font-size: 13px; color: var(--text); margin-bottom: 2px; }
         .list-info p { font-size: 11px; color: var(--subtext); }
-        .del-btn { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+        .del-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: 0.2s; }
+        .del-btn:hover { background: #ef4444; color: #fff; }
+
+        @media (max-width: 500px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -87,12 +105,12 @@
             </a>
         </div>
 
-        <!-- THE 5 MAIN STRIPS (PATTIYA) -->
+        <!-- THE 5 MAIN STRIPS (Type XYZ) -->
         <div class="strip" onclick="openModal('announceModal')">
             <div class="strip-icon"><i class="fa-solid fa-bullhorn"></i></div>
             <div class="strip-text">
                 <h3>Announcement Line</h3>
-                <p>Update the scrolling text on student portal</p>
+                <p>Update scrolling text for exams</p>
             </div>
             <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
@@ -101,7 +119,7 @@
             <div class="strip-icon"><i class="fa-solid fa-folder-plus"></i></div>
             <div class="strip-text">
                 <h3>Create Category</h3>
-                <p>Add folders like Half-Yearly, Final Exams</p>
+                <p>e.g. Half-Yearly, Final Exams</p>
             </div>
             <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
@@ -110,7 +128,7 @@
             <div class="strip-icon"><i class="fa-solid fa-book-bookmark"></i></div>
             <div class="strip-text">
                 <h3>Upload Syllabus</h3>
-                <p>Add syllabus PDF files inside categories</p>
+                <p>Add syllabus PDF files</p>
             </div>
             <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
@@ -119,7 +137,7 @@
             <div class="strip-icon"><i class="fa-solid fa-calendar-days"></i></div>
             <div class="strip-text">
                 <h3>Publish Timetable</h3>
-                <p>Upload exam schedule and datesheets</p>
+                <p>Upload exam datesheets</p>
             </div>
             <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
@@ -128,14 +146,14 @@
             <div class="strip-icon"><i class="fa-solid fa-list-check"></i></div>
             <div class="strip-text">
                 <h3>Manage Uploads</h3>
-                <p>Delete or view old categories and files</p>
+                <p>Delete or view old records</p>
             </div>
             <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
 
     </div>
 
-    <!-- ================= MODALS (POP-UPS) ================= -->
+    <!-- ================= MODALS ================= -->
 
     <!-- 1. Announcement -->
     <div class="modal" id="announceModal">
@@ -146,7 +164,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <label>Notice Text</label>
+                    <label>Notice Text (Optional)</label>
                     <textarea id="marqueeText" class="input-box" placeholder="Write announcement here..."></textarea>
                 </div>
                 <button class="action-btn" onclick="updateNotice()">Update Notice</button>
@@ -163,7 +181,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <label>Category Name</label>
+                    <label>Category Name (Mandatory)</label>
                     <input type="text" id="catName" class="input-box" placeholder="e.g. Pre-Board Exams 2026">
                 </div>
                 <button class="action-btn" id="btnCat" onclick="addCategory()">Create Category</button>
@@ -171,7 +189,7 @@
         </div>
     </div>
 
-    <!-- 3. Syllabus -->
+ <!-- 3. syllabus -->
     <div class="modal" id="syllabusModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -180,49 +198,54 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <label>Select Category</label>
+                    <label>Select Category (Mandatory)</label>
                     <select id="sylCategory" class="input-box"></select>
                 </div>
                 <div>
-                    <label>Syllabus Title</label>
-                    <input type="text" id="sylTitle" class="input-box" placeholder="e.g. Class 11th Syllabus">
+                    <label>Syllabus Title (Mandatory)</label>
+                    <input type="text" id="sylTitle" class="input-box" placeholder="e.g. Class 11th Science Syllabus">
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Class</label>
+                        <select id="sylClass" class="input-box" onchange="toggleStream('sylClass', 'sylStreamBox')">
+                            <option value="All">All Classes</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="LKG">LKG</option>
+                            <option value="UKG">UKG</option>
+                            <option value="1">Class 1st</option>
+                            <option value="2">Class 2nd</option>
+                            <option value="3">Class 3rd</option>
+                            <option value="4">Class 4th</option>
+                            <option value="5">Class 5th</option>
+                            <option value="6">Class 6th</option>
+                            <option value="7">Class 7th</option>
+                            <option value="8">Class 8th</option>
+                            <option value="9">Class 9th</option>
+                            <option value="10">Class 10th</option>
+                            <option value="11">Class 11th</option>
+                            <option value="12">Class 12th</option>
+                        </select>
+                    </div>
+ <div id="sylStreamBox" style="display: none;" >
+                        <label>Stream</label>
+                        <select id="sylStream" class="input-box">
+                            <option value="All">All Streams</option>
+                            <option value="PCM">PCM</option>
+                            <option value="PCB">PCB</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Arts">Arts</option>
+                            <option value="General">General</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
-                    <label>Class</label>
-                    <select id="sylClass" class="input-box" onchange="toggleStream('sylClass', 'sylStreamBox')">
-                        <option value="All">All Classes</option>
-                        <option value="1">Class 1st</option>
-                        <option value="2">Class 2nd</option>
-                        <option value="3">Class 3rd</option>
-                        <option value="4">Class 4th</option>
-                        <option value="5">Class 5th</option>
-                        <option value="6">Class 6th</option>
-                        <option value="7">Class 7th</option>
-                        <option value="8">Class 8th</option>
-                        <option value="9">Class 9th</option>
-                        <option value="10">Class 10th</option>
-                        <option value="11">Class 11th</option>
-                        <option value="12">Class 12th</option>
-                    </select>
-                </div>
-                <div id="sylStreamBox" style="display: none;">
-                    <label>Stream</label>
-                    <select id="sylStream" class="input-box">
-                        <option value="All">All Streams</option>
-                        <option value="PCM">PCM</option>
-                        <option value="PCB">PCB</option>
-                        <option value="Commerce">Commerce</option>
-                        <option value="Arts">Arts</option>
-                        <option value="General">General</option>
-                    </select>
-                </div>
-                <div>
-                    <label>PDF File (Max 1MB) or Google Drive Link</label>
+                    <label>PDF File (Max 1MB) or Drive Link</label>
                     <div class="file-box">
                         <input type="file" id="sylFile" accept="application/pdf,image/*" onchange="handleFile(event, 'sylStat')">
-                        <div class="file-msg" id="sylStat"><i class="fa-solid fa-upload"></i> Tap to select PDF File</div>
+                        <div class="file-msg" id="sylStat"><i class="fa-solid fa-upload"></i> Select PDF File</div>
                     </div>
-                    <input type="url" id="sylLink" class="input-box" placeholder="Or paste Link here..." style="margin-top: 10px;">
+ <input type="url" id="sylLink" class="input-box" placeholder="Or paste Link here..." style="margin-top: 10px;" >
                 </div>
                 <button class="action-btn" id="btnSyl" onclick="addSyllabus()">Upload Syllabus</button>
             </div>
@@ -238,31 +261,56 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <label>Timetable Title</label>
+                    <label>Timetable Title (Mandatory)</label>
                     <input type="text" id="ttTitle" class="input-box" placeholder="e.g. Final Exam Datesheet">
                 </div>
-                <div>
-                    <label>Class</label>
-                    <select id="ttClass" class="input-box" onchange="toggleStream('ttClass', 'ttStreamBox')">
-                        <option value="All">All Classes</option>
-                        <option value="1">Class 1st</option>
-                        <option value="10">Class 10th</option>
-                        <option value="11">Class 11th</option>
-                        <option value="12">Class 12th</option>
-                    </select>
+                <div class="form-row">
+                    <div>
+                        <label>Class</label>
+                        <select id="ttClass" class="input-box" onchange="toggleStream('ttClass', 'ttStreamBox')">
+                            <option value="All">All Classes</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="LKG">LKG</option>
+                            <option value="UKG">UKG</option>
+                            <option value="1">Class 1st</option>
+                            <option value="2">Class 2nd</option>
+                            <option value="3">Class 3rd</option>
+                            <option value="4">Class 4th</option>
+                            <option value="5">Class 5th</option>
+                            <option value="6">Class 6th</option>
+                            <option value="7">Class 7th</option>
+                            <option value="8">Class 8th</option>
+                            <option value="9">Class 9th</option>
+                            <option value="10">Class 10th</option>
+                            <option value="11">Class 11th</option>
+                            <option value="12">Class 12th</option>
+                        </select>
+                    </div>
+ <div id="ttStreamBox" style="display: none;" >
+                        <label>Stream</label>
+                        <select id="ttStream" class="input-box">
+                            <option value="All">All Streams</option>
+                            <option value="PCM">PCM</option>
+                            <option value="PCB">PCB</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Arts">Arts</option>
+                            <option value="General">General</option>
+                        </select>
+                    </div>
                 </div>
-                <div id="ttStreamBox" style="display: none;">
-                    <label>Stream</label>
-                    <select id="ttStream" class="input-box">
-                        <option value="All">All Streams</option>
-                        <option value="PCM">PCM</option>
-                        <option value="Commerce">Commerce</option>
-                    </select>
+                
+                <!-- Mandatory Date & Time -->
+                <div class="form-row">
+                    <div>
+                        <label>Exam Start Date (Mandatory)</label>
+                        <input type="date" id="ttDate" class="input-box" required>
+                    </div>
+                    <div>
+                        <label>Timing (Mandatory)</label>
+                        <input type="time" id="ttTime" class="input-box" required>
+                    </div>
                 </div>
-                <div>
-                    <label>Exam Start Date (Optional)</label>
-                    <input type="date" id="ttDate" class="input-box">
-                </div>
+
                 <div>
                     <label>Status</label>
                     <select id="ttStatus" class="input-box">
@@ -271,12 +319,12 @@
                     </select>
                 </div>
                 <div>
-                    <label>PDF File (Max 1MB) or Google Drive Link</label>
+                    <label>Timetable PDF (Max 1MB) or Link</label>
                     <div class="file-box">
                         <input type="file" id="ttFile" accept="application/pdf,image/*" onchange="handleFile(event, 'ttStat')">
-                        <div class="file-msg" id="ttStat"><i class="fa-solid fa-upload"></i> Tap to select PDF File</div>
+                        <div class="file-msg" id="ttStat"><i class="fa-solid fa-upload"></i> Select PDF File</div>
                     </div>
-                    <input type="url" id="ttLink" class="input-box" placeholder="Or paste Link here..." style="margin-top: 10px;">
+ <input type="url" id="ttLink" class="input-box" placeholder="Or paste Link here..." style="margin-top: 10px;" >
                 </div>
                 <button class="action-btn" id="btnTT" onclick="addTimetable()">Publish Schedule</button>
             </div>
@@ -290,14 +338,14 @@
                 <h2><i class="fa-solid fa-list-check"></i> Manage Database</h2>
                 <button class="close-btn" onclick="closeModal('manageModal')"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="modal-body" style="background: rgba(0,0,0,0.2);">
-                <label style="color:var(--primary);">Categories</label>
+ <div class="modal-body" style="background: rgba(0,0,0,0.15);" >
+ <label style="color:var(--primary);" >Exam Categories</label>
                 <div id="listCats"></div>
                 
-                <label style="color:var(--primary); margin-top:10px;">Syllabus Uploads</label>
+ <label style="color:var(--primary); margin-top:10px;" >Uploaded Syllabus</label>
                 <div id="listSyls"></div>
 
-                <label style="color:var(--primary); margin-top:10px;">Timetables</label>
+ <label style="color:var(--primary); margin-top:10px;" >Published Timetables</label>
                 <div id="listTTs"></div>
             </div>
         </div>
@@ -316,7 +364,7 @@
             messagingSenderId: "776171239833",
             appId: "1:776171239833:web:39eea44420db97384b3b08"
         };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+          if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         let base64Syllabus = '';
@@ -339,7 +387,7 @@
             const display = document.getElementById(displayId);
             if(!file) return;
             if(file.size > 1048576) {
-                alert("File is too big. Use a link.");
+                alert("File exceeds 1MB. Please compress or use Drive Link.");
                 e.target.value = '';
                 return;
             }
@@ -357,6 +405,16 @@
             return new Date(dStr).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
         }
 
+        function formatTime(tStr) {
+            if(!tStr) return '';
+            let [h, m] = tStr.split(':');
+            let ampm = 'AM';
+            h = parseInt(h);
+            if(h >= 12) { ampm = 'PM'; if(h > 12) h -= 12; }
+            if(h === 0) h = 12;
+            return `${h}:${m} ${ampm}`;
+        }
+
         async function updateNotice() {
             const txt = document.getElementById('marqueeText').value.trim();
             await db.collection('portal_settings').doc('exam_announcement').set({ text: txt });
@@ -366,12 +424,12 @@
 
         async function addCategory() {
             const name = document.getElementById('catName').value.trim();
-            if(!name) return alert("Enter category name");
+            if(!name) return alert("Please enter a category name.");
             const btn = document.getElementById('btnCat');
             btn.disabled = true; btn.innerText = "Creating...";
             
             await db.collection('exam_categories').add({
-                name: name, icon: 'fa-folder-open', createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                name: name, icon: 'fa-folder-open', description: "View Syllabus PDFs", createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             
             document.getElementById('catName').value = '';
@@ -384,27 +442,30 @@
             const cat = document.getElementById('sylCategory').value;
             const title = document.getElementById('sylTitle').value.trim();
             const cls = document.getElementById('sylClass').value;
-            const stream = (cls === '11' || cls === '12') ? document.getElementById('sylStream').value : "All";
+            const stream = (cls === '11' || cls === '12') ? document.getElementById('sylStream').value : "General";
             const link = document.getElementById('sylLink').value.trim();
             
             const fileUrl = base64Syllabus || link;
-            if(!cat || !title || !fileUrl) return alert("Category, Title & File are required.");
+            if(!cat || !title || !fileUrl) return alert("Category, Title, and File are mandatory!");
 
             const btn = document.getElementById('btnSyl');
             btn.disabled = true; btn.innerText = "Uploading...";
 
+            // Auto-filling fields needed for Student portal compatibility
             await db.collection('exam_syllabus').add({
                 category: cat, name: title, class: cls, stream: stream, fileUrl: fileUrl,
-                showNote: false, dateText: '', createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                description: 'Complete Syllabus Document', teacherNote: 'Please review the official syllabus for preparation.',
+                teacherNoteHeading: 'Important Instruction', showNote: true, dateText: 'Uploaded recently',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
 
             base64Syllabus = '';
             document.getElementById('sylTitle').value = '';
             document.getElementById('sylLink').value = '';
             document.getElementById('sylFile').value = '';
-            document.getElementById('sylStat').innerHTML = '<i class="fa-solid fa-upload"></i> Tap to select PDF File';
+            document.getElementById('sylStat').innerHTML = '<i class="fa-solid fa-upload"></i> Select PDF File';
             
-            alert("Syllabus Uploaded!");
+            alert("Syllabus Published Successfully!");
             closeModal('syllabusModal');
             btn.disabled = false; btn.innerText = "Upload Syllabus";
         }
@@ -412,30 +473,35 @@
         async function addTimetable() {
             const title = document.getElementById('ttTitle').value.trim();
             const cls = document.getElementById('ttClass').value;
-            const stream = (cls === '11' || cls === '12') ? document.getElementById('ttStream').value : "All";
+            const stream = (cls === '11' || cls === '12') ? document.getElementById('ttStream').value : "General";
             const date = document.getElementById('ttDate').value;
+            const time = document.getElementById('ttTime').value;
             const status = document.getElementById('ttStatus').value;
             const link = document.getElementById('ttLink').value.trim();
 
             const fileUrl = base64Timetable || link;
-            if(!title || !fileUrl) return alert("Title and File are required.");
+            if(!title || !date || !time || !fileUrl) return alert("Title, Date, Time, and File are all mandatory!");
 
             const btn = document.getElementById('btnTT');
             btn.disabled = true; btn.innerText = "Publishing...";
 
+            // Auto-filling fields needed for Student portal compatibility
             await db.collection('exams').add({
                 title: title, class: cls, stream: stream, timetableUrl: fileUrl, status: status,
                 isRescheduled: (status === 'Rescheduled'), dateText: formatDate(date),
+                timeText: formatTime(time), description: 'Official Timetable PDF attached. Ensure to check timings carefully.',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
 
             base64Timetable = '';
             document.getElementById('ttTitle').value = '';
+            document.getElementById('ttDate').value = '';
+            document.getElementById('ttTime').value = '';
             document.getElementById('ttLink').value = '';
             document.getElementById('ttFile').value = '';
-            document.getElementById('ttStat').innerHTML = '<i class="fa-solid fa-upload"></i> Tap to select PDF File';
+            document.getElementById('ttStat').innerHTML = '<i class="fa-solid fa-upload"></i> Select PDF File';
 
-            alert("Timetable Published!");
+            alert("Timetable Published Successfully!");
             closeModal('timetableModal');
             btn.disabled = false; btn.innerText = "Publish Schedule";
         }
@@ -448,8 +514,8 @@
             db.collection('exam_categories').orderBy('createdAt', 'desc').onSnapshot(s => {
                 const sel = document.getElementById('sylCategory');
                 const list = document.getElementById('listCats');
-                sel.innerHTML = '<option value="" disabled selected>Choose Category...</option>';
-                list.innerHTML = s.empty ? '<p style="color:#94a3b8; font-size:12px;">No records</p>' : '';
+                sel.innerHTML = '<option value="" disabled selected>Select Category...</option>';
+                list.innerHTML = s.empty ? '<p style="color:#64748b; font-size:12px;">No records</p>' : '';
                 
                 s.forEach(doc => {
                     const d = doc.data();
@@ -458,27 +524,27 @@
                 });
             });
 
-            db.collection('exam_syllabus').orderBy('createdAt', 'desc').limit(10).onSnapshot(s => {
+            db.collection('exam_syllabus').orderBy('createdAt', 'desc').limit(15).onSnapshot(s => {
                 const list = document.getElementById('listSyls');
-                list.innerHTML = s.empty ? '<p style="color:#94a3b8; font-size:12px;">No records</p>' : '';
+                list.innerHTML = s.empty ? '<p style="color:#64748b; font-size:12px;">No records</p>' : '';
                 s.forEach(doc => {
                     const d = doc.data();
-                    list.innerHTML += `<div class="list-item"><div class="list-info"><h4>${d.name}</h4><p>Cls: ${d.class}</p></div><button class="del-btn" onclick="del('exam_syllabus','${doc.id}')"><i class="fa-solid fa-trash"></i></button></div>`;
+                    list.innerHTML += `<div class="list-item"><div class="list-info"><h4>${d.name}</h4><p>Cat: ${d.category} | Cls: ${d.class}</p></div><button class="del-btn" onclick="del('exam_syllabus','${doc.id}')"><i class="fa-solid fa-trash"></i></button></div>`;
                 });
             });
 
-            db.collection('exams').orderBy('createdAt', 'desc').limit(10).onSnapshot(s => {
+            db.collection('exams').orderBy('createdAt', 'desc').limit(15).onSnapshot(s => {
                 const list = document.getElementById('listTTs');
-                list.innerHTML = s.empty ? '<p style="color:#94a3b8; font-size:12px;">No records</p>' : '';
+                list.innerHTML = s.empty ? '<p style="color:#64748b; font-size:12px;">No records</p>' : '';
                 s.forEach(doc => {
                     const d = doc.data();
-                    list.innerHTML += `<div class="list-item"><div class="list-info"><h4>${d.title}</h4><p>Cls: ${d.class}</p></div><button class="del-btn" onclick="del('exams','${doc.id}')"><i class="fa-solid fa-trash"></i></button></div>`;
+                    list.innerHTML += `<div class="list-item"><div class="list-info"><h4>${d.title}</h4><p>Cls: ${d.class} | Date: ${d.dateText}</p></div><button class="del-btn" onclick="del('exams','${doc.id}')"><i class="fa-solid fa-trash"></i></button></div>`;
                 });
             });
         }
 
         function del(col, id) {
-            if(confirm("Delete this?")) db.collection(col).doc(id).delete();
+            if(confirm("Permanently delete this record?")) db.collection(col).doc(id).delete();
         }
     </script>
 </body>
