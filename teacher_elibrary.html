@@ -8,517 +8,331 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+        :root {
+            --bg: #070d19;
+            --card: #0f172a;
+            --primary: #38bdf8;
+            --text: #ffffff;
+            --subtext: #94a3b8;
+            --border: rgba(56, 189, 248, 0.25);
         }
 
-        body {
-            background-color: #070d19;
-            color: #ffffff;
-            min-height: 100vh;
+        /* Front-End UI Protection */
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+            user-select: none; 
+            -webkit-user-drag: none; 
+        }
+
+        input, textarea, select { user-select: auto; }
+
+        /* Mobile Fixes */
+        html, body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100dvh;
+            overscroll-behavior-y: none;
             display: flex;
             justify-content: center;
-            padding: 14px 12px 30px;
+            padding: 15px;
             position: relative;
-            overflow-x: hidden;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
             z-index: -1;
         }
 
-        .container {
-            width: 100%;
-            max-width: 780px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            animation: fadeIn 0.3s ease-out;
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .container { width: 100%; max-width: 650px; padding-bottom: 30px; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Top Bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(30, 41, 59, 0.75);
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .brand i {
-            background: rgba(56, 189, 248, 0.12);
-            padding: 7px 9px;
-            border-radius: 8px;
-            color: #38bdf8;
-            font-size: 14px;
-            border: 1px solid rgba(56, 189, 248, 0.25);
-        }
-
-        .btn-dashboard {
-            background: rgba(56, 189, 248, 0.1);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-dashboard:hover {
-            background: rgba(56, 189, 248, 0.2);
-            color: #ffffff;
-        }
-
-        /* Section Cards */
-        .section-card {
-            background: rgba(30, 41, 59, 0.55);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 18px 16px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-        }
-
-        .section-title {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        /* Vibrant Colors for Icons */
-        .section-title i.purple { color: #a855f7; }
-        .section-title i.emerald { color: #10b981; }
-        .section-title i.blue { color: #38bdf8; }
-
-        /* Form Grid */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-        }
-
-        .full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .optional-tag {
-            font-size: 9px;
-            color: #64748b;
-            text-transform: none;
-            font-weight: 400;
-        }
-
-        .form-control {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            outline: none;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .form-control:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
-        }
-
-        select.form-control { cursor: pointer; }
-        textarea.form-control { min-height: 70px; resize: vertical; line-height: 1.5; }
-
-        /* File Upload Zone */
-        .upload-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .file-upload-btn {
-            position: relative;
-            overflow: hidden;
-            border: 1px dashed rgba(56, 189, 248, 0.4);
-            background: rgba(56, 189, 248, 0.05);
-            color: #38bdf8;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .file-upload-btn:hover { background: rgba(56, 189, 248, 0.12); }
-        .file-upload-btn input[type=file] {
-            position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
-        }
-
-        .file-status {
-            display: none;
-            font-size: 11.5px;
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            padding: 6px 10px;
-            border-radius: 6px;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Vibrant Submit Buttons */
-        .btn-submit {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            color: #ffffff;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            margin-top: 14px;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.25);
-        }
-        .btn-submit:hover { transform: translateY(-1px); background: #0284c7; }
-        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-        .btn-submit.purple-btn { 
-            background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%); 
-            box-shadow: 0 4px 15px rgba(126, 34, 206, 0.25); 
-            border-color: rgba(168, 85, 247, 0.3); 
-        }
-        .btn-submit.purple-btn:hover { background: #7e22ce; }
-
-        .btn-submit.emerald-btn { 
-            background: linear-gradient(135deg, #059669 0%, #047857 100%); 
-            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.25); 
-            border-color: rgba(52, 211, 153, 0.3); 
-        }
-        .btn-submit.emerald-btn:hover { background: #059669; }
-
-        /* Manage Lists */
-        .manage-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); backdrop-filter: blur(8px); }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 600; color: var(--text); }
+        .brand i { color: var(--primary); font-size: 18px; background: rgba(56, 189, 248, 0.1); padding: 8px; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.2); }
         
-        .manage-list::-webkit-scrollbar { width: 4px; }
-        .manage-list::-webkit-scrollbar-track { background: #0f172a; }
-        .manage-list::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .btn-home { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; cursor: pointer; }
+        .btn-home:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
-        .list-item {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 12px 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s ease;
-        }
+        /* Type XYZ Menu Strips */
+        .strip { display: flex; align-items: center; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 18px 15px; margin-bottom: 15px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.15); backdrop-filter: blur(5px); }
+        .strip:hover { transform: translateY(-4px); background: rgba(15, 23, 42, 0.9); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2); }
+        .strip:active { transform: scale(0.97); }
+        
+        .strip-icon { width: 48px; height: 48px; background: rgba(56, 189, 248, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px; margin-right: 15px; flex-shrink: 0; border: 1px solid var(--border); }
+        .strip-text h3 { font-size: 14.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+        .strip-text p { font-size: 11.5px; color: var(--subtext); }
+        .strip-arrow { margin-left: auto; color: var(--primary); font-size: 16px; transition: transform 0.3s; }
+        .strip:hover .strip-arrow { transform: translateX(4px); }
 
-        .list-item:hover {
-            border-color: rgba(56, 189, 248, 0.3);
-        }
+        /* Modals (Popups) */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(7, 13, 25, 0.85); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.3s ease; }
+        .modal.active { display: flex; opacity: 1; }
+        
+        .modal-content { background: var(--card); width: 100%; max-width: 500px; border-radius: 18px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; max-height: 90dvh; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .modal.active .modal-content { transform: scale(1); }
+        
+        .modal-header { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.05); }
+        .modal-header h2 { font-size: 15.5px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .close-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--subtext); width: 32px; height: 32px; border-radius: 50%; font-size: 14px; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; }
+        .close-btn:hover { background: #ef4444; color: #fff; border-color: #ef4444; transform: rotate(90deg); }
 
-        .item-info {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            min-width: 0;
-            flex: 1;
-        }
+        .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
 
-        .item-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #ffffff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        /* Forms inside Modal */
+        label { font-size: 11px; font-weight: 600; color: var(--subtext); margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-box { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 12px 14px; border-radius: 10px; font-size: 13px; outline: none; color-scheme: dark; transition: all 0.3s ease; }
+        .input-box:focus { border-color: var(--primary); background: rgba(30, 41, 59, 0.6); box-shadow: 0 0 10px rgba(56, 189, 248, 0.15); }
+        select.input-box option { background-color: var(--card); color: var(--text); }
+        textarea.input-box { resize: vertical; min-height: 80px; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-        .item-meta { font-size: 11px; color: #94a3b8; }
+        .file-box { border: 1px dashed var(--primary); background: rgba(56, 189, 248, 0.05); padding: 15px; border-radius: 10px; text-align: center; position: relative; cursor: pointer; transition: all 0.2s; }
+        .file-box:hover { background: rgba(56, 189, 248, 0.1); }
+        .file-box input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .file-msg { color: var(--primary); font-size: 12.5px; font-weight: 500; }
+        .optional-tag { font-size: 9px; color: #64748b; font-weight: 400; text-transform: none; }
 
-        .action-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        .action-btn { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 14px; border-radius: 10px; font-size: 13.5px; font-weight: 600; text-align: center; width: 100%; cursor: pointer; margin-top: 5px; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .action-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(56, 189, 248, 0.3); }
+        .action-btn:active { transform: scale(0.96); }
+        .action-btn:disabled { opacity: 0.6; pointer-events: none; }
 
-        .btn-view {
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            color: #38bdf8;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-        .btn-view:hover { background: #38bdf8; color: #ffffff; }
+        /* Manage List Elements */
+        .list-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-left: 4px solid var(--primary); padding: 14px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; gap: 10px; }
+        .list-item:hover { border-color: rgba(56, 189, 248, 0.3); background: rgba(30, 41, 59, 0.8); }
+        .list-info { flex: 1; min-width: 0; }
+        .list-info h4 { font-size: 13.5px; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .list-info p { font-size: 11px; color: var(--subtext); }
 
-        .btn-delete {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #f87171;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
+        .btn-group { display: flex; gap: 6px; flex-shrink: 0; }
+        .btn-view { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; }
+        .btn-view:hover { background: var(--primary); color: var(--bg); }
+        
+        .btn-delete { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; }
+        .btn-delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-        .btn-delete:hover { background: #ef4444; color: #ffffff; }
-        .no-data { color: #64748b; font-size: 12.5px; text-align: center; padding: 16px; }
+        .no-data { color: var(--subtext); font-size: 12.5px; text-align: center; padding: 25px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
 
-        @media (max-width: 600px) {
-            .form-grid { grid-template-columns: 1fr; gap: 12px; }
-            .section-card { padding: 16px 14px; }
+        @media (max-width: 500px) {
+            .form-row { grid-template-columns: 1fr; gap: 12px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- UI Lock Script -->
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+        }
+    </script>
+
     <div class="container">
+        
         <!-- Top Bar -->
         <div class="top-bar">
             <div class="brand">
                 <i class="fa-solid fa-book-open"></i>
                 <span>Manage E-Library</span>
             </div>
-            <a href="teacher_dashboard.html" class="btn-dashboard">
+            <a href="teacher_dashboard.html" class="btn-home">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
         </div>
 
-        <!-- 1. Create Category / Subject Folder -->
-        <div class="section-card">
-            <div class="section-title">
-                <i class="fa-solid fa-folder-plus purple"></i> 1. Create Subject Category
+        <!-- TYPE XYZ STRIPS -->
+        <div class="strip" onclick="openModal('categoryModal')">
+            <div class="strip-icon"><i class="fa-solid fa-folder-plus"></i></div>
+            <div class="strip-text">
+                <h3>Create Subject Category</h3>
+                <p>Create folders like 'Physics Notes'</p>
             </div>
-            <div class="form-grid">
-                <div class="form-group full-width">
-                    <label>Category / Subject Name</label>
-                    <input type="text" id="catName" class="form-control" placeholder="e.g. Physics Chapter-Wise Notes">
-                </div>
-                
-                <div class="form-group">
-                    <label>Target Class</label>
-                    <select id="catClass" class="form-control" onchange="toggleCatStream()">
-                        <option value="All" selected>All Classes</option>
-                        <option value="Nursery">Nursery</option>
-                        <option value="LKG">LKG</option>
-                        <option value="UKG">UKG</option>
-                        <option value="1">Class 1st</option>
-                        <option value="2">Class 2nd</option>
-                        <option value="3">Class 3rd</option>
-                        <option value="4">Class 4th</option>
-                        <option value="5">Class 5th</option>
-                        <option value="6">Class 6th</option>
-                        <option value="7">Class 7th</option>
-                        <option value="8">Class 8th</option>
-                        <option value="9">Class 9th</option>
-                        <option value="10">Class 10th</option>
-                        <option value="11">Class 11th</option>
-                        <option value="12">Class 12th</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="catStreamGroup">
-                    <label>Target Stream</label>
-                    <select id="catStream" class="form-control">
-                        <option value="All" selected>All Streams</option>
-                        <option value="PCM">Science (PCM)</option>
-                        <option value="PCB">Science (PCB)</option>
-                        <option value="Commerce">Commerce</option>
-                        <option value="Arts">Humanities / Arts</option>
-                        <option value="General">General</option>
-                    </select>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>Short Description <span class="optional-tag">(Optional)</span></label>
-                    <input type="text" id="catDesc" class="form-control" placeholder="Brief info about this folder...">
-                </div>
-            </div>
-            <button class="btn-submit purple-btn" id="btnSaveCat" onclick="createCategory()">
-                <i class="fa-solid fa-layer-group"></i> Create Category Folder
-            </button>
+            <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
 
-        <!-- 2. Upload Document / File -->
-        <div class="section-card">
-            <div class="section-title">
-                <i class="fa-solid fa-cloud-arrow-up emerald"></i> 2. Upload Study Material
+        <div class="strip" onclick="openModal('uploadModal')">
+            <div class="strip-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <div class="strip-text">
+                <h3>Upload Study Material</h3>
+                <p>Upload PDFs or documents inside folders</p>
             </div>
-            <div class="form-grid">
-                <div class="form-group full-width">
-                    <label>Select Category Folder</label>
-                    <select id="fileCategory" class="form-control">
+            <i class="fa-solid fa-chevron-right strip-arrow"></i>
+        </div>
+
+        <div class="strip" onclick="openModal('manageModal')">
+            <div class="strip-icon"><i class="fa-solid fa-list-check"></i></div>
+            <div class="strip-text">
+                <h3>Manage Library Database</h3>
+                <p>View or delete files and categories</p>
+            </div>
+            <i class="fa-solid fa-chevron-right strip-arrow"></i>
+        </div>
+
+    </div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- 1. Category Modal -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-folder-plus"></i> New Category Folder</h2>
+                <button class="close-btn" onclick="closeModal('categoryModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Category / Subject Name (Mandatory)</label>
+                    <input type="text" id="catName" class="input-box" placeholder="e.g. Physics Chapter-Wise Notes">
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Target Class</label>
+                        <select id="catClass" class="input-box" onchange="toggleCatStream()">
+                            <option value="All" selected>All Classes</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="LKG">LKG</option>
+                            <option value="UKG">UKG</option>
+                            <option value="1">Class 1st</option>
+                            <option value="2">Class 2nd</option>
+                            <option value="3">Class 3rd</option>
+                            <option value="4">Class 4th</option>
+                            <option value="5">Class 5th</option>
+                            <option value="6">Class 6th</option>
+                            <option value="7">Class 7th</option>
+                            <option value="8">Class 8th</option>
+                            <option value="9">Class 9th</option>
+                            <option value="10">Class 10th</option>
+                            <option value="11">Class 11th</option>
+                            <option value="12">Class 12th</option>
+                        </select>
+                    </div>
+                    <div id="catStreamGroup" style="display: none;">
+                        <label>Target Stream</label>
+                        <select id="catStream" class="input-box">
+                            <option value="All" selected>All Streams</option>
+                            <option value="PCM">Science (PCM)</option>
+                            <option value="PCB">Science (PCB)</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Arts">Humanities / Arts</option>
+                            <option value="General">General</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>Short Description <span class="optional-tag">(Optional)</span></label>
+                    <input type="text" id="catDesc" class="input-box" placeholder="Brief info about this folder...">
+                </div>
+                <button class="action-btn" id="btnSaveCat" onclick="createCategory()">
+                    <i class="fa-solid fa-folder-open"></i> Create Category
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Upload Material Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-cloud-arrow-up"></i> Upload Study Material</h2>
+                <button class="close-btn" onclick="closeModal('uploadModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Select Category Folder (Mandatory)</label>
+                    <select id="fileCategory" class="input-box">
                         <option value="" disabled selected>Loading categories...</option>
                     </select>
                 </div>
-                
-                <div class="form-group full-width">
-                    <label>Document Title / Heading</label>
-                    <input type="text" id="fileTitle" class="form-control" placeholder="e.g. Thermodynamics Part 1 PDF">
+                <div>
+                    <label>Document Title / Heading (Mandatory)</label>
+                    <input type="text" id="fileTitle" class="input-box" placeholder="e.g. Thermodynamics Part 1 PDF">
                 </div>
-                
-                <div class="form-group">
-                    <label>Target Class</label>
-                    <select id="fileClass" class="form-control" onchange="toggleFileStream()">
-                        <option value="All" selected>All Classes</option>
-                        <option value="Nursery">Nursery</option>
-                        <option value="LKG">LKG</option>
-                        <option value="UKG">UKG</option>
-                        <option value="1">Class 1st</option>
-                        <option value="2">Class 2nd</option>
-                        <option value="3">Class 3rd</option>
-                        <option value="4">Class 4th</option>
-                        <option value="5">Class 5th</option>
-                        <option value="6">Class 6th</option>
-                        <option value="7">Class 7th</option>
-                        <option value="8">Class 8th</option>
-                        <option value="9">Class 9th</option>
-                        <option value="10">Class 10th</option>
-                        <option value="11">Class 11th</option>
-                        <option value="12">Class 12th</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="fileStreamGroup">
-                    <label>Target Stream</label>
-                    <select id="fileStream" class="form-control">
-                        <option value="All" selected>All Streams</option>
-                        <option value="PCM">Science (PCM)</option>
-                        <option value="PCB">Science (PCB)</option>
-                        <option value="Commerce">Commerce</option>
-                        <option value="Arts">Humanities / Arts</option>
-                        <option value="General">General</option>
-                    </select>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>Description / Note for Students <span class="optional-tag">(Optional)</span></label>
-                    <textarea id="fileDesc" class="form-control" placeholder="Write any instructions regarding this file..."></textarea>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>Attach PDF / Document (Max 1MB or Drive Link)</label>
-                    <div class="upload-container">
-                        <div class="file-upload-btn">
-                            <i class="fa-solid fa-file-arrow-up"></i> Select Document File
-                            <input type="file" id="fileInput" accept="application/pdf,image/*,.doc,.docx" onchange="handleFileSelect(event)">
-                        </div>
-                        <div id="fileStatus" class="file-status"></div>
-                        <input type="url" id="fileLinkInput" class="form-control" placeholder="Or paste external Google Drive link here...">
+                <div class="form-row">
+                    <div>
+                        <label>Target Class</label>
+                        <select id="fileClass" class="input-box" onchange="toggleFileStream()">
+                            <option value="All" selected>All Classes</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="LKG">LKG</option>
+                            <option value="UKG">UKG</option>
+                            <option value="1">Class 1st</option>
+                            <option value="2">Class 2nd</option>
+                            <option value="3">Class 3rd</option>
+                            <option value="4">Class 4th</option>
+                            <option value="5">Class 5th</option>
+                            <option value="6">Class 6th</option>
+                            <option value="7">Class 7th</option>
+                            <option value="8">Class 8th</option>
+                            <option value="9">Class 9th</option>
+                            <option value="10">Class 10th</option>
+                            <option value="11">Class 11th</option>
+                            <option value="12">Class 12th</option>
+                        </select>
+                    </div>
+                    <div id="fileStreamGroup" style="display: none;">
+                        <label>Target Stream</label>
+                        <select id="fileStream" class="input-box">
+                            <option value="All" selected>All Streams</option>
+                            <option value="PCM">Science (PCM)</option>
+                            <option value="PCB">Science (PCB)</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Arts">Humanities / Arts</option>
+                            <option value="General">General</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-            <button class="btn-submit emerald-btn" id="btnUploadFile" onclick="uploadMaterial()">
-                <i class="fa-solid fa-paper-plane"></i> Publish Material
-            </button>
-        </div>
-
-        <!-- 3. Manage Library -->
-        <div class="section-card">
-            <div class="section-title">
-                <i class="fa-solid fa-list-check blue"></i> 3. Manage Database
-            </div>
-            
-            <label style="display:block; margin-bottom:6px; color:#ffffff; font-size:12px;">Active Categories</label>
-            <div class="manage-list" id="manageCategoriesList" style="margin-bottom: 24px;">
-                <div class="no-data">Loading...</div>
-            </div>
-
-            <label style="display:block; margin-bottom:6px; color:#ffffff; font-size:12px;">Recently Uploaded Files</label>
-            <div class="manage-list" id="manageFilesList">
-                <div class="no-data">Loading...</div>
+                <div>
+                    <label>Instructions <span class="optional-tag">(Optional)</span></label>
+                    <textarea id="fileDesc" class="input-box" placeholder="Write any instructions regarding this file..."></textarea>
+                </div>
+                <div>
+                    <label>Attach PDF / Document (Max 1.5MB or Link)</label>
+                    <div class="file-box">
+                        <input type="file" id="fileInput" accept="application/pdf,image/*,.doc,.docx" onchange="handleFileSelect(event)">
+                        <div class="file-msg" id="fileStatus"><i class="fa-solid fa-file-arrow-up"></i> Select Document File</div>
+                    </div>
+                    <input type="url" id="fileLinkInput" class="input-box" placeholder="Or paste Google Drive link here..." style="margin-top: 10px;">
+                </div>
+                <button class="action-btn" id="btnUploadFile" onclick="uploadMaterial()">
+                    <i class="fa-solid fa-paper-plane"></i> Publish Material
+                </button>
             </div>
         </div>
+    </div>
 
+    <!-- 3. Manage Library Modal -->
+    <div class="modal" id="manageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-list-check"></i> Manage E-Library</h2>
+                <button class="close-btn" onclick="closeModal('manageModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" style="background: rgba(0,0,0,0.15);">
+                <label style="color:var(--primary);">Active Categories</label>
+                <div id="manageCategoriesList" style="margin-bottom: 20px;"></div>
+
+                <label style="color:var(--primary);">Recently Uploaded Files</label>
+                <div id="manageFilesList"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Firebase Scripts -->
@@ -532,10 +346,10 @@
             projectId: "ss-kanhaiyalal-agrawal",
             storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
             messagingSenderId: "776171239833",
-            appId: "1:776171239833:web:39eea44420db97384b3b08",
-            measurementId: "G-TQKTRTKBEJ"
+            appId: "1:776171239833:web:39eea44420db97384b3b08"
         };
-             if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         let uploadedFileDataUrl = '';
@@ -547,14 +361,28 @@
             listenFiles();
         };
 
+        // Smooth Modal System
+        function openModal(id) { 
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+        
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        // Toggle Stream
         function toggleCatStream() {
             const cls = document.getElementById('catClass').value;
-            document.getElementById('catStreamGroup').style.display = (cls === '11' || cls === '12') ? 'flex' : 'none';
+            document.getElementById('catStreamGroup').style.display = (cls === '11' || cls === '12') ? 'block' : 'none';
         }
 
         function toggleFileStream() {
             const cls = document.getElementById('fileClass').value;
-            document.getElementById('fileStreamGroup').style.display = (cls === '11' || cls === '12') ? 'flex' : 'none';
+            document.getElementById('fileStreamGroup').style.display = (cls === '11' || cls === '12') ? 'block' : 'none';
         }
 
         // --- 1. Category Creation ---
@@ -562,13 +390,9 @@
             const name = document.getElementById('catName').value.trim();
             const desc = document.getElementById('catDesc').value.trim();
             const cls = document.getElementById('catClass').value;
-            const isSenior = (cls === '11' || cls === '12');
-            const stream = isSenior ? document.getElementById('catStream').value : "General";
+            const stream = (cls === '11' || cls === '12') ? document.getElementById('catStream').value : "General";
 
-            if (!name) {
-                alert("Category Name is mandatory!");
-                return;
-            }
+            if (!name) return alert("Category Name is mandatory!");
 
             const btn = document.getElementById('btnSaveCat');
             btn.disabled = true;
@@ -577,7 +401,7 @@
             try {
                 await db.collection('library_categories').add({
                     name: name,
-                    description: desc || 'Tap to view study materials',
+                    description: desc || 'Study materials folder',
                     class: cls,
                     stream: stream,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -586,13 +410,13 @@
                 document.getElementById('catName').value = '';
                 document.getElementById('catDesc').value = '';
                 alert("✅ Category Created Successfully!");
+                closeModal('categoryModal');
             } catch (error) {
-                console.error("Error creating category:", error);
                 alert("Failed to create category.");
             }
 
             btn.disabled = false;
-            btn.innerHTML = `<i class="fa-solid fa-layer-group"></i> Create Category Folder`;
+            btn.innerHTML = `<i class="fa-solid fa-folder-open"></i> Create Category`;
         }
 
         // --- 2. File Upload ---
@@ -602,23 +426,22 @@
             
             if (!file) {
                 uploadedFileDataUrl = '';
-                statusBox.style.display = 'none';
+                statusBox.innerHTML = '<i class="fa-solid fa-file-arrow-up"></i> Select Document File';
                 return;
             }
 
-            if (file.size > 1024 * 1024) {
-                alert("File size exceeds 1MB. Please compress it or use a Google Drive link instead.");
+            if (file.size > 1.5 * 1024 * 1024) {
+                alert("⚠️ File size exceeds 1.5 MB. Please use a Google Drive link.");
                 event.target.value = '';
                 uploadedFileDataUrl = '';
-                statusBox.style.display = 'none';
+                statusBox.innerHTML = '<i class="fa-solid fa-file-arrow-up"></i> Select Document File';
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 uploadedFileDataUrl = e.target.result;
-                statusBox.style.display = 'flex';
-                statusBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Attached: ${file.name}`;
+                statusBox.innerHTML = `<i class="fa-solid fa-check" style="color:#10b981;"></i> Attached: ${file.name}`;
             };
             reader.readAsDataURL(file);
         }
@@ -628,20 +451,13 @@
             const title = document.getElementById('fileTitle').value.trim();
             const desc = document.getElementById('fileDesc').value.trim();
             const cls = document.getElementById('fileClass').value;
-            const isSenior = (cls === '11' || cls === '12');
-            const stream = isSenior ? document.getElementById('fileStream').value : "General";
+            const stream = (cls === '11' || cls === '12') ? document.getElementById('fileStream').value : "General";
             const linkInput = document.getElementById('fileLinkInput').value.trim();
 
-            if (!category || !title) {
-                alert("Category and Document Title are mandatory!");
-                return;
-            }
+            if (!category || !title) return alert("Category and Document Title are mandatory!");
 
             const finalFileUrl = uploadedFileDataUrl || linkInput;
-            if (!finalFileUrl) {
-                alert("Please select a file or provide an external drive link.");
-                return;
-            }
+            if (!finalFileUrl) return alert("Please select a file or provide a drive link.");
 
             const btn = document.getElementById('btnUploadFile');
             btn.disabled = true;
@@ -662,12 +478,12 @@
                 document.getElementById('fileDesc').value = '';
                 document.getElementById('fileLinkInput').value = '';
                 document.getElementById('fileInput').value = '';
-                document.getElementById('fileStatus').style.display = 'none';
+                document.getElementById('fileStatus').innerHTML = '<i class="fa-solid fa-file-arrow-up"></i> Select Document File';
                 uploadedFileDataUrl = '';
 
                 alert("✅ Material Uploaded Successfully!");
+                closeModal('uploadModal');
             } catch (error) {
-                console.error("Error uploading file:", error);
                 alert("Failed to upload file.");
             }
 
@@ -675,124 +491,83 @@
             btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publish Material`;
         }
 
-        // --- View Base64 PDF Logic ---
-        function openBase64PDF(url) {
+        // --- View Safe Base64 PDF Logic ---
+        function openSafePDF(url) {
             if (!url) return;
-            if (url.startsWith('data:application/pdf') || url.startsWith('data:application/octet-stream')) {
+            if (url.startsWith('data:')) {
                 try {
-                    const base64Data = url.split(',')[1];
-                    const byteCharacters = atob(base64Data);
-                    const byteNumbers = new Uint8Array(byteCharacters.length);
-                    for (let i = 0; i < byteCharacters.length; i++) {
-                        byteNumbers[i] = byteCharacters.charCodeAt(i);
-                    }
-                    const blob = new Blob([byteNumbers], { type: 'application/pdf' });
-                    const blobUrl = URL.createObjectURL(blob);
-                    
-                    const tempLink = document.createElement('a');
-                    tempLink.href = blobUrl;
-                    tempLink.target = '_blank';
-                    tempLink.rel = 'noopener noreferrer';
-                    document.body.appendChild(tempLink);
-                    tempLink.click();
-                    document.body.removeChild(tempLink);
-                } catch (e) {
-                    console.error("Blob error:", e);
-                    alert("Error opening PDF file.");
-                }
-            } else if (url.startsWith('data:image/')) {
-                try {
-                    const mimeType = url.substring(5, url.indexOf(';'));
-                    const base64Data = url.split(',')[1];
-                    const byteCharacters = atob(base64Data);
-                    const byteNumbers = new Uint8Array(byteCharacters.length);
-                    for (let i = 0; i < byteCharacters.length; i++) {
-                        byteNumbers[i] = byteCharacters.charCodeAt(i);
-                    }
-                    const blob = new Blob([byteNumbers], { type: mimeType });
-                    const blobUrl = URL.createObjectURL(blob);
-                    window.open(blobUrl, '_blank');
-                } catch(e) { window.open(url, '_blank'); }
+                    const parts = url.split(',');
+                    const mime = parts[0].match(/:(.*?);/)[1];
+                    const bstr = atob(parts[1]);
+                    let n = bstr.length; const u8arr = new Uint8Array(n);
+                    while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+                    const blob = new Blob([u8arr], { type: mime });
+                    window.open(URL.createObjectURL(blob), '_blank');
+                } catch (e) { window.open(url, '_blank'); }
             } else {
                 window.open(url, '_blank');
             }
         }
 
-        // --- 3. Listeners & Management ---
+        // --- 3. Listeners & Realtime Sorting Fixes ---
         function listenCategories() {
-            db.collection('library_categories').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+            db.collection('library_categories').onSnapshot(snapshot => {
                 const selectElement = document.getElementById('fileCategory');
                 const manageList = document.getElementById('manageCategoriesList');
                 
+                let temp = [];
+                snapshot.forEach(doc => temp.push({id: doc.id, ...doc.data()}));
+                temp.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+                
                 selectElement.innerHTML = '<option value="" disabled selected>-- Select Category --</option>';
-                manageList.innerHTML = '';
+                manageList.innerHTML = temp.length === 0 ? `<div class="no-data">No categories exist yet.</div>` : '';
 
-                if (snapshot.empty) {
-                    manageList.innerHTML = `<div class="no-data">No categories exist yet.</div>`;
-                    return;
-                }
-
-                snapshot.forEach(doc => {
-                    const data = doc.data();
+                temp.forEach(data => {
                     const catName = data.name || 'Unnamed';
-                    
                     selectElement.innerHTML += `<option value="${catName}">${catName} (Class: ${data.class || 'All'})</option>`;
 
                     manageList.innerHTML += `
                         <div class="list-item">
-                            <div class="item-info">
-                                <div class="item-title" style="color:#a855f7;">
-                                    <i class="fa-solid fa-folder" style="margin-right:4px;"></i> ${catName}
-                                </div>
-                                <div class="item-meta">Class: ${data.class || 'All'} • Stream: ${data.stream || 'All'}</div>
+                            <div class="list-info">
+                                <h4><i class="fa-solid fa-folder"></i> ${catName}</h4>
+                                <p>Class: ${data.class || 'All'} • Stream: ${data.stream || 'All'}</p>
                             </div>
-                            <button class="btn-delete" onclick="deleteCategory('${doc.id}')">
+                            <button class="btn-delete" onclick="deleteCategory('${data.id}')">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
                     `;
                 });
-            }, err => console.error(err));
+            });
         }
 
         function listenFiles() {
-            db.collection('library_files').orderBy('timestamp', 'desc').limit(15).onSnapshot(snapshot => {
+            db.collection('library_files').onSnapshot(snapshot => {
                 const manageList = document.getElementById('manageFilesList');
-                manageList.innerHTML = '';
+                
+                let temp = [];
+                snapshot.forEach(doc => temp.push({id: doc.id, ...doc.data()}));
+                temp.sort((a,b) => (b.timestamp?.seconds||0) - (a.timestamp?.seconds||0));
 
-                if (snapshot.empty) {
-                    manageList.innerHTML = `<div class="no-data">No files uploaded recently.</div>`;
-                    return;
-                }
+                manageList.innerHTML = temp.length === 0 ? `<div class="no-data">No files uploaded yet.</div>` : '';
 
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    
-                    // Escaping quotes for onclick function
+                temp.slice(0, 15).forEach(data => {
                     const safeUrl = data.fileUrl ? data.fileUrl.replace(/'/g, "\\'") : '';
-
+                    
                     manageList.innerHTML += `
                         <div class="list-item">
-                            <div class="item-info">
-                                <div class="item-title" style="color:#38bdf8;">
-                                    <i class="fa-solid fa-file-pdf" style="margin-right:4px;"></i> ${data.title || 'Document'}
-                                </div>
-                                <div class="item-meta">Cat: ${data.category} • Class: ${data.class || 'All'}</div>
+                            <div class="list-info">
+                                <h4><i class="fa-solid fa-file-pdf"></i> ${data.title || 'Document'}</h4>
+                                <p>Folder: ${data.category} • Class: ${data.class || 'All'}</p>
                             </div>
-                            <div class="action-group">
-                                ${safeUrl ? `
-                                <button class="btn-view" onclick="openBase64PDF('${safeUrl}')">
-                                    <i class="fa-solid fa-eye"></i> View
-                                </button>
-                                ` : ''}
-                                <button class="btn-delete" onclick="deleteFile('${doc.id}')">
-                                    <i class="fa-solid fa-trash"></i> Delete
-                                </button>
+                            <div class="btn-group">
+                                ${safeUrl ? `<button class="btn-view" onclick="openSafePDF('${safeUrl}')"><i class="fa-solid fa-eye"></i></button>` : ''}
+                                <button class="btn-delete" onclick="deleteFile('${data.id}')"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
                     `;
                 });
-            }, err => console.error(err));
+            });
         }
 
         async function deleteCategory(id) {
@@ -808,4 +583,4 @@
         }
     </script>
 </body>
-</html> 
+</html>
