@@ -77,7 +77,7 @@
         }
         .btn-dashboard:hover { background: var(--primary); color: #000; box-shadow: 0 0 12px var(--primary-glow); }
 
-        /* Navigation Header */
+        /* Navigation Header (For New Pages) */
         .nav-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
         .btn-back { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
         .btn-back:hover { background: #fff; color: #000; }
@@ -162,12 +162,6 @@
 
         .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 24px; width: 100%; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
 
-        /* Delete / Edit Buttons */
-        .btn-action-sm { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
-        .btn-action-sm.edit:hover { background: rgba(0, 229, 255, 0.15); color: var(--primary); border-color: var(--primary); }
-        .btn-action-sm.delete { color: var(--danger); border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.1); }
-        .btn-action-sm.delete:hover { background: var(--danger); color: #fff; }
-
         @media (max-width: 500px) {
             .result-header { flex-direction: column; align-items: flex-start; gap: 12px; }
             .form-row { grid-template-columns: 1fr; }
@@ -196,7 +190,7 @@
             </a>
         </div>
 
-        <!-- ================= VIEW 1: FILTER & MENU (Main Dashboard) ================= -->
+        <!-- ================= VIEW 1: FILTER & MENU ================= -->
         <div id="viewFilterMenu" class="fade-in">
             <div class="section-card">
                 <div class="section-title"><i class="fa-solid fa-filter" style="color:var(--primary);"></i> Setup Classroom Environment</div>
@@ -241,12 +235,12 @@
                 </div>
 
                 <div class="menu-grid">
-                    <!-- 1. Evaluate Students (Marks + Personal Remark) -->
+                    <!-- 1. Evaluate Students -->
                     <div class="menu-card" onclick="switchView('viewMarks')">
                         <div class="menu-icon"><i class="fa-solid fa-user-pen"></i></div>
                         <div class="menu-text">
                             <h3>Evaluate Students</h3>
-                            <p>Update exam scores, ranks, report cards & send confidential remarks.</p>
+                            <p>Update exam scores, ranks, standing, report cards & send confidential remarks.</p>
                         </div>
                         <i class="fa-solid fa-arrow-right menu-arrow"></i>
                     </div>
@@ -263,7 +257,7 @@
                         <i class="fa-solid fa-arrow-right menu-arrow"></i>
                     </div>
 
-                    <!-- 3. Manage Past Messages (Edit/Delete) -->
+                    <!-- 3. Manage Past Messages -->
                     <div class="menu-card" onclick="switchView('viewManageFeedbacks')">
                         <div class="menu-icon" style="color:var(--purple); background:rgba(168, 85, 247, 0.1); border-color:rgba(168, 85, 247, 0.3); box-shadow:0 0 15px var(--purple-glow);">
                             <i class="fa-solid fa-clock-rotate-left"></i>
@@ -278,7 +272,7 @@
             </div>
         </div>
 
-        <!-- ================= VIEW 2: EVALUATE & PERSONAL REMARKS ================= -->
+        <!-- ================= VIEW 2: EVALUATE STUDENTS ================= -->
         <div id="viewMarks" class="hidden fade-in">
             <div class="nav-header">
                 <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
@@ -288,7 +282,6 @@
             <div class="section-card">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <!-- UPDATED SEARCH PLACEHOLDER -->
                     <input type="text" id="studentSearch" class="search-input" placeholder="Search Student ID, Email or Phone..." onkeyup="handleStudentSearch()">
                 </div>
 
@@ -326,7 +319,7 @@
             </div>
         </div>
 
-        <!-- ================= VIEW 4: MANAGE PAST RECORDS (Edit/Delete Messages) ================= -->
+        <!-- ================= VIEW 4: MANAGE PAST RECORDS ================= -->
         <div id="viewManageFeedbacks" class="hidden fade-in">
             <div class="nav-header">
                 <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
@@ -376,10 +369,31 @@
         let studentFiles = {}; 
         let selectedClassObj = { cls: '', sec: '', stm: '' };
 
-        // Feedback Management Arrays
         let allClassFeedbacks = [];
         let fbSearchQuery = "";
         let fbVisibleCount = 5;
+
+        // --- SESSION PERSISTENCE (REFRESH FIX) ---
+        window.onload = function() {
+            let savedObj = sessionStorage.getItem('ta_selectedClassObj');
+            let savedView = sessionStorage.getItem('ta_currentView');
+            
+            if (savedObj) {
+                selectedClassObj = JSON.parse(savedObj);
+                document.getElementById('flClass').value = selectedClassObj.cls;
+                document.getElementById('flSection').value = selectedClassObj.sec;
+                document.getElementById('flStream').value = selectedClassObj.stm;
+                toggleStreamLogic();
+                
+                // Auto load without clicking
+                loadClassData(true, savedView);
+            }
+        };
+
+        function saveState(viewId) {
+            sessionStorage.setItem('ta_selectedClassObj', JSON.stringify(selectedClassObj));
+            if(viewId) sessionStorage.setItem('ta_currentView', viewId);
+        }
 
         function switchView(viewId) {
             document.getElementById('viewFilterMenu').classList.add('hidden');
@@ -389,6 +403,8 @@
             
             document.getElementById(viewId).classList.remove('hidden');
             window.scrollTo(0,0);
+            
+            saveState(viewId);
         }
 
         function toggleStreamLogic() {
@@ -399,12 +415,11 @@
         }
 
         function toggleInlineForm(id) {
-            const form = document.getElementById(id);
-            form.classList.toggle('hidden');
+            document.getElementById(id).classList.toggle('hidden');
         }
 
-        // ================= DATA FETCHING (SMART LOOSE MATCHING - FIXED COLLECTION) =================
-        async function loadClassData() {
+        // ================= DUAL-FETCH STUDENT DATA (THE GLITCH FIX) =================
+        async function loadClassData(isAuto = false, viewToRestore = null) {
             const cls = document.getElementById('flClass').value;
             const sec = document.getElementById('flSection').value;
             const stm = (cls === '11' || cls === '12') ? document.getElementById('flStream').value : 'All';
@@ -412,11 +427,20 @@
             if(!cls) return alert("Please select a Class.");
 
             selectedClassObj = { cls, sec, stm };
-            document.getElementById('workspaceMenu').classList.remove('hidden');
-            
-            // FETCH FROM `students` Collection
+            saveState(viewToRestore || 'viewFilterMenu');
+
+            if(!isAuto) {
+                document.getElementById('workspaceMenu').classList.remove('hidden');
+            }
+
             await fetchStudents(cls, sec, stm);
-            listenClassFeedbacks(); // Load feedbacks for the 3rd card
+            listenClassFeedbacks(); 
+            
+            if(viewToRestore) {
+                switchView(viewToRestore);
+            } else {
+                document.getElementById('workspaceMenu').classList.remove('hidden');
+            }
         }
 
         async function fetchStudents(cls, sec, stm) {
@@ -424,23 +448,28 @@
             document.getElementById('leaderboardContainer').innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading ranks...</div>';
 
             try {
-                const studentSnap = await db.collection('students').get();
-                currentStudents = [];
-                
+                // Fetching from BOTH collections to ensure no student is missed
+                const [usersSnap, studentsSnap] = await Promise.all([
+                    db.collection('users').get().catch(() => ({ docs: [] })),
+                    db.collection('students').get().catch(() => ({ docs: [] }))
+                ]);
+
+                let studentMap = new Map();
                 const targetClsNum = cls.replace(/\D/g, ''); 
 
-                studentSnap.forEach(doc => {
+                const processDoc = (doc) => {
                     const data = doc.data();
+                    const role = (data.role || data.user_role || 'student').toString().toLowerCase();
                     
-                    const sClass = (data.studentClass || data.class || data.className || '').toString().toLowerCase().trim();
+                    if (role === 'teacher' || role === 'admin') return;
+
+                    const sClass = String(data.studentClass || data.class || data.className || '').toLowerCase().trim();
                     const sClassNum = sClass.replace(/\D/g, ''); 
-                    const sSec = (data.section || data.sec || '').toString().toUpperCase().trim();
-                    const sStm = (data.stream || data.subject || data.curriculum || 'General').toString().toUpperCase().trim();
+                    const sSec = String(data.section || data.sec || '').toUpperCase().trim();
+                    const sStm = String(data.stream || data.subject || data.curriculum || 'General').toUpperCase().trim();
 
                     let cMatch = false;
-                    if (sClass === cls.toLowerCase() || sClass.includes(cls.toLowerCase())) {
-                        cMatch = true;
-                    } else if (targetClsNum !== '' && sClassNum === targetClsNum) {
+                    if (sClass === cls.toLowerCase() || sClass.includes(cls.toLowerCase()) || (targetClsNum !== '' && sClassNum === targetClsNum)) {
                         cMatch = true;
                     }
 
@@ -452,12 +481,17 @@
                     }
 
                     if (cMatch && secMatch && stmMatch) {
-                        currentStudents.push({id: doc.id, ...data});
+                        studentMap.set(doc.id, {id: doc.id, ...data});
                     }
-                });
+                };
+
+                usersSnap.forEach(processDoc);
+                studentsSnap.forEach(processDoc);
+
+                currentStudents = Array.from(studentMap.values());
 
                 if(currentStudents.length === 0) {
-                    container.innerHTML = '<div class="no-data"><i class="fa-solid fa-ghost" style="font-size:24px; color:var(--primary); margin-bottom:10px;"></i><br>No students found for this class in database.</div>';
+                    container.innerHTML = '<div class="no-data"><i class="fa-solid fa-ghost" style="font-size:24px; color:var(--primary); margin-bottom:10px;"></i><br>No students found for this class.</div>';
                     document.getElementById('leaderboardContainer').innerHTML = '<div class="no-data">No data.</div>';
                     document.getElementById('seeMoreBtn').style.display = 'none';
                     return;
@@ -498,15 +532,16 @@
             const container = document.getElementById('studentsListContainer');
             container.innerHTML = '';
 
-            // SUPER ARRAY SEARCH LOGIC (NO UNDEFINED ERRORS)
+            // SAFE STRING SEARCH (CRASH PROOF)
             let filtered = currentStudents.filter(item => {
                 let textArray = [
-                    item.name || '', item.username || '', item.fullName || '',
-                    item.email || '', item.id || '', item.studentId || '',
-                    item.phone || '', item.phoneNumber || '',
-                    item.rollNo || '', item.roll || ''
-                ];
-                let textToSearch = textArray.join(' ').toLowerCase();
+                    item.name, item.username, item.fullName,
+                    item.email, item.id, item.studentId,
+                    item.phone, item.phoneNumber,
+                    item.rollNo, item.roll
+                ].map(val => String(val || '').toLowerCase());
+                
+                let textToSearch = textArray.join(' ');
                 return textToSearch.includes(searchQuery);
             });
 
@@ -529,6 +564,7 @@
                     rankHTML = `<div class="badge-pill">${getFormatStanding(student.standing)}</div>`;
                 }
 
+                // FIXED MISSING OPTIONS
                 const isDist = student.standing === 'distinction' ? 'selected' : '';
                 const isFirst = student.standing === 'first_division' ? 'selected' : '';
                 const isSecond = student.standing === 'second_division' ? 'selected' : '';
@@ -554,7 +590,6 @@
                             </div>
                         </div>
 
-                        <!-- Integrated Edit Form -->
                         <div id="form_${student.id}" class="integrated-form hidden">
                             <div class="form-row">
                                 <div class="form-field">
@@ -574,6 +609,7 @@
                                 <div class="form-field">
                                     <label>Standing Status</label>
                                     <select id="exStanding_${student.id}" class="input-box">
+                                        <option value="" disabled ${!student.standing?'selected':''}>Select Standing...</option>
                                         <option value="distinction" ${isDist}>Distinction</option>
                                         <option value="first_division" ${isFirst}>First Division</option>
                                         <option value="second_division" ${isSecond}>Second Division</option>
@@ -594,7 +630,6 @@
                                 </div>
                             </div>
 
-                            <!-- CONFIDENTIAL REMARK MERGED HERE -->
                             <div class="confidential-box">
                                 <h4><i class="fa-solid fa-user-secret"></i> Send Confidential Remark to ${name}</h4>
                                 <div class="form-field">
@@ -634,9 +669,9 @@
             reader.readAsDataURL(file);
         }
 
-        // SAVE ACADEMIC DATA + NOTICE TO `students`
+        // SAVE ACADEMIC DATA TO BOTH COLLECTIONS TO BE 100% SURE
         async function saveAllStudentData(studentId, email, name) {
-            const exName = document.getElementById(`exName_${studentId}`).value.trim() || 'Examination Report';
+            const exName = document.getElementById(`exName_${studentId}`).value.trim();
             const score = document.getElementById(`exScore_${studentId}`).value.trim();
             const rank = parseInt(document.getElementById(`exRank_${studentId}`).value) || null;
             const standing = document.getElementById(`exStanding_${studentId}`).value;
@@ -653,13 +688,15 @@
 
             try {
                 let updateData = {
-                    examType: exName, score: score || "Pending", standing: standing,
+                    examType: exName || "Examination Report", score: score || "Pending", standing: standing,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 if(rank !== null) updateData.rank = rank;
                 if(reportCard !== "") updateData.reportCardUrl = reportCard;
 
-                await db.collection('students').doc(studentId).update(updateData);
+                // Sync to BOTH to prevent glitches
+                try { await db.collection('students').doc(studentId).update(updateData); } catch(e){}
+                try { await db.collection('users').doc(studentId).update(updateData); } catch(e){}
                 
                 const idx = currentStudents.findIndex(s => s.id === studentId);
                 if(idx > -1) {
@@ -733,20 +770,25 @@
             });
         }
 
-        // ================= FEEDBACK & RECORD MANAGER (VIEW 4) =================
+        // ================= FEEDBACK & RECORD MANAGER =================
         function listenClassFeedbacks() {
             db.collection('feedbacks').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
                 allClassFeedbacks = [];
                 snapshot.forEach(doc => {
                     const fb = doc.data();
-                    const fType = (fb.type || 'general').toLowerCase();
+                    const fType = String(fb.type || 'general').toLowerCase();
                     
-                    // Show ALL general notices no matter what
+                    // FIXED: Global Messages MUST show up!
+                    let isGlobal = (!fb.targetClass || String(fb.targetClass).toLowerCase() === 'all' || fb.targetClass === '');
+                    let isClassMatch = (String(fb.targetClass) === String(selectedClassObj.cls));
+                    
                     if (fType === 'general') {
-                        allClassFeedbacks.push({id: doc.id, ...fb});
-                    } 
-                    // Show personal notices ONLY if the student is in the current class list
-                    else if (fType === 'personal') {
+                        // If it's general, show it if it's Global OR belongs to this class
+                        if (isGlobal || isClassMatch) {
+                            allClassFeedbacks.push({id: doc.id, ...fb});
+                        }
+                    } else if (fType === 'personal') {
+                        // Show personal notices ONLY if the student is in the current class list
                         let isTargetedPersonal = currentStudents.some(s => 
                             (s.email || '').toLowerCase() === (fb.targetUser || '').toLowerCase() || 
                             (s.id || '').toLowerCase() === (fb.targetUser || '').toLowerCase()
@@ -757,7 +799,6 @@
                     }
                 });
                 
-                // Reset search & pagination
                 fbSearchQuery = "";
                 document.getElementById('fbSearch').value = "";
                 fbVisibleCount = 5;
@@ -782,10 +823,11 @@
 
             let filtered = allClassFeedbacks.filter(f => {
                 let textArray = [
-                    f.title || '', f.message || '', f.targetUser || '', 
-                    f.targetName || '', f.teacherName || ''
-                ];
-                let t = textArray.join(' ').toLowerCase();
+                    f.title, f.message, f.targetUser, 
+                    f.targetName, f.teacherName
+                ].map(val => String(val || '').toLowerCase());
+                
+                let t = textArray.join(' ');
                 return t.includes(fbSearchQuery);
             });
 
@@ -802,7 +844,7 @@
                 const dateTxt = fb.createdAt ? new Date(fb.createdAt.toDate()).toLocaleDateString() : 'Recent';
                 const typeBadge = isPers ? 
                     `<span class="badge-pill gold" style="font-size:9px;">Personal To: ${fb.targetName || fb.targetUser}</span>` : 
-                    `<span class="badge-pill" style="font-size:9px;">Class Notice</span>`;
+                    `<span class="badge-pill" style="font-size:9px;">${!fb.targetClass || fb.targetClass==='All' ? 'All Classes' : 'Class Notice'}</span>`;
 
                 container.innerHTML += `
                     <div style="margin-bottom:8px;">
