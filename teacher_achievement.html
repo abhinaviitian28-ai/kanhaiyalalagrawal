@@ -3,377 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Teacher Portal - SS KanhaiyaLal Agrawal</title>
+    <title>Performance & Ranks Manager - SS KanhaiyaLal Agrawal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --bg: #070d19;
-            --card: #0f172a;
-            --primary: #38bdf8;
-            --text: #ffffff;
-            --subtext: #94a3b8;
-            --border: rgba(56, 189, 248, 0.25);
-        }
-
-        /* Front-End Security: Disable Text Selection & Dragging */
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; 
-            font-family: 'Poppins', sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
-            user-select: none; 
-            -webkit-user-drag: none; 
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none; -webkit-user-drag: none;
+            scrollbar-width: none; -ms-overflow-style: none;
         }
 
         input, textarea, select { user-select: auto; }
+        ::-webkit-scrollbar { display: none; width: 0; background: transparent; }
 
-        /* Mobile White-Bar & Scroll Glitch Fix */
-        html, body {
-            background-color: var(--bg);
-            color: var(--text);
-            min-height: 100dvh;
+        body {
+            background-color: #070d19; color: #ffffff;
+            min-height: 100vh; display: flex; justify-content: center;
+            padding: 14px 12px 30px; position: relative; overflow-x: hidden;
             overscroll-behavior-y: none;
-            display: flex;
-            justify-content: center;
-            padding: 15px;
-            position: relative;
         }
 
         body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
             z-index: -1;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        .container {
+            width: 100%; max-width: 760px; display: flex;
+            flex-direction: column; gap: 14px; animation: pageFade 0.25s ease-out;
+        }
 
-        .container { width: 100%; max-width: 650px; padding-bottom: 30px; animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pageFade {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated-btn { transition: all 0.25s ease; cursor: pointer; will-change: transform; }
+        .animated-btn:hover { transform: translateY(-2px); }
+        .animated-btn:active { transform: scale(0.97); }
+
+        .hidden { display: none !important; }
 
         /* Top Bar */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); backdrop-filter: blur(8px); }
-        .brand { display: flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 600; color: var(--text); }
-        .brand i { color: var(--primary); font-size: 18px; background: rgba(56, 189, 248, 0.1); padding: 8px; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.2); }
-        
-        .btn-home { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; cursor: pointer; }
-        .btn-home:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(30, 41, 59, 0.75); padding: 12px 16px;
+            border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2);
+            backdrop-filter: blur(10px); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+        }
 
-        /* Type XYZ: Menu Strips */
-        .strip { display: flex; align-items: center; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 12px; padding: 18px 15px; margin-bottom: 15px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15); backdrop-filter: blur(5px); }
-        .strip:hover { transform: translateY(-4px); background: rgba(15, 23, 42, 0.9); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2); }
-        .strip:active { transform: scale(0.97); }
-        
-        .strip-icon { width: 48px; height: 48px; background: rgba(56, 189, 248, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px; margin-right: 15px; flex-shrink: 0; border: 1px solid var(--border); }
-        .strip-text h3 { font-size: 14.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-        .strip-text p { font-size: 11.5px; color: var(--subtext); }
-        .strip-arrow { margin-left: auto; color: var(--primary); font-size: 16px; transition: transform 0.3s; }
-        .strip:hover .strip-arrow { transform: translateX(4px); }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; color: #ffffff; }
+        .brand i { background: rgba(56, 189, 248, 0.12); padding: 7px 9px; border-radius: 8px; color: #38bdf8; font-size: 14px; border: 1px solid rgba(56, 189, 248, 0.25); }
 
-        /* Modals (Popups) */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(7, 13, 25, 0.85); z-index: 100; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.3s ease; }
-        .modal.active { display: flex; opacity: 1; }
-        
-        .modal-content { background: var(--card); width: 100%; max-width: 500px; border-radius: 18px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; max-height: 90dvh; box-shadow: 0 15px 40px rgba(0,0,0,0.6); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .modal.active .modal-content { transform: scale(1); }
-        
-        .modal-header { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.05); }
-        .modal-header h2 { font-size: 15.5px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .close-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--subtext); width: 32px; height: 32px; border-radius: 50%; font-size: 14px; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; }
-        .close-btn:hover { background: #ef4444; color: #fff; border-color: #ef4444; transform: rotate(90deg); }
+        .btn-dashboard {
+            background: rgba(56, 189, 248, 0.1); color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.25); text-decoration: none;
+            padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;
+            display: flex; align-items: center; gap: 6px; transition: 0.2s;
+        }
+        .btn-dashboard:hover { background: rgba(56, 189, 248, 0.2); color: #fff; }
 
-        .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+        /* Action Strips (Replaces Popups) */
+        .action-strip {
+            background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px; padding: 16px 18px; display: flex; justify-content: space-between;
+            align-items: center; cursor: pointer; transition: 0.25s; margin-bottom: 12px;
+        }
+        .action-strip:hover { border-color: rgba(56, 189, 248, 0.4); background: #1e293b; }
+        .strip-left { display: flex; align-items: center; gap: 14px; }
+        .strip-icon { width: 40px; height: 40px; background: rgba(56, 189, 248, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #38bdf8; font-size: 16px; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .strip-text h3 { font-size: 14.5px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+        .strip-text p { font-size: 11.5px; color: #94a3b8; }
 
-        /* Forms inside Modal */
-        label { font-size: 11px; font-weight: 600; color: var(--subtext); margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
-        .input-box { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 12px 14px; border-radius: 10px; font-size: 13px; outline: none; color-scheme: dark; transition: all 0.3s ease; }
-        .input-box:focus { border-color: var(--primary); background: rgba(30, 41, 59, 0.6); box-shadow: 0 0 10px rgba(56, 189, 248, 0.15); }
-        select.input-box option { background-color: var(--card); color: var(--text); }
+        /* Inline Form Cards */
+        .form-card {
+            background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 14px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .form-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; margin-bottom: 16px;
+        }
+        .form-header h3 { font-size: 15px; font-weight: 600; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+        .btn-close-form { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .form-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+        .form-field label { font-size: 11px; font-weight: 600; color: #94a3b8; text-transform: uppercase; }
+
+        .input-box {
+            width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff; padding: 10px 12px; border-radius: 8px; font-size: 12.5px; outline: none; color-scheme: dark;
+        }
+        .input-box:focus { border-color: #38bdf8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.2); }
         textarea.input-box { resize: vertical; min-height: 80px; }
-        
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-        /* Status Pill */
-        .status-pill { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 6px; display: none; align-items: center; gap: 6px; width: fit-content; margin-top: 6px; }
-        .status-pill.success { display: inline-flex; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); color: #4ade80; }
-        .status-pill.neutral { display: inline-flex; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary); }
-
-        /* File Box */
-        .file-box { border: 1px dashed var(--primary); background: rgba(56, 189, 248, 0.05); padding: 15px; border-radius: 10px; text-align: center; position: relative; cursor: pointer; transition: all 0.2s; }
-        .file-box:hover { background: rgba(56, 189, 248, 0.1); }
+        .file-box { border: 1px dashed #38bdf8; background: rgba(56, 189, 248, 0.05); padding: 14px; border-radius: 8px; text-align: center; position: relative; cursor: pointer; }
         .file-box input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-        .file-msg { color: var(--primary); font-size: 12.5px; font-weight: 500; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .file-msg { color: #38bdf8; font-size: 12px; font-weight: 500; }
 
-        .action-btn { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 14px; border-radius: 10px; font-size: 13.5px; font-weight: 600; text-align: center; width: 100%; cursor: pointer; margin-top: 5px; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .action-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(56, 189, 248, 0.3); }
-        .action-btn:active { transform: scale(0.96); }
-        .action-btn:disabled { opacity: 0.6; pointer-events: none; }
+        .btn-submit {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff;
+            border: 1px solid rgba(56, 189, 248, 0.35); padding: 12px; border-radius: 8px;
+            font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; display: flex;
+            justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-submit:hover { background: #0284c7; }
 
-        /* Record Cards (List) */
-        .record-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-left: 4px solid var(--primary); padding: 14px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; gap: 10px; }
-        .record-card:hover { border-color: rgba(56, 189, 248, 0.3); background: rgba(30, 41, 59, 0.8); }
-        .record-info { flex: 1; min-width: 0; }
-        .record-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
-        .record-title span { font-size: 10px; color: var(--subtext); font-weight: 500; }
-        .record-desc { font-size: 11.5px; color: var(--subtext); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        /* Section Cards */
+        .section-card {
+            background: rgba(30, 41, 59, 0.55); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px; padding: 16px; backdrop-filter: blur(8px); box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25); margin-bottom: 14px;
+        }
+        .section-title {
+            font-size: 13.5px; font-weight: 700; color: #38bdf8; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
 
-        .btn-delete { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
-        .btn-delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+        /* Leaderboard Items in Teacher View */
+        .leaderboard-list { display: flex; flex-direction: column; gap: 8px; }
+        .leaderboard-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #0f172a; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .rank-num {
+            width: 26px; height: 26px; border-radius: 6px; display: flex; justify-content: center; align-items: center;
+            font-size: 11.5px; font-weight: 700; background: #1e293b; color: #94a3b8; border: 1px solid rgba(255,255,255,0.08);
+        }
+        .rank-num.r1 { background: rgba(234, 179, 8, 0.15); color: #facc15; border-color: rgba(234, 179, 8, 0.4); }
+        .rank-num.r2 { background: rgba(203, 213, 225, 0.15); color: #e2e8f0; border-color: rgba(203, 213, 225, 0.4); }
+        .rank-num.r3 { background: rgba(249, 115, 22, 0.15); color: #fb923c; border-color: rgba(249, 115, 22, 0.4); }
 
-        .no-data { color: var(--subtext); font-size: 12.5px; text-align: center; padding: 25px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
+        .no-data { color: #64748b; font-size: 12px; text-align: center; padding: 20px; width: 100%; }
 
-        @media (max-width: 500px) {
-            .form-row { grid-template-columns: 1fr; gap: 12px; }
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; gap: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 100% SECURE UI LOCK SCRIPT (AS REQUESTED) -->
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
-        }
-    </script>
-
     <div class="container">
-        
         <!-- Top Bar -->
         <div class="top-bar">
             <div class="brand">
                 <i class="fa-solid fa-award"></i>
-                <span>Teacher Management</span>
+                <span>Performance & Marks Control</span>
             </div>
-            <!-- Untouched Navigation Link -->
-            <a href="teacher_dashboard.html" class="btn-home">
+            <a href="teacher_dashboard.html" class="btn-dashboard">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
         </div>
 
-        <!-- TYPE XYZ STRIPS -->
-        <div class="strip" onclick="openModal('performanceModal')">
-            <div class="strip-icon"><i class="fa-solid fa-file-circle-check"></i></div>
-            <div class="strip-text">
-                <h3>Update Student Performance</h3>
-                <p>Add marks, percentage, and report cards</p>
-            </div>
-            <i class="fa-solid fa-chevron-right strip-arrow"></i>
-        </div>
-
-        <div class="strip" onclick="openModal('remarkModal')">
-            <div class="strip-icon"><i class="fa-solid fa-comment-dots"></i></div>
-            <div class="strip-text">
-                <h3>Publish Remarks & Notices</h3>
-                <p>Send direct feedback to class or student</p>
-            </div>
-            <i class="fa-solid fa-chevron-right strip-arrow"></i>
-        </div>
-
-        <div class="strip" onclick="openModal('manageModal')">
-            <div class="strip-icon"><i class="fa-solid fa-list"></i></div>
-            <div class="strip-text">
-                <h3>Manage Active Records</h3>
-                <p>View or delete published feedbacks</p>
-            </div>
-            <i class="fa-solid fa-chevron-right strip-arrow"></i>
-        </div>
-
-    </div>
-
-    <!-- ================= MODALS ================= -->
-
-    <!-- 1. Update Performance Modal -->
-    <div class="modal" id="performanceModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fa-solid fa-file-circle-check"></i> Performance Record</h2>
-                <button class="close-btn" onclick="closeModal('performanceModal')"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <label>Student Email Address (Auto Fill)</label>
-                    <input type="email" id="stEmail" class="input-box" placeholder="student@gmail.com" onblur="autoFetchStudent()" oninput="resetStatusPill()">
-                    <div id="emailPill" class="status-pill"></div>
+        <!-- Action Strip 1: Update Marks/Rank -->
+        <div class="action-strip animated-btn" onclick="toggleForm('scoreForm')">
+            <div class="strip-left">
+                <div class="strip-icon"><i class="fa-solid fa-user-pen"></i></div>
+                <div class="strip-text">
+                    <h3>Update Student Exam Score & Rank</h3>
+                    <p>Assign marks, standing ranks, and report cards to student profiles.</p>
                 </div>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: #64748b;"></i>
+        </div>
 
-                <div class="form-row">
-                    <div>
-                        <label>Student Name</label>
-                        <input type="text" id="stName" class="input-box" placeholder="e.g. Abhinav Pandey">
-                    </div>
-                    <div>
-                        <label>Roll Number</label>
-                        <input type="text" id="stRoll" class="input-box" placeholder="e.g. 101">
-                    </div>
+        <!-- INLINE FORM 1: Update Scores -->
+        <div class="form-card hidden fade-in" id="scoreForm">
+            <div class="form-header">
+                <h3><i class="fa-solid fa-user-pen"></i> Update Student Standing</h3>
+                <button class="btn-close-form" onclick="toggleForm('scoreForm')"><i class="fa-solid fa-xmark"></i> Close</button>
+            </div>
+            
+            <div class="form-field">
+                <label>Select Student</label>
+                <select id="updateStudentSelect" class="input-box"></select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Exam Title (e.g., Half Yearly)</label>
+                    <input type="text" id="upExamType" class="input-box" placeholder="Terminal Exam">
                 </div>
+                <div class="form-field">
+                    <label>Score / Marks (e.g., 450/500)</label>
+                    <input type="text" id="upScore" class="input-box" placeholder="480/500 (96%)">
+                </div>
+            </div>
 
-                <div>
-                    <label>Examination / Assessment Type</label>
-                    <select id="stExamType" class="input-box">
-                        <option value="Half Yearly Examination" selected>Half Yearly Examination</option>
-                        <option value="Annual Examination">Annual Examination</option>
-                        <option value="Unit Test 1">Unit Test 1</option>
-                        <option value="Unit Test 2">Unit Test 2</option>
-                        <option value="Pre-Board Examination">Pre-Board Examination</option>
-                        <option value="Monthly Assessment">Monthly Assessment</option>
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Class Rank (1 to 5 for Leaderboard)</label>
+                    <input type="number" id="upRank" class="input-box" min="1" max="50" placeholder="1">
+                </div>
+                <div class="form-field">
+                    <label>Standing Status</label>
+                    <select id="upStanding" class="input-box">
+                        <option value="distinction">Distinction</option>
+                        <option value="first_division" selected>First Division</option>
+                        <option value="second_division">Second Division</option>
+                        <option value="improvement_needed">Needs Improvement</option>
                     </select>
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div>
-                        <label>Class</label>
-                        <select id="stClass" class="input-box" onchange="handleClassChange()">
-                            <option value="Nursery">Nursery</option>
-                            <option value="LKG">LKG</option>
-                            <option value="UKG">UKG</option>
-                            <option value="1">Class 1st</option>
-                            <option value="2">Class 2nd</option>
-                            <option value="3">Class 3rd</option>
-                            <option value="4">Class 4th</option>
-                            <option value="5">Class 5th</option>
-                            <option value="6">Class 6th</option>
-                            <option value="7">Class 7th</option>
-                            <option value="8">Class 8th</option>
-                            <option value="9">Class 9th</option>
-                            <option value="10">Class 10th</option>
-                            <option value="11" selected>Class 11th</option>
-                            <option value="12">Class 12th</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Section</label>
-                        <select id="stSection" class="input-box">
-                            <option value="B" selected>Section B</option>
-                            <option value="A">Section A</option>
-                            <option value="C">Section C</option>
-                            <option value="D">Section D</option>
-                            <option value="ALL">All Sections</option>
-                        </select>
-                    </div>
+            <div class="form-field">
+                <label>Personal Comments / Performance Feedback</label>
+                <textarea id="upDescription" class="input-box" placeholder="Write specific remarks for this student..."></textarea>
+            </div>
+
+            <div class="form-field">
+                <label>Report Card PDF (Max 1.5MB) OR Link</label>
+                <div class="file-box">
+                    <input type="file" accept="application/pdf,image/*" onchange="handleFileUpload(event, 'scoreFileStatus')">
+                    <div class="file-msg" id="scoreFileStatus"><i class="fa-solid fa-paperclip"></i> Tap to attach report card PDF</div>
                 </div>
+                <input type="url" id="upLink" class="input-box" placeholder="Or paste link here..." style="margin-top: 8px;">
+            </div>
 
-                <div id="streamGroup" style="display: flex; flex-direction: column; gap: 5px;">
-                    <label>Stream</label>
-                    <select id="stStream" class="input-box">
-                        <option value="PCM" selected>Science (PCM)</option>
-                        <option value="PCB">Science (PCB)</option>
-                        <option value="Commerce">Commerce</option>
-                        <option value="Arts">Humanities / Arts</option>
-                        <option value="General">General</option>
+            <button class="btn-submit" id="btnSaveScore" onclick="saveStudentScore()"><i class="fa-solid fa-floppy-disk"></i> Save & Sync Profile</button>
+        </div>
+
+        <!-- Action Strip 2: Post Feedback/Notice -->
+        <div class="action-strip animated-btn" onclick="toggleForm('feedbackForm')">
+            <div class="strip-left">
+                <div class="strip-icon" style="color: #4ade80; background: rgba(74, 222, 128, 0.15); border-color: rgba(74, 222, 128, 0.3);"><i class="fa-solid fa-comments"></i></div>
+                <div class="strip-text">
+                    <h3>Publish Faculty Remarks & Notices</h3>
+                    <p>Post general class feedback or confidential remarks for a specific student.</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: #64748b;"></i>
+        </div>
+
+        <!-- INLINE FORM 2: Post Feedbacks -->
+        <div class="form-card hidden fade-in" id="feedbackForm">
+            <div class="form-header">
+                <h3 style="color: #4ade80;"><i class="fa-solid fa-comments"></i> Publish Remark / Notice</h3>
+                <button class="btn-close-form" onclick="toggleForm('feedbackForm')"><i class="fa-solid fa-xmark"></i> Close</button>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Remark Type</label>
+                    <select id="fbType" class="input-box" onchange="toggleTargetStudent()">
+                        <option value="general">General Class Notice / Praise</option>
+                        <option value="personal">Personal Confidential Remark</option>
                     </select>
                 </div>
-
-                <div>
-                    <label>Academic Standing / Rank</label>
-                    <select id="stRank" class="input-box">
-                        <option value="1">Rank 1 (Topper)</option>
-                        <option value="2">Rank 2 (Second Position)</option>
-                        <option value="3">Rank 3 (Third Position)</option>
-                        <option value="4">Rank 4</option>
-                        <option value="5">Rank 5</option>
-                        <option value="distinction">Above Average (Distinction)</option>
-                        <option value="average" selected>Average Standing</option>
-                        <option value="below_average">Below Average</option>
-                        <option value="needs_improvement">Needs Improvement</option>
-                        <option value="failed">Failed</option>
-                    </select>
+                <div class="form-field hidden" id="targetStudentGroup">
+                    <label>Target Student Email / Name</label>
+                    <input type="text" id="fbTarget" class="input-box" placeholder="student email or name">
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div>
-                        <label>Marks Obtained</label>
-                        <input type="number" id="marksObtained" class="input-box" placeholder="e.g. 465" oninput="calculatePercentage()">
-                    </div>
-                    <div>
-                        <label>Maximum Marks</label>
-                        <input type="number" id="marksTotal" class="input-box" placeholder="500" value="500" oninput="calculatePercentage()">
-                    </div>
-                </div>
+            <div class="form-field">
+                <label>Notice / Feedback Title</label>
+                <input type="text" id="fbTitle" class="input-box" placeholder="e.g. Science Fair Appreciation">
+            </div>
 
-                <div>
-                    <label>Calculated Percentage</label>
-                    <input type="text" id="stPercentage" class="input-box" placeholder="93.0%" style="color: var(--primary); font-weight: 600;">
-                </div>
+            <div class="form-field">
+                <label>Message Content</label>
+                <textarea id="fbMessage" class="input-box" placeholder="Write feedback message..."></textarea>
+            </div>
 
-                <div>
-                    <label>Evaluation & Remarks (Optional)</label>
-                    <textarea id="stDescription" class="input-box" placeholder="Write performance assessment, strengths, and areas to improve..."></textarea>
-                </div>
+            <button class="btn-submit" id="btnSaveFb" style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); border-color: rgba(74, 222, 128, 0.4);" onclick="saveFeedback()"><i class="fa-solid fa-paper-plane"></i> Broadcast Remark</button>
+        </div>
 
-                <div>
-                    <label>Report Card (PDF / Image Max 1MB)</label>
-                    <div class="file-box" onclick="document.getElementById('reportFileInput').click()">
-                        <input type="file" id="reportFileInput" accept="image/*,application/pdf" onchange="handleFileSelected(event)">
-                        <div class="file-msg" id="fileStatus"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Document</div>
-                    </div>
-                    <input type="url" id="reportLink" class="input-box" placeholder="Or paste Google Drive Link here..." style="margin-top: 10px;">
-                </div>
-
-                <button id="btnSaveRecord" class="action-btn" onclick="saveStudentRecord()">
-                    <i class="fa-solid fa-check"></i> Save Record
-                </button>
+        <!-- Section Card: Current Top 5 Leaderboard Preview -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fa-solid fa-trophy"></i> Live Top 5 Class Leaderboard
+            </div>
+            <div class="leaderboard-list" id="teacherLeaderboardContainer">
+                <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading records...</div>
             </div>
         </div>
-    </div>
 
-    <!-- 2. Publish Remarks Modal -->
-    <div class="modal" id="remarkModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fa-solid fa-comment-dots"></i> Publish Remark</h2>
-                <button class="close-btn" onclick="closeModal('remarkModal')"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <label>Audience</label>
-                    <select id="fbType" class="input-box" onchange="handleFeedbackTypeChange()">
-                        <option value="general">Entire Class</option>
-                        <option value="personal">Individual Student</option>
-                    </select>
-                </div>
-                <div id="targetUserGroup" style="display: none;">
-                    <label>Recipient Email or Name</label>
-                    <input type="text" id="fbTargetUser" class="input-box" placeholder="e.g. student@gmail.com">
-                </div>
-                <div>
-                    <label>Subject / Title</label>
-                    <input type="text" id="fbTitle" class="input-box" placeholder="e.g. Term Assessment Review">
-                </div>
-                <div>
-                    <label>Message Content</label>
-                    <textarea id="fbMessage" class="input-box" placeholder="Write announcement or personal remark..."></textarea>
-                </div>
-                <button class="action-btn" onclick="postDirectFeedback()">
-                    <i class="fa-solid fa-paper-plane"></i> Publish Remark
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. Manage Records Modal -->
-    <div class="modal" id="manageModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fa-solid fa-list"></i> Active Remarks</h2>
-                <button class="close-btn" onclick="closeModal('manageModal')"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body" style="background: rgba(0,0,0,0.15);">
-                <div id="recordsListContainer" style="max-height: 400px; overflow-y: auto; padding-right: 4px;">
-                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Fetching records...</div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Firebase Scripts -->
@@ -381,8 +292,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
-        const loggedInTeacher = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || "Teacher";
-
         const firebaseConfig = {
             apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
             authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
@@ -391,321 +300,184 @@
             messagingSenderId: "776171239833",
             appId: "1:776171239833:web:39eea44420db97384b3b08"
         };
-        
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let uploadedFileDataUrl = '';
+        let allStudentsRefDocs = [];
+        let uploadedFileBase64 = "";
 
         window.onload = function() {
-            handleClassChange();
-            loadActiveFeedbacks();
+            loadStudentsDropdown();
+            listenTeacherLeaderboard();
         };
 
-        // Smooth Modals
-        function openModal(id) { 
-            const modal = document.getElementById(id);
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-        }
-        function closeModal(id) { 
-            const modal = document.getElementById(id);
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
-
-        // Logical Functions
-        function handleClassChange() {
-            const cls = document.getElementById('stClass').value;
-            const isSenior = (cls === '11' || cls === '12');
-            document.getElementById('streamGroup').style.display = isSenior ? 'flex' : 'none';
-        }
-
-        function calculatePercentage() {
-            const obtained = parseFloat(document.getElementById('marksObtained').value);
-            const total = parseFloat(document.getElementById('marksTotal').value);
-
-            if (!isNaN(obtained) && !isNaN(total) && total > 0) {
-                const perc = ((obtained / total) * 100).toFixed(1);
-                document.getElementById('stPercentage').value = `${perc}% (${obtained}/${total})`;
-            } else if (!isNaN(obtained)) {
-                document.getElementById('stPercentage').value = `${obtained}%`;
+        function toggleForm(formId) {
+            const form = document.getElementById(formId);
+            if (form.classList.contains('hidden')) {
+                uploadedFileBase64 = "";
+                if(formId === 'scoreForm') document.getElementById('feedbackForm').classList.add('hidden');
+                if(formId === 'feedbackForm') document.getElementById('scoreForm').classList.add('hidden');
+                form.classList.remove('hidden');
+            } else {
+                form.classList.add('hidden');
             }
         }
 
-        function resetStatusPill() {
-            const pill = document.getElementById('emailPill');
-            pill.style.display = 'none';
+        function toggleTargetStudent() {
+            const type = document.getElementById('fbType').value;
+            const group = document.getElementById('targetStudentGroup');
+            if (type === 'personal') group.classList.remove('hidden');
+            else group.classList.add('hidden');
         }
 
-        async function autoFetchStudent() {
-            const email = document.getElementById('stEmail').value.trim().toLowerCase();
-            const pill = document.getElementById('emailPill');
-
-            if (!email) {
-                pill.style.display = 'none';
-                return;
-            }
-
-            pill.className = 'status-pill neutral';
-            pill.style.display = 'inline-flex';
-            pill.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking records...';
-
-            try {
-                let matched = false;
-
-                const usersSnap = await db.collection('users').get();
-                usersSnap.forEach(doc => {
-                    const d = doc.data();
-                    const dEmail = (d.email || '').toLowerCase().trim();
-                    if (dEmail === email || doc.id.toLowerCase() === email) {
-                        applyStudentData(d);
-                        matched = true;
-                    }
-                });
-
-                if (!matched) {
-                    const stuSnap = await db.collection('students').where('email', '==', email).get();
-                    if (!stuSnap.empty) {
-                        applyStudentData(stuSnap.docs[0].data());
-                        matched = true;
-                    }
-                }
-
-                if (matched) {
-                    pill.className = 'status-pill success';
-                    pill.innerHTML = '<i class="fa-solid fa-circle-check"></i> Profile matched';
-                } else {
-                    pill.className = 'status-pill neutral';
-                    pill.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> New profile entry';
-                }
-            } catch (err) {
-                pill.style.display = 'none';
-            }
-        }
-
-        function cleanClassVal(val) {
-            if (!val) return '11';
-            const m = String(val).match(/\d+/);
-            return m ? m[0] : String(val).trim();
-        }
-
-        function applyStudentData(data) {
-            if (data.name || data.fullName || data.username) {
-                document.getElementById('stName').value = data.name || data.fullName || data.username;
-            }
-            if (data.rollNo || data.roll) {
-                document.getElementById('stRoll').value = data.rollNo || data.roll;
-            }
-            if (data.class || data.className || data.studentClass) {
-                document.getElementById('stClass').value = cleanClassVal(data.class || data.className || data.studentClass);
-                handleClassChange();
-            }
-            if (data.stream || data.subject) {
-                const s = (data.stream || data.subject).toUpperCase();
-                const stElem = document.getElementById('stStream');
-                for (let i = 0; i < stElem.options.length; i++) {
-                    if (stElem.options[i].value.toUpperCase().includes(s)) {
-                        stElem.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-            if (data.section || data.sec) {
-                const sec = String(data.section || data.sec).toUpperCase();
-                const secElem = document.getElementById('stSection');
-                for (let i = 0; i < secElem.options.length; i++) {
-                    if (secElem.options[i].value.toUpperCase() === sec) {
-                        secElem.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-        }
-
-        function handleFileSelected(event) {
+        function handleFileUpload(event, statusId) {
             const file = event.target.files[0];
-            const status = document.getElementById('fileStatus');
-            if (!file) {
-                status.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Document';
-                return;
-            }
-
-            if (file.size > 1024 * 1024) {
-                alert("⚠️ File exceeds 1MB limit. Please use a Drive link instead.");
+            const statusBox = document.getElementById(statusId);
+            if (!file) return;
+            if (file.size > 1.5 * 1024 * 1024) {
+                alert("File too large. Maximum size is 1.5MB.");
                 event.target.value = '';
-                uploadedFileDataUrl = '';
-                status.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Document';
                 return;
             }
-
             const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedFileDataUrl = e.target.result;
-                status.innerHTML = `<i class="fa-solid fa-check" style="color:#4ade80;"></i> Attached: ${file.name}`;
+            reader.onload = e => {
+                uploadedFileBase64 = e.target.result;
+                statusBox.innerHTML = `<i class="fa-solid fa-check" style="color:#4ade80;"></i> Attached`;
             };
             reader.readAsDataURL(file);
         }
 
-        async function saveStudentRecord() {
-            const email = document.getElementById('stEmail').value.trim().toLowerCase();
-            const name = document.getElementById('stName').value.trim();
-            const rollNo = document.getElementById('stRoll').value.trim();
-            const classVal = document.getElementById('stClass').value;
-            const section = document.getElementById('stSection').value;
-            const isSenior = (classVal === '11' || classVal === '12');
-            const stream = isSenior ? document.getElementById('stStream').value : 'General';
-            const examType = document.getElementById('stExamType').value;
-            const standingVal = document.getElementById('stRank').value;
-            const percentage = document.getElementById('stPercentage').value.trim();
-            const description = document.getElementById('stDescription').value.trim();
-            const reportLink = document.getElementById('reportLink').value.trim();
-            const finalReportUrl = uploadedFileDataUrl || reportLink || '';
+        // Load students for dropdown selection
+        function loadStudentsDropdown() {
+            db.collection('students').onSnapshot(snapshot => {
+                const select = document.getElementById('updateStudentSelect');
+                select.innerHTML = '<option value="" disabled selected>Select Student Profile</option>';
+                allStudentsRefDocs = [];
 
-            if (!name) return alert("Please enter the student's name.");
-
-            const btn = document.getElementById('btnSaveRecord');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
-
-            let parsedRank = '';
-            let standingLabel = standingVal;
-            if (['1', '2', '3', '4', '5'].includes(standingVal)) {
-                parsedRank = parseInt(standingVal);
-                standingLabel = `Rank ${parsedRank}`;
-            }
-
-            try {
-                let snap = null;
-                if (email) snap = await db.collection('students').where('email', '==', email).get();
-                if ((!snap || snap.empty) && name) snap = await db.collection('students').where('name', '==', name).get();
-
-                const recordData = {
-                    name, email, rollNo, roll: rollNo, class: classVal, classSection: classVal,
-                    section, stream, examType, rank: parsedRank, standing: standingLabel,
-                    score: percentage || 'N/A', marks: percentage || 'N/A', description,
-                    reportCardUrl: finalReportUrl, updatedBy: loggedInTeacher,
-                    updatedAt: new Date().toISOString()
-                };
-
-                if (snap && !snap.empty) {
-                    await db.collection('students').doc(snap.docs[0].id).update(recordData);
-                    alert(`✅ Record updated successfully for ${name}.`);
-                } else {
-                    await db.collection('students').add(recordData);
-                    alert(`✅ New record created successfully for ${name}.`);
-                }
-
-                if (description) {
-                    await db.collection('feedbacks').add({
-                        type: email ? 'personal' : 'general',
-                        targetUser: email || name,
-                        title: `${examType} - Evaluation`,
-                        message: description,
-                        teacherName: loggedInTeacher,
-                        createdAt: new Date().toISOString()
-                    });
-                }
-
-                // Reset Fields
-                document.getElementById('stEmail').value = '';
-                document.getElementById('stName').value = '';
-                document.getElementById('stRoll').value = '';
-                document.getElementById('marksObtained').value = '';
-                document.getElementById('stPercentage').value = '';
-                document.getElementById('stDescription').value = '';
-                document.getElementById('reportLink').value = '';
-                document.getElementById('reportFileInput').value = '';
-                document.getElementById('fileStatus').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload Document';
-                document.getElementById('emailPill').style.display = 'none';
-                uploadedFileDataUrl = '';
-                closeModal('performanceModal');
-
-            } catch (err) {
-                alert("Failed to save record. Check database permissions.");
-            }
-
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fa-solid fa-check"></i> Save Record';
-        }
-
-        function handleFeedbackTypeChange() {
-            const val = document.getElementById('fbType').value;
-            document.getElementById('targetUserGroup').style.display = (val === 'personal') ? 'block' : 'none';
-        }
-
-        async function postDirectFeedback() {
-            const type = document.getElementById('fbType').value;
-            const targetUser = document.getElementById('fbTargetUser').value.trim();
-            const title = document.getElementById('fbTitle').value.trim();
-            const message = document.getElementById('fbMessage').value.trim();
-
-            if (!title || !message) return alert("Title and Message are required.");
-            if (type === 'personal' && !targetUser) return alert("Please specify the recipient student.");
-
-            try {
-                await db.collection('feedbacks').add({
-                    type,
-                    targetUser: type === 'personal' ? targetUser : '',
-                    title,
-                    message,
-                    teacherName: loggedInTeacher,
-                    createdAt: new Date().toISOString()
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    allStudentsRefDocs.push({ id: doc.id, ...data });
+                    select.innerHTML += `<option value="${doc.id}">${data.name || 'Student'} (Class ${data.class || '11'} - Sec ${data.section || 'B'})</option>`;
                 });
-
-                alert("✅ Remark published successfully.");
-                document.getElementById('fbTitle').value = '';
-                document.getElementById('fbMessage').value = '';
-                document.getElementById('fbTargetUser').value = '';
-                closeModal('remarkModal');
-            } catch (err) {
-                alert("Failed to publish remark.");
-            }
-        }
-
-        function loadActiveFeedbacks() {
-            db.collection('feedbacks').onSnapshot((snapshot) => {
-                const listContainer = document.getElementById('recordsListContainer');
-                
-                let temp = [];
-                snapshot.forEach(doc => temp.push({id: doc.id, ...doc.data()}));
-                temp.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-                if (temp.length === 0) {
-                    listContainer.innerHTML = `<div class="no-data"><i class="fa-solid fa-folder-open"></i> No active remarks published yet.</div>`;
-                    return;
-                }
-
-                listContainer.innerHTML = '';
-                temp.forEach(d => {
-                    const isPersonal = d.type === 'personal';
-                    const targetInfo = isPersonal ? `(To: ${d.targetUser})` : '(General Class)';
-
-                    listContainer.innerHTML += `
-                        <div class="record-card">
-                            <div class="record-info">
-                                <div class="record-title">${d.title || 'Notice'} <span>${targetInfo}</span></div>
-                                <div class="record-desc">${d.message || ''}</div>
-                                <div class="record-meta">By ${d.teacherName || loggedInTeacher}</div>
-                            </div>
-                            <button class="btn-delete" onclick="deleteRecord('${d.id}')">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
-                });
-            }, (err) => {
-                console.error("Fetch feedbacks error:", err);
             });
         }
 
-        async function deleteRecord(docId) {
-            if (!confirm("Are you sure you want to remove this record?")) return;
+        async function saveStudentScore() {
+            const studentId = document.getElementById('updateStudentSelect').value;
+            const examType = document.getElementById('upExamType').value.trim();
+            const score = document.getElementById('upScore').value.trim();
+            const rank = parseInt(document.getElementById('upRank').value) || 0;
+            const standing = document.getElementById('upStanding').value;
+            const description = document.getElementById('upDescription').value.trim();
+            const link = document.getElementById('upLink').value.trim();
+            const reportCardUrl = uploadedFileBase64 || link;
+
+            if (!studentId) return alert("Please select a student profile.");
+
+            const btn = document.getElementById('btnSaveScore');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
+            btn.disabled = true;
+
             try {
-                await db.collection('feedbacks').doc(docId).delete();
+                await db.collection('students').doc(studentId).update({
+                    examType: examType || "Examination Report",
+                    score: score || "Pending",
+                    rank: rank,
+                    standing: standing,
+                    description: description,
+                    reportCardUrl: reportCardUrl || ""
+                });
+
+                alert("✅ Student Performance & Rank Updated Successfully!");
+                toggleForm('scoreForm');
             } catch (err) {
-                alert("Failed to delete record.");
+                alert("Failed to update student record.");
             }
+
+            btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save & Sync Profile`;
+            btn.disabled = false;
+        }
+
+        async function saveFeedback() {
+            const type = document.getElementById('fbType').value;
+            const targetUser = document.getElementById('fbTarget').value.trim().toLowerCase();
+            const title = document.getElementById('fbTitle').value.trim();
+            const message = document.getElementById('fbMessage').value.trim();
+            const teacherName = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || 'Faculty Member';
+
+            if (!message) return alert("Message content cannot be blank.");
+            if (type === 'personal' && !targetUser) return alert("Please specify the target student email or name.");
+
+            const btn = document.getElementById('btnSaveFb');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Broadcasting...`;
+            btn.disabled = true;
+
+            try {
+                await db.collection('feedbacks').add({
+                    type: type,
+                    targetUser: type === 'personal' ? targetUser : '',
+                    title: title || 'Class Notice',
+                    message: message,
+                    teacherName: teacherName,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert("✅ Remark Published Successfully!");
+                toggleForm('feedbackForm');
+                document.getElementById('fbTitle').value = '';
+                document.getElementById('fbMessage').value = '';
+                document.getElementById('fbTarget').value = '';
+            } catch (err) {
+                alert("Failed to post remark.");
+            }
+
+            btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Broadcast Remark`;
+            btn.disabled = false;
+        }
+
+        function listenTeacherLeaderboard() {
+            const container = document.getElementById('teacherLeaderboardContainer');
+            db.collection('students').onSnapshot(snapshot => {
+                let list = [];
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    const r = parseInt(d.rank);
+                    if (!isNaN(r) && r >= 1 && r <= 5) {
+                        list.push(d);
+                    }
+                });
+
+                list.sort((a, b) => (parseInt(a.rank) || 99) - (parseInt(b.rank) || 99));
+
+                if (list.length === 0) {
+                    container.innerHTML = `<div class="no-data">No students currently assigned a top 5 rank.</div>`;
+                    return;
+                }
+
+                container.innerHTML = '';
+                list.forEach(item => {
+                    const pos = parseInt(item.rank) || 1;
+                    let rankClass = 'rank-num';
+                    if (pos === 1) rankClass += ' r1';
+                    if (pos === 2) rankClass += ' r2';
+                    if (pos === 3) rankClass += ' r3';
+
+                    container.innerHTML += `
+                        <div class="leaderboard-item">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div class="${rankClass}">${pos}</div>
+                                <div>
+                                    <div style="font-size:13px; font-weight:600; color:#fff;">${item.name || 'Student'}</div>
+                                    <div style="font-size:10.5px; color:#64748b;">Class ${item.class || '11'} • Sec ${item.section || 'B'}</div>
+                                </div>
+                            </div>
+                            <div style="font-size:12px; font-weight:700; color:#38bdf8; background:rgba(56,189,248,0.1); padding:3px 8px; border-radius:6px;">
+                                ${item.score || ('Rank #' + pos)}
+                            </div>
+                        </div>
+                    `;
+                });
+            });
         }
     </script>
 </body>
