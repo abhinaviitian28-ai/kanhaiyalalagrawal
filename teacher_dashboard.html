@@ -17,7 +17,7 @@
             --border: rgba(56, 189, 248, 0.25);
         }
 
-        /* 5. Front-End Security: Disable Text Selection & Dragging */
+        /* Front-End Security: Disable Text Selection & Dragging */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
             font-family: 'Poppins', sans-serif; 
@@ -28,7 +28,7 @@
 
         input, textarea, select { user-select: auto; }
 
-        /* 2. Mobile White-Bar & Scroll Glitch Fix */
+        /* Mobile Fix: 100dvh & No White-Bar Scroll Glitch */
         html, body {
             background-color: var(--bg);
             color: var(--text);
@@ -36,7 +36,7 @@
             overscroll-behavior-y: none;
             display: flex;
             justify-content: center;
-            padding: 20px 15px;
+            padding: 25px 15px;
             position: relative;
         }
 
@@ -49,32 +49,32 @@
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* 1. PC vs Mobile View Fix (Desktop-friendly width 1100px) */
+        /* PC View: Full Desktop Width (1100px) */
         .container { 
             width: 100%; 
             max-width: 1100px; 
-            padding-bottom: 40px; 
+            padding-bottom: 50px; 
             animation: fadeIn 0.4s ease-out; 
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 3. Smooth & Crisp Marquee (Scrolling Text) Fix */
+        /* Marquee Fix: Highly Optimized 60fps, No Lag */
         .marquee-container {
             width: 100%;
             background: rgba(56, 189, 248, 0.1);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 10px 15px;
-            margin-bottom: 20px;
+            padding: 12px 18px;
+            margin-bottom: 25px;
             overflow: hidden;
             white-space: nowrap;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             display: flex;
             align-items: center;
         }
@@ -82,11 +82,11 @@
         .marquee-text {
             display: inline-block;
             padding-left: 100%;
-            animation: marqueeMove 25s linear infinite;
+            animation: marqueeMove 22s linear infinite;
             color: var(--primary);
             font-size: 13.5px;
             font-weight: 600;
-            will-change: transform; /* GPU Acceleration */
+            will-change: transform; /* Hardware Acceleration for zero lag */
         }
 
         @keyframes marqueeMove {
@@ -99,108 +99,111 @@
         /* Top Bar */
         .top-bar { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 18px 22px; background: rgba(15, 23, 42, 0.85); 
-            border: 1px solid var(--border); border-radius: 14px; 
-            margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); 
-            backdrop-filter: blur(8px); 
+            padding: 20px 25px; background: rgba(15, 23, 42, 0.9); 
+            border: 1px solid var(--border); border-radius: 16px; 
+            margin-bottom: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); 
         }
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; color: var(--text); }
-        .brand i { color: var(--primary); font-size: 22px; background: rgba(56, 189, 248, 0.1); padding: 10px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .brand { display: flex; align-items: center; gap: 14px; font-size: 19px; font-weight: 600; color: var(--text); }
+        .brand i { color: var(--primary); font-size: 22px; background: rgba(56, 189, 248, 0.1); padding: 11px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.2); }
         
         .btn-logout { 
             background: rgba(239, 68, 68, 0.1); color: #f87171; 
-            border: 1px solid rgba(239, 68, 68, 0.3); padding: 9px 16px; border-radius: 10px; 
+            border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px 18px; border-radius: 10px; 
             font-size: 13.5px; font-weight: 600; text-decoration: none; 
             display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; cursor: pointer; 
         }
-        .btn-logout:hover { background: #ef4444; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+        .btn-logout:hover { background: #ef4444; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
 
         /* Welcome Banner */
         .welcome-card {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 1));
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 24px 30px;
-            margin-bottom: 30px;
+            padding: 28px 32px;
+            margin-bottom: 35px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(8px);
         }
-        .welcome-info h2 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
-        .welcome-info p { font-size: 14px; color: var(--subtext); }
+        .welcome-info h2 { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .welcome-info p { font-size: 14.5px; color: var(--subtext); }
         .welcome-badge {
             background: rgba(56, 189, 248, 0.15);
             color: var(--primary);
             border: 1px solid var(--border);
-            padding: 10px 16px;
+            padding: 10px 18px;
             border-radius: 10px;
-            font-size: 13px;
+            font-size: 13.5px;
             font-weight: 600;
         }
 
-        /* 7. Profile & Dashboard Exception: Original Grid Layout */
+        /* Dashboard Grid Layout */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
+            gap: 22px;
         }
 
-        /* 4. Animations & Hover Effects */
+        /* Cards Lag/Glitch Fix: Removed heavy filters, optimized transitions */
         .dash-card {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(15, 23, 42, 0.85); /* Solid dark instead of heavy blur */
             border: 1px solid rgba(56, 189, 248, 0.15);
             border-radius: 18px;
-            padding: 24px;
+            padding: 26px;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 20px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            backdrop-filter: blur(5px);
+            gap: 22px;
+            transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, background 0.25s ease-out;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            will-change: transform; /* Eliminates hover jitters */
         }
 
         .dash-card:hover {
-            transform: translateY(-6px);
-            background: rgba(15, 23, 42, 0.9);
+            transform: translateY(-5px);
+            background: rgba(30, 41, 59, 0.95);
             border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
         }
 
-        .dash-card:active { transform: scale(0.97); }
+        .dash-card:active { transform: scale(0.98); }
 
         .dash-icon {
-            width: 65px; height: 65px;
+            width: 68px; height: 68px;
             background: rgba(56, 189, 248, 0.1);
             border: 1px solid var(--border);
             border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
             color: var(--primary); font-size: 28px;
             flex-shrink: 0;
-            transition: all 0.3s ease;
+            transition: background 0.25s, color 0.25s; /* Simplified animation to prevent lag */
         }
 
         .dash-card:hover .dash-icon {
             background: var(--primary);
             color: var(--bg);
-            transform: scale(1.05);
         }
 
-        .dash-text h3 { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-        .dash-text p { font-size: 13px; color: var(--subtext); line-height: 1.4; }
+        .dash-text h3 { font-size: 17.5px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+        .dash-text p { font-size: 13.5px; color: var(--subtext); line-height: 1.4; }
 
+        /* Strict Mobile View Responsiveness - Zero Overlap */
         @media (max-width: 768px) {
-            .welcome-card { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .container { max-width: 100%; }
+            .welcome-card { flex-direction: column; align-items: flex-start; gap: 15px; padding: 22px; }
+            .welcome-info h2 { font-size: 20px; }
+            .dashboard-grid { grid-template-columns: 1fr; gap: 16px; }
+            .container { max-width: 100%; padding: 0 5px; }
+            .top-bar { padding: 15px 20px; margin-bottom: 20px; }
+            .brand { font-size: 15.5px; }
+            .dash-card { padding: 20px; gap: 16px; }
+            .dash-icon { width: 56px; height: 56px; font-size: 24px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 5. Security Guard Script -->
+    <!-- Security Guard Script -->
     <script>
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
@@ -214,7 +217,7 @@
 
     <div class="container">
         
-        <!-- Marquee Announcement -->
+        <!-- Marquee Announcement (Zero Lag / GPU Accelerated) -->
         <div class="marquee-container">
             <div class="marquee-text">
                 <i class="fa-solid fa-bell"></i> Welcome to the Teacher Portal. Ensure all daily attendance and assignment records are updated before the end of the day.
@@ -227,7 +230,6 @@
                 <i class="fa-solid fa-chalkboard-user"></i>
                 <span>Teacher Control Panel</span>
             </div>
-            <!-- Logout Link -->
             <a href="index.html" class="btn-logout" onclick="logoutTeacher()">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
             </a>
@@ -244,7 +246,7 @@
             </div>
         </div>
 
-        <!-- 6 & 8. No Missing Elements & Exact Teacher File Links -->
+        <!-- Dashboard Grid Modules -->
         <div class="dashboard-grid">
             
             <!-- Student Profiles -->
@@ -314,9 +316,8 @@
 
     </div>
 
-    <!-- 9. Future Ready Logic (Phone/OTP structure in place) -->
+    <!-- Future Ready Logic (Phone/OTP structure in place) -->
     <script>
-        // Fetches logged-in teacher's name (Email or Phone logic compatible)
         const loggedInTeacher = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || "Faculty Member";
         const nameEl = document.getElementById('teacherNameDisplay');
         if (nameEl) {
@@ -324,11 +325,10 @@
         }
 
         function logoutTeacher() {
-            // Clears all possible auth tokens
             localStorage.removeItem('loggedInTeacher');
             localStorage.removeItem('loggedInUser');
             localStorage.removeItem('user_email');
-            localStorage.removeItem('user_phone'); // Phone auth hook
+            localStorage.removeItem('user_phone');
         }
     </script>
 </body>
