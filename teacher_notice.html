@@ -17,7 +17,7 @@
             --border: rgba(56, 189, 248, 0.25);
         }
 
-        /* Front-End Security: Disable Text Selection & Dragging */
+        /* 5. Front-End Security: Disable Text Selection & Dragging */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
             font-family: 'Poppins', sans-serif; 
@@ -28,7 +28,7 @@
 
         input, textarea, select { user-select: auto; }
 
-        /* PC & Mobile Responsive Fix (Desktop friendly width + Mobile 100dvh) */
+        /* 2. PC & Mobile Responsive Fix (Desktop friendly width + Mobile 100dvh) */
         html, body {
             background-color: var(--bg);
             color: var(--text);
@@ -54,9 +54,10 @@
         ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
+        /* 1. PC vs Mobile View Fix */
         .container { 
             width: 100%; 
-            max-width: 950px; /* PC पर शानदार चौड़ाई, मोबाइल पर ऑटो फिट */
+            max-width: 950px; 
             padding-bottom: 40px; 
             animation: fadeIn 0.4s ease-out; 
         }
@@ -74,6 +75,7 @@
         .brand { display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 600; color: var(--text); }
         .brand i { color: var(--primary); font-size: 20px; background: rgba(56, 189, 248, 0.1); padding: 9px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.2); }
         
+        /* 8. Exact Links */
         .btn-home { 
             background: rgba(56, 189, 248, 0.1); color: var(--primary); 
             border: 1px solid var(--border); padding: 9px 16px; border-radius: 10px; 
@@ -82,7 +84,7 @@
         }
         .btn-home:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
 
-        /* Type XYZ Menu Strips */
+        /* 4. Type XYZ Menu Strips with Smooth Animations */
         .strip { 
             display: flex; align-items: center; background: rgba(15, 23, 42, 0.6); 
             border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 14px; 
@@ -93,7 +95,8 @@
         .strip:hover { transform: translateY(-4px); background: rgba(15, 23, 42, 0.9); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2); }
         .strip:active { transform: scale(0.98); }
         
-        .strip-icon { width: 52px; height: 52px; background: rgba(56, 189, 248, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 22px; margin-right: 18px; flex-shrink: 0; border: 1px solid var(--border); }
+        .strip-icon { width: 52px; height: 52px; background: rgba(56, 189, 248, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 22px; margin-right: 18px; flex-shrink: 0; border: 1px solid var(--border); transition: all 0.3s ease; }
+        .strip:hover .strip-icon { background: var(--primary); color: var(--bg); }
         .strip-text h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
         .strip-text p { font-size: 12.5px; color: var(--subtext); }
         .strip-arrow { margin-left: auto; color: var(--primary); font-size: 18px; transition: transform 0.3s; }
@@ -141,7 +144,7 @@
 
         /* Notice List Elements */
         .list-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-left: 4px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; gap: 12px; }
-        .list-item:hover { border-color: rgba(56, 189, 248, 0.3); background: rgba(30, 41, 59, 0.8); }
+        .list-item:hover { border-color: rgba(56, 189, 248, 0.3); background: rgba(30, 41, 59, 0.85); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .list-info { flex: 1; min-width: 0; }
         .list-info h4 { font-size: 14.5px; color: var(--text); margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 8px; }
         .list-info p { font-size: 12px; color: var(--subtext); line-height: 1.4; margin-bottom: 4px; }
@@ -159,12 +162,14 @@
         @media (max-width: 600px) {
             .form-row { grid-template-columns: 1fr; gap: 14px; }
             .container { max-width: 100%; }
+            .list-item { flex-direction: column; align-items: flex-start; }
+            .btn-group { width: 100%; justify-content: flex-end; margin-top: 5px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- UI Security Guard -->
+    <!-- 5. UI Security Guard -->
     <script>
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
@@ -184,8 +189,8 @@
                 <i class="fa-solid fa-bullhorn"></i>
                 <span>Notice Board Management</span>
             </div>
-            <!-- Exact file link name matching dashboard -->
-            <a href="database.html" class="btn-home">
+            <!-- 8. Exact Link to Teacher Dashboard -->
+            <a href="teacher_dashboard.html" class="btn-home">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
         </div>
@@ -286,8 +291,8 @@
                 <h2><i class="fa-solid fa-list-check"></i> Manage Active Notices</h2>
                 <button class="close-btn" onclick="closeModal('manageNoticeModal')"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="modal-body" style="background: rgba(0,0,0,0.15);">
-                <div id="manageNoticesList">
+            <div class="modal-body" style="background: rgba(0,0,0,0.15); padding: 15px;">
+                <div id="manageNoticesList" style="max-height: 400px; overflow-y: auto; padding-right: 5px;">
                     <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading notices...</div>
                 </div>
             </div>
@@ -371,12 +376,16 @@
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publishing...`;
 
             try {
+                // Future Ready logic: Also saving author name if logged in
+                const author = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || 'Admin';
+                
                 await db.collection('notices').add({
                     title: title,
                     targetClass: targetClass,
                     priority: priority,
                     description: description,
                     fileUrl: finalFileUrl || '',
+                    author: author,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
@@ -426,17 +435,20 @@
 
                 temp.forEach(data => {
                     const safeUrl = data.fileUrl ? data.fileUrl.replace(/'/g, "\\'") : '';
+                    let priorityColor = "var(--primary)";
+                    if(data.priority === "Important") priorityColor = "#fbbf24";
+                    if(data.priority === "Warning") priorityColor = "#ef4444";
                     
                     manageList.innerHTML += `
                         <div class="list-item">
                             <div class="list-info">
-                                <h4><i class="fa-solid fa-bullhorn"></i> ${data.title || 'Notice'}</h4>
+                                <h4><i class="fa-solid fa-bullhorn" style="color:${priorityColor};"></i> ${data.title || 'Notice'}</h4>
                                 <p>${data.description || ''}</p>
                                 <div class="list-meta">Class: ${data.targetClass || 'All'} • Priority: ${data.priority || 'Normal'}</div>
                             </div>
                             <div class="btn-group">
                                 ${safeUrl ? `<button class="btn-view" onclick="openSafePDF('${safeUrl}')"><i class="fa-solid fa-eye"></i> View</button>` : ''}
-                                <button class="btn-delete" onclick="deleteNotice('${data.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                <button class="btn-delete" onclick="deleteNotice('${data.id}')"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
                     `;
@@ -445,7 +457,7 @@
         }
 
         async function deleteNotice(id) {
-            if (!confirm("Are you sure you want to delete this notice?")) return;
+            if (!confirm("Are you sure you want to delete this notice permanently?")) return;
             try { await db.collection('notices').doc(id).delete(); } 
             catch (e) { alert("Error deleting notice."); }
         }
