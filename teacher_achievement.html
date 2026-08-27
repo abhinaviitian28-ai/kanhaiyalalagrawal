@@ -77,7 +77,7 @@
         }
         .btn-dashboard:hover { background: var(--primary); color: #000; box-shadow: 0 0 12px var(--primary-glow); }
 
-        /* Navigation Header (For New Pages) */
+        /* Navigation Header */
         .nav-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
         .btn-back { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
         .btn-back:hover { background: #fff; color: #000; }
@@ -125,7 +125,7 @@
         /* List Cards (Result / Notice Strips) */
         .list-container { display: flex; flex-direction: column; gap: 14px; }
         .result-card { background: linear-gradient(145deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 15px; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .result-card:hover { border-color: var(--primary); }
+        .result-card:hover { border-color: var(--primary); box-shadow: 0 6px 20px var(--primary-glow); }
         
         .result-header { display: flex; justify-content: space-between; align-items: center; }
         .result-left { display: flex; align-items: center; gap: 14px; }
@@ -162,7 +162,7 @@
 
         .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 24px; width: 100%; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
 
-        /* Action Sm Buttons */
+        /* Delete / Edit Buttons */
         .btn-action-sm { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
         .btn-action-sm.edit:hover { background: rgba(0, 229, 255, 0.15); color: var(--primary); border-color: var(--primary); }
         .btn-action-sm.delete { color: var(--danger); border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.1); }
@@ -230,7 +230,7 @@
                 <button class="btn-primary animated-btn" onclick="loadClassData()"><i class="fa-solid fa-bolt"></i> Initialize Workspace</button>
             </div>
 
-            <!-- Workspace Menu (Appears after loading class) -->
+            <!-- Workspace Menu -->
             <div id="workspaceMenu" class="hidden fade-in" style="margin-top:20px;">
                 
                 <div class="section-card" style="margin-bottom:20px;">
@@ -246,8 +246,9 @@
                         <div class="menu-icon"><i class="fa-solid fa-user-pen"></i></div>
                         <div class="menu-text">
                             <h3>Evaluate Students</h3>
-                            <p>Update exam scores, ranks, standing, report cards & send confidential remarks.</p>
+                            <p>Update exam scores, ranks, report cards & send confidential remarks.</p>
                         </div>
+                        <i class="fa-solid fa-arrow-right menu-arrow"></i>
                     </div>
 
                     <!-- 2. Broadcast General Notice -->
@@ -259,6 +260,7 @@
                             <h3>Broadcast Notice</h3>
                             <p>Send a general announcement or feedback to the entire classroom.</p>
                         </div>
+                        <i class="fa-solid fa-arrow-right menu-arrow"></i>
                     </div>
 
                     <!-- 3. Manage Past Messages (Edit/Delete) -->
@@ -268,14 +270,15 @@
                         </div>
                         <div class="menu-text">
                             <h3>Manage Past Records</h3>
-                            <p>Search, edit or delete previously sent notices and confidential remarks.</p>
+                            <p>Search, edit or delete previously sent general and personal notices.</p>
                         </div>
+                        <i class="fa-solid fa-arrow-right menu-arrow"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= VIEW 2: EVALUATE & PERSONAL REMARKS (New Page) ================= -->
+        <!-- ================= VIEW 2: EVALUATE & PERSONAL REMARKS ================= -->
         <div id="viewMarks" class="hidden fade-in">
             <div class="nav-header">
                 <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
@@ -285,7 +288,7 @@
             <div class="section-card">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <!-- UPDATED PLACEHOLDER FOR SHORT & MULTI-SEARCH -->
+                    <!-- UPDATED SEARCH PLACEHOLDER -->
                     <input type="text" id="studentSearch" class="search-input" placeholder="Search Student ID, Email or Phone..." onkeyup="handleStudentSearch()">
                 </div>
 
@@ -301,7 +304,7 @@
             </div>
         </div>
 
-        <!-- ================= VIEW 3: CLASS ANNOUNCEMENTS (New Page) ================= -->
+        <!-- ================= VIEW 3: CLASS ANNOUNCEMENTS ================= -->
         <div id="viewClassNotice" class="hidden fade-in">
             <div class="nav-header">
                 <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
@@ -340,7 +343,6 @@
                     <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading past records...</div>
                 </div>
 
-                <!-- See More for Past Messages -->
                 <div style="text-align: center;">
                     <button id="seeMoreFbBtn" class="btn-see-more animated-btn" style="color:var(--purple); border-color:rgba(168, 85, 247, 0.3); background:rgba(168, 85, 247, 0.1); box-shadow: 0 0 10px var(--purple-glow);" onclick="loadMoreFb()" style="display:none;">
                         <i class="fa-solid fa-chevron-down"></i> Load More Notices
@@ -422,7 +424,6 @@
             document.getElementById('leaderboardContainer').innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading ranks...</div>';
 
             try {
-                // FIXED: Fetching from 'students' collection!
                 const studentSnap = await db.collection('students').get();
                 currentStudents = [];
                 
@@ -497,9 +498,15 @@
             const container = document.getElementById('studentsListContainer');
             container.innerHTML = '';
 
+            // SUPER ARRAY SEARCH LOGIC (NO UNDEFINED ERRORS)
             let filtered = currentStudents.filter(item => {
-                // ADDED EMAIL, PHONE, AND ID SEARCHING LOGIC
-                let textToSearch = `${item.name} ${item.username} ${item.email} ${item.rollNo} ${item.roll} ${item.phone} ${item.phoneNumber} ${item.studentId} ${item.id}`.toLowerCase();
+                let textArray = [
+                    item.name || '', item.username || '', item.fullName || '',
+                    item.email || '', item.id || '', item.studentId || '',
+                    item.phone || '', item.phoneNumber || '',
+                    item.rollNo || '', item.roll || ''
+                ];
+                let textToSearch = textArray.join(' ').toLowerCase();
                 return textToSearch.includes(searchQuery);
             });
 
@@ -522,7 +529,6 @@
                     rankHTML = `<div class="badge-pill">${getFormatStanding(student.standing)}</div>`;
                 }
 
-                // Proper Options Selection
                 const isDist = student.standing === 'distinction' ? 'selected' : '';
                 const isFirst = student.standing === 'first_division' ? 'selected' : '';
                 const isSecond = student.standing === 'second_division' ? 'selected' : '';
@@ -628,6 +634,7 @@
             reader.readAsDataURL(file);
         }
 
+        // SAVE ACADEMIC DATA + NOTICE TO `students`
         async function saveAllStudentData(studentId, email, name) {
             const exName = document.getElementById(`exName_${studentId}`).value.trim() || 'Examination Report';
             const score = document.getElementById(`exScore_${studentId}`).value.trim();
@@ -732,20 +739,25 @@
                 allClassFeedbacks = [];
                 snapshot.forEach(doc => {
                     const fb = doc.data();
+                    const fType = (fb.type || 'general').toLowerCase();
                     
-                    let isTargetedPersonal = false;
-                    if (fb.type === 'personal') {
-                        isTargetedPersonal = currentStudents.some(s => (s.email || s.id).toLowerCase() === (fb.targetUser || '').toLowerCase());
-                    }
-
-                    let classMatch = !fb.targetClass || fb.targetClass === "All" || fb.targetClass === selectedClassObj.cls;
-                    let secMatch = !fb.targetSec || fb.targetSec === "All" || fb.targetSec === selectedClassObj.sec;
-                    
-                    if ((fb.type === 'general' && classMatch && secMatch) || isTargetedPersonal) {
+                    // Show ALL general notices no matter what
+                    if (fType === 'general') {
                         allClassFeedbacks.push({id: doc.id, ...fb});
+                    } 
+                    // Show personal notices ONLY if the student is in the current class list
+                    else if (fType === 'personal') {
+                        let isTargetedPersonal = currentStudents.some(s => 
+                            (s.email || '').toLowerCase() === (fb.targetUser || '').toLowerCase() || 
+                            (s.id || '').toLowerCase() === (fb.targetUser || '').toLowerCase()
+                        );
+                        if (isTargetedPersonal) {
+                            allClassFeedbacks.push({id: doc.id, ...fb});
+                        }
                     }
                 });
-                // Reset search & pagination for feedbacks when newly loaded
+                
+                // Reset search & pagination
                 fbSearchQuery = "";
                 document.getElementById('fbSearch').value = "";
                 fbVisibleCount = 5;
@@ -769,7 +781,11 @@
             container.innerHTML = '';
 
             let filtered = allClassFeedbacks.filter(f => {
-                let t = `${f.title} ${f.message} ${f.targetUser} ${f.targetName}`.toLowerCase();
+                let textArray = [
+                    f.title || '', f.message || '', f.targetUser || '', 
+                    f.targetName || '', f.teacherName || ''
+                ];
+                let t = textArray.join(' ').toLowerCase();
                 return t.includes(fbSearchQuery);
             });
 
@@ -838,8 +854,7 @@
 
             try {
                 await db.collection('feedbacks').doc(id).update({
-                    title: title,
-                    message: msg,
+                    title: title, message: msg,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 alert("✅ Message Updated!");
