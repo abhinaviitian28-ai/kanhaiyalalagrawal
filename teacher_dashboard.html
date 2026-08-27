@@ -10,248 +10,100 @@
     <style>
         :root {
             --bg: #070d19;
-            --card: #0f172a;
+            --card: #162133;
             --primary: #38bdf8;
-            --text: #ffffff;
+            --secondary: #eab308;
+            --text: #f8fafc;
             --subtext: #94a3b8;
-            --border: rgba(56, 189, 248, 0.25);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        /* Security: Disable Text Selection & Dragging */
+        /* === CORE SETTINGS & NO SCROLLBAR === */
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            -webkit-user-drag: none;
+            user-select: none; -webkit-user-drag: none;
+            scrollbar-width: none; -ms-overflow-style: none;
         }
 
         input, textarea, select { user-select: auto; }
+        ::-webkit-scrollbar { display: none; width: 0; background: transparent; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            padding: 15px;
-            position: relative;
-            overscroll-behavior-y: none;
+            background-color: var(--bg); color: var(--text);
+            min-height: 100vh; display: flex; justify-content: center;
+            padding: 15px; position: relative; overscroll-behavior-y: none;
         }
 
-        /* सॉलिड ग्रेडिएंट बैकग्राउंड (कोई लैग नहीं) */
         body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
             z-index: -1;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
-
-        /* परफेक्ट लैपटॉप विड्थ */
-        .container {
-            width: 100%;
-            max-width: 950px;
-            padding-bottom: 30px;
-        }
+        /* 950px Exact Student Reference Width */
+        .container { width: 100%; max-width: 950px; padding-bottom: 40px; }
 
         /* --- LAG-FREE ANIMATIONS --- */
-        /* Will-change GPU को बता देता है कि सिर्फ यह चीज हिलेगी, जिससे बाकी पेज हैंग नहीं होता */
-        .animated-btn { 
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s; 
-            cursor: pointer; 
-            will-change: transform; 
-        }
-        .animated-btn:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.15); }
+        .animated-btn { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; will-change: transform; }
+        .animated-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
         .animated-btn:active { transform: scale(0.97); }
 
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Running Announcement Bar - Removed Blur */
-        .announcement-bar {
-            background: #1e293b; /* सॉलिड डार्क कलर, कोई कांच वाला इफ़ेक्ट नहीं */
-            color: var(--text);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .announcement-bar i {
-            color: var(--primary);
-            font-size: 16px;
-            animation: pulseIcon 1.5s infinite;
-            flex-shrink: 0;
-        }
-
+        /* Announcement Bar */
+        .announcement-bar { background: var(--card); color: var(--text); padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 500; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); overflow: hidden; border: 1px solid var(--border); }
+        .announcement-bar i { color: var(--primary); font-size: 16px; animation: pulseIcon 1.5s infinite; flex-shrink: 0; }
         @keyframes pulseIcon { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-
+        
         .marquee-container { overflow: hidden; white-space: nowrap; width: 100%; }
-        /* translate3d से हार्डवेयर एक्सेलेरेशन ऑन हो जाता है (100% स्मूथ) */
-        .marquee-text { 
-            display: inline-block; 
-            padding-left: 100%; 
-            animation: marquee 20s linear infinite; 
-            will-change: transform;
-        }
+        .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite; will-change: transform; }
         @keyframes marquee { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-        /* Top Bar - Removed Blur */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #162032; /* सॉलिड कलर */
-            padding: 14px 20px;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
+        /* Top Bar */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 14px 20px; border-radius: 14px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); margin-bottom: 20px; border: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
         .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--text); }
         .brand i { background: rgba(56, 189, 248, 0.1); padding: 9px; border-radius: 10px; color: var(--primary); font-size: 16px; border: 1px solid rgba(56, 189, 248, 0.2); }
-
-        .header-right-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .profile-badge { background: #0f172a; border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 12px; color: var(--primary); font-weight: 500; display: flex; align-items: center; gap: 6px; }
         
-        .btn-logout {
-            background: rgba(239, 68, 68, 0.1);
-            color: #f87171;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 9px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            transition: all 0.2s;
-        }
-        .btn-logout:hover { background: #ef4444; color: #ffffff; }
+        .btn-logout { background: rgba(239, 68, 68, 0.1); color: #f87171; text-decoration: none; padding: 8px 16px; border-radius: 9px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(239, 68, 68, 0.3); transition: 0.2s; }
+        .btn-logout:hover { background: #ef4444; color: #fff; }
 
-        /* Welcome Summary Card - Removed Blur */
-        .welcome-card {
-            background: #162133;
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 14px;
-            padding: 18px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+        /* Welcome Summary Card (Cleaned up text) */
+        .welcome-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
 
-        .welcome-info h4 { font-size: 12px; color: var(--primary); margin-bottom: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .welcome-info p { font-size: 16px; color: var(--text); font-weight: 600; }
+        .welcome-info h2 { font-size: 20px; color: var(--text); margin-bottom: 4px; font-weight: 600; }
+        .welcome-info p { font-size: 13px; color: var(--subtext); }
 
-        .welcome-status {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary);
-            border: 1px solid var(--border);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .welcome-status { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.25); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
 
-        /* Main Hubs Grid */
-        .main-hubs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 25px;
-        }
-
-        /* Cards - Removed Blur for 100% smooth hover */
-        .hub-main-card {
-            background: #111827; /* Solid color fixes the glitch */
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            text-decoration: none;
-        }
-
-        .hub-main-card:hover {
-            border-color: var(--primary);
-            background: #1e293b;
-        }
+        /* Main Hub Cards (7 Original Modules) */
+        .main-hubs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 25px; }
         
-        .hub-main-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            transition: all 0.3s ease;
-        }
-
-        .hub-main-card:hover .hub-main-icon {
-            background: var(--primary);
-            color: var(--bg);
-        }
-
-        .hub-main-content h3 { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-        .hub-main-content p { font-size: 12px; color: var(--subtext); line-height: 1.5; }
+        .hub-main-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.15); text-decoration: none; transition: 0.25s; }
+        .hub-main-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--primary); transition: 0.3s; opacity: 0.8; }
         
-        .hub-main-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            color: var(--primary);
-            font-weight: 600;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            margin-top: auto;
-        }
+        .hub-main-card:hover { border-color: var(--primary); background: #1e293b; }
 
-        /* Mobile Fixes (Strict Reference Match) */
+        .hub-header { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+        .hub-icon { width: 46px; height: 46px; background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: 0.3s; flex-shrink: 0; }
+        
+        .hub-main-card:hover .hub-icon { background: var(--primary); color: #0f172a; }
+
+        .hub-title { font-size: 16px; font-weight: 600; color: var(--text); }
+        .hub-desc { font-size: 12.5px; color: var(--subtext); line-height: 1.5; flex-grow: 1; }
+        
+        .hub-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; padding-top: 12px; border-top: 1px solid var(--border); color: var(--primary); margin-top: auto; }
+
+        /* Mobile Fixes */
         @media (max-width: 650px) {
-            .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
-            .header-right-group { width: 100%; justify-content: space-between; }
-            .profile-badge { font-size: 11px; max-width: 60%; overflow: hidden; text-overflow: ellipsis; }
-            .welcome-card { flex-direction: column; align-items: flex-start; }
-            .welcome-status { width: 100%; justify-content: center; }
-            .main-hubs-grid { grid-template-columns: 1fr; }
+            .top-bar { flex-direction: column; align-items: flex-start; gap: 14px; }
+            .header-right-group { width: 100%; justify-content: flex-end; }
+            .welcome-card { flex-direction: column; align-items: flex-start; padding: 18px; }
+            .welcome-status { width: 100%; justify-content: center; margin-top: 5px; }
+            .main-hubs-grid { grid-template-columns: 1fr; gap: 14px; }
+            .hub-main-card { padding: 18px; }
         }
     </style>
 </head>
@@ -261,137 +113,130 @@
     <script>
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false; 
         }
     </script>
 
     <div class="container fade-in">
         
-        <!-- Marquee Bar (Now GPU Accelerated & Glitch-Free) -->
+        <!-- Marquee Bar (Cleaned Text) -->
         <div class="announcement-bar animated-btn">
-            <i class="fa-solid fa-bullhorn"></i>
+            <i class="fa-solid fa-bell"></i>
             <div class="marquee-container">
-                <div class="marquee-text" id="marqueeTextContent">
-                    Welcome to the Teacher Portal. Ensure all daily attendance, assignments, and marks are updated on time.
+                <div class="marquee-text">
+                    Ensure all student records, daily attendance, and assignment marks are updated regularly.
                 </div>
             </div>
         </div>
 
-        <!-- Top Bar -->
+        <!-- Top Bar (Cleaned Text) -->
         <div class="top-bar">
             <div class="brand">
                 <i class="fa-solid fa-chalkboard-user"></i>
-                <span>Teacher Management Panel</span>
+                <span>Teacher Dashboard</span>
             </div>
             <div class="header-right-group">
-                <div class="profile-badge" id="teacherBadge">
-                    <i class="fa-solid fa-user-tie"></i> <span id="teacherNameDisplay">Faculty Member</span>
-                </div>
                 <a href="index.html" class="btn-logout animated-btn" onclick="logoutTeacher()">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                 </a>
             </div>
         </div>
 
-        <!-- Welcome Banner -->
+        <!-- Welcome Banner (Cleaned Text) -->
         <div class="welcome-card fade-in">
             <div class="welcome-info">
-                <h4><i class="fa-solid fa-shield-halved"></i> Academic Control Station</h4>
-                <p id="welcomeGreeting">Welcome to Staff Portal</p>
+                <h2 id="welcomeGreeting">Welcome, Teacher</h2>
+                <p>Academic Session 2026-2027</p>
             </div>
             <div class="welcome-status">
-                <i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> Active Session
+                <i class="fa-solid fa-shield-halved"></i> Faculty Access
             </div>
         </div>
 
-        <!-- Main Hubs -->
+        <!-- Main Hubs (Only 7 Original Cards, Clean Descriptions) -->
         <div class="main-hubs-grid">
             
             <!-- 1. Student Directory -->
             <a href="teacher_students.html" class="hub-main-card animated-btn">
-                <div class="hub-main-icon"><i class="fa-solid fa-users-gear"></i></div>
-                <div class="hub-main-content">
-                    <h3>Student Directory</h3>
-                    <p>Manage student accounts, view enrolled students by class & section, and edit profile details.</p>
+                <div class="hub-header">
+                    <div class="hub-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                    <div class="hub-title">Student Directory</div>
                 </div>
-                <div class="hub-main-footer">
+                <div class="hub-desc">Manage student accounts, view rolls, and edit profile details.</div>
+                <div class="hub-footer">
                     <span>Open Directory</span><i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
 
             <!-- 2. Exam & Syllabus -->
             <a href="teacher_exam.html" class="hub-main-card animated-btn">
-                <div class="hub-main-icon"><i class="fa-solid fa-file-lines"></i></div>
-                <div class="hub-main-content">
-                    <h3>Exam & Syllabus</h3>
-                    <p>Publish examination timetables, datesheet documents, and chapter breakdowns.</p>
+                <div class="hub-header">
+                    <div class="hub-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div class="hub-title">Exam & Syllabus</div>
                 </div>
-                <div class="hub-main-footer">
-                    <span>Manage Schedules</span><i class="fa-solid fa-arrow-right"></i>
+                <div class="hub-desc">Publish timetables and upload chapter-wise syllabus documents.</div>
+                <div class="hub-footer">
+                    <span>Manage Exams</span><i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
 
             <!-- 3. Notice Board -->
             <a href="teacher_notice.html" class="hub-main-card animated-btn">
-                <div class="hub-main-icon"><i class="fa-solid fa-bullhorn"></i></div>
-                <div class="hub-main-content">
-                    <h3>Notice Board</h3>
-                    <p>Broadcast urgent circulars, announcements, and event updates for specific classes or all students.</p>
+                <div class="hub-header">
+                    <div class="hub-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                    <div class="hub-title">Notice Board</div>
                 </div>
-                <div class="hub-main-footer">
-                    <span>Broadcast Notices</span><i class="fa-solid fa-arrow-right"></i>
+                <div class="hub-desc">Broadcast urgent circulars and class-specific announcements.</div>
+                <div class="hub-footer">
+                    <span>Broadcast Notice</span><i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
 
             <!-- 4. E-Library -->
             <a href="teacher_elibrary.html" class="hub-main-card animated-btn">
-                <div class="hub-main-icon"><i class="fa-solid fa-book-open"></i></div>
-                <div class="hub-main-content">
-                    <h3>E-Library Manager</h3>
-                    <p>Create subject folders and upload study notes, reference materials, and PDF books.</p>
+                <div class="hub-header">
+                    <div class="hub-icon"><i class="fa-solid fa-book-open"></i></div>
+                    <div class="hub-title">E-Library</div>
                 </div>
-                <div class="hub-main-footer">
+                <div class="hub-desc">Create folders and upload study notes, books, and reference PDFs.</div>
+                <div class="hub-footer">
                     <span>Manage Library</span><i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
 
             <!-- 5. Attendance Portal -->
             <a href="teacher_attendance.html" class="hub-main-card animated-btn">
-                <div class="hub-main-icon"><i class="fa-solid fa-clipboard-user"></i></div>
-                <div class="hub-main-content">
-                    <h3>Attendance Portal</h3>
-                    <p>Record daily student attendance with Present, Absent, and Leave status markers.</p>
+                <div class="hub-header">
+                    <div class="hub-icon"><i class="fa-solid fa-clipboard-user"></i></div>
+                    <div class="hub-title">Attendance</div>
                 </div>
-                <div class="hub-main-footer">
+                <div class="hub-desc">Record daily student attendance and track leave applications.</div>
+                <div class="hub-footer">
                     <span>Take Attendance</span><i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
 
             <!-- 6. Assignment Portal -->
             <a href="teacher_assignment.html" class="hub-main-card animated-btn">
-                <div class="hub-main-icon"><i class="fa-solid fa-book-tanakh"></i></div>
-                <div class="hub-main-content">
-                    <h3>Assignments & Homework</h3>
-                    <p>Create new assignments, set submission deadlines, and evaluate submitted student homework.</p>
+                <div class="hub-header">
+                    <div class="hub-icon"><i class="fa-solid fa-book-tanakh"></i></div>
+                    <div class="hub-title">Assignments</div>
                 </div>
-                <div class="hub-main-footer">
-                    <span>Manage Homework</span><i class="fa-solid fa-arrow-right"></i>
+                <div class="hub-desc">Assign tasks, set deadlines, and evaluate homework submissions.</div>
+                <div class="hub-footer">
+                    <span>Manage Tasks</span><i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
 
             <!-- 7. Achievement & Performance -->
             <a href="teacher_achievement.html" class="hub-main-card animated-btn">
-                <div class="hub-main-icon"><i class="fa-solid fa-award"></i></div>
-                <div class="hub-main-content">
-                    <h3>Performance & Ranks</h3>
-                    <p>Update examination scores, calculate rankings, upload report cards, and send remarks.</p>
+                <div class="hub-header">
+                    <div class="hub-icon"><i class="fa-solid fa-award"></i></div>
+                    <div class="hub-title">Performance</div>
                 </div>
-                <div class="hub-main-footer">
-                    <span>Update Performance</span><i class="fa-solid fa-arrow-right"></i>
+                <div class="hub-desc">Update exam marks, rank students, and generate report cards.</div>
+                <div class="hub-footer">
+                    <span>Update Marks</span><i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
 
@@ -399,15 +244,15 @@
 
     </div>
 
+    <!-- User Name Logic -->
     <script>
         window.onload = function() {
             const loggedInTeacher = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || "Faculty Member";
             
-            const nameEl = document.getElementById('teacherNameDisplay');
             const greetingEl = document.getElementById('welcomeGreeting');
-            
-            if (nameEl) nameEl.innerText = loggedInTeacher;
-            if (greetingEl) greetingEl.innerText = `Welcome, ${loggedInTeacher}`;
+            if (greetingEl) {
+                greetingEl.innerText = `Welcome, ${loggedInTeacher}`;
+            }
         };
 
         function logoutTeacher() {
