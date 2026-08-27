@@ -101,7 +101,7 @@
         .btn-primary { background: linear-gradient(135deg, #00e5ff 0%, #0088cc 100%); color: #000; border: none; padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; transition: 0.2s; box-shadow: 0 4px 15px var(--primary-glow); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow); }
 
-        /* Main Menu Cards (Replaces Strips) */
+        /* Main Menu Cards */
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 10px; }
         .menu-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
         .menu-card::before { content: ''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
@@ -155,6 +155,12 @@
         .btn-see-more:hover { background: var(--primary); color: #000; }
 
         .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 24px; width: 100%; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
+
+        /* Delete / Edit Buttons */
+        .btn-action-sm { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-action-sm.edit:hover { background: rgba(0, 229, 255, 0.15); color: var(--primary); border-color: var(--primary); }
+        .btn-action-sm.delete { color: var(--danger); border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.1); }
+        .btn-action-sm.delete:hover { background: var(--danger); color: #fff; }
 
         @media (max-width: 500px) {
             .result-header { flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -229,21 +235,34 @@
                 </div>
 
                 <div class="menu-grid">
+                    <!-- 1. Evaluate Students (Marks + Personal Remark) -->
                     <div class="menu-card" onclick="switchView('viewMarks')">
                         <div class="menu-icon"><i class="fa-solid fa-user-pen"></i></div>
                         <div class="menu-text">
-                            <h3>Evaluate Students & Send Remarks</h3>
-                            <p>Update exam scores, rankings, upload report cards and send confidential notices in one place.</p>
+                            <h3>Evaluate Students</h3>
+                            <p>Update exam scores, ranks, standing, report cards & send confidential remarks.</p>
                         </div>
                     </div>
 
+                    <!-- 2. Broadcast General Notice -->
                     <div class="menu-card" onclick="switchView('viewClassNotice')">
                         <div class="menu-icon" style="color:var(--secondary); background:rgba(250,204,21,0.1); border-color:rgba(250,204,21,0.3); box-shadow:0 0 15px var(--secondary-glow);">
                             <i class="fa-solid fa-bullhorn"></i>
                         </div>
                         <div class="menu-text">
-                            <h3>Broadcast Class Announcement</h3>
-                            <p>Send general notices, test alerts or feedback to this entire classroom.</p>
+                            <h3>Broadcast Notice</h3>
+                            <p>Send a general announcement or feedback to the entire classroom.</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Manage Past Messages (Edit/Delete) -->
+                    <div class="menu-card" onclick="switchView('viewManageFeedbacks')">
+                        <div class="menu-icon" style="color:#a855f7; background:rgba(168, 85, 247, 0.1); border-color:rgba(168, 85, 247, 0.3); box-shadow:0 0 15px rgba(168, 85, 247, 0.4);">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <div class="menu-text">
+                            <h3>Manage Past Records</h3>
+                            <p>Search, edit or delete previously sent notices and confidential remarks.</p>
                         </div>
                     </div>
                 </div>
@@ -297,6 +316,25 @@
             </div>
         </div>
 
+        <!-- ================= VIEW 4: MANAGE PAST RECORDS (Edit/Delete Messages) ================= -->
+        <div id="viewManageFeedbacks" class="hidden fade-in">
+            <div class="nav-header">
+                <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <div class="page-title" style="color:#a855f7; text-shadow:0 0 8px rgba(168, 85, 247, 0.4);">Manage Past Messages</div>
+            </div>
+
+            <div class="section-card">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass" style="color:#a855f7;"></i>
+                    <input type="text" id="fbSearch" class="search-input" placeholder="Search past notices by title or student name..." onkeyup="handleFbSearch()">
+                </div>
+
+                <div class="students-list" id="feedbacksListContainer">
+                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading past records...</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Firebase Scripts -->
@@ -322,10 +360,15 @@
         let studentFiles = {}; 
         let selectedClassObj = { cls: '', sec: '', stm: '' };
 
+        // Feedback Management Arrays
+        let allClassFeedbacks = [];
+        let fbSearchQuery = "";
+
         function switchView(viewId) {
             document.getElementById('viewFilterMenu').classList.add('hidden');
             document.getElementById('viewMarks').classList.add('hidden');
             document.getElementById('viewClassNotice').classList.add('hidden');
+            document.getElementById('viewManageFeedbacks').classList.add('hidden');
             
             document.getElementById(viewId).classList.remove('hidden');
             window.scrollTo(0,0);
@@ -338,6 +381,12 @@
             else group.classList.add('hidden');
         }
 
+        function toggleInlineForm(id) {
+            const form = document.getElementById(id);
+            form.classList.toggle('hidden');
+        }
+
+        // ================= DATA FETCHING (SMART LOOSE MATCHING - FIXED COLLECTION) =================
         async function loadClassData() {
             const cls = document.getElementById('flClass').value;
             const sec = document.getElementById('flSection').value;
@@ -348,44 +397,52 @@
             selectedClassObj = { cls, sec, stm };
             document.getElementById('workspaceMenu').classList.remove('hidden');
             
+            // FETCH FROM `students` Collection (To perfectly sync with student app)
             await fetchStudents(cls, sec, stm);
+            listenClassFeedbacks(); // Load feedbacks for the 3rd card
         }
 
-        // LOOSE FILTERING TO ENSURE DATA LOADS
         async function fetchStudents(cls, sec, stm) {
             const container = document.getElementById('studentsListContainer');
             document.getElementById('leaderboardContainer').innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading ranks...</div>';
 
             try {
-                const userSnap = await db.collection('users').get();
+                // FIXED: Fetching from 'students' collection!
+                const studentSnap = await db.collection('students').get();
                 currentStudents = [];
                 
-                userSnap.forEach(doc => {
+                const targetClsNum = cls.replace(/\D/g, ''); // Extract digits only
+
+                studentSnap.forEach(doc => {
                     const data = doc.data();
-                    const role = (data.role || data.user_role || '').toString().toLowerCase();
                     
-                    // Fallback keys for robustness
-                    const sClass = (data.studentClass || data.class || data.className || '').toString().trim();
+                    // Smart loose match
+                    const sClass = (data.studentClass || data.class || data.className || '').toString().toLowerCase().trim();
+                    const sClassNum = sClass.replace(/\D/g, ''); 
                     const sSec = (data.section || data.sec || '').toString().toUpperCase().trim();
                     const sStm = (data.stream || data.subject || data.curriculum || 'General').toString().toUpperCase().trim();
 
-                    if (role !== 'teacher' && role !== 'admin') {
-                        let cMatch = sClass.includes(cls); // Loose match
-                        let secMatch = (sec === 'All' || sSec === sec || sSec === '');
-                        let stmMatch = true;
+                    let cMatch = false;
+                    if (sClass === cls.toLowerCase() || sClass.includes(cls.toLowerCase())) {
+                        cMatch = true;
+                    } else if (targetClsNum !== '' && sClassNum === targetClsNum) {
+                        cMatch = true;
+                    }
 
-                        if (cls === '11' || cls === '12') {
-                            if (stm !== 'All' && sStm !== stm && sStm !== 'GENERAL') stmMatch = false;
-                        }
+                    let secMatch = (sec === 'All' || sSec === sec || sSec === '');
+                    let stmMatch = true;
 
-                        if (cMatch && secMatch && stmMatch) {
-                            currentStudents.push({id: doc.id, ...data});
-                        }
+                    if (cls === '11' || cls === '12') {
+                        if (stm !== 'All' && sStm !== stm.toUpperCase() && sStm !== 'GENERAL') stmMatch = false;
+                    }
+
+                    if (cMatch && secMatch && stmMatch) {
+                        currentStudents.push({id: doc.id, ...data});
                     }
                 });
 
                 if(currentStudents.length === 0) {
-                    container.innerHTML = '<div class="no-data"><i class="fa-solid fa-ghost" style="font-size:24px; color:var(--primary); margin-bottom:10px;"></i><br>No students found for this Class & Section combination.</div>';
+                    container.innerHTML = '<div class="no-data"><i class="fa-solid fa-ghost" style="font-size:24px; color:var(--primary); margin-bottom:10px;"></i><br>No students found for this class in database.</div>';
                     document.getElementById('leaderboardContainer').innerHTML = '<div class="no-data">No data.</div>';
                     document.getElementById('seeMoreBtn').style.display = 'none';
                     return;
@@ -405,7 +462,7 @@
             }
         }
 
-        // --- PAGINATION & SEARCH LOGIC ---
+        // ================= EVALUATE VIEW LOGIC =================
         function handleStudentSearch() {
             searchQuery = document.getElementById('studentSearch').value.toLowerCase().trim();
             visibleCount = 5; 
@@ -417,12 +474,17 @@
             applyPaginationAndRender();
         }
 
+        function getFormatStanding(standing) {
+            if(!standing) return 'ACTIVE';
+            return standing.replace('_', ' ').toUpperCase();
+        }
+
         function applyPaginationAndRender() {
             const container = document.getElementById('studentsListContainer');
             container.innerHTML = '';
 
             let filtered = currentStudents.filter(item => {
-                let textToSearch = `${item.name} ${item.username} ${item.rollNo} ${item.roll}`.toLowerCase();
+                let textToSearch = `${item.name} ${item.username} ${item.email} ${item.rollNo} ${item.roll}`.toLowerCase();
                 return textToSearch.includes(searchQuery);
             });
 
@@ -442,26 +504,37 @@
                 if(student.rank && ['1','2','3','4','5'].includes(String(student.rank))) {
                     rankHTML = `<div class="badge-pill gold"><i class="fa-solid fa-trophy"></i> Rank #${student.rank}</div>`;
                 } else {
-                    rankHTML = `<div class="badge-pill">${student.standing ? student.standing.replace('_',' ').toUpperCase() : 'ACTIVE'}</div>`;
+                    rankHTML = `<div class="badge-pill">${getFormatStanding(student.standing)}</div>`;
                 }
 
+                // Proper Options Selection
+                const isDist = student.standing === 'distinction' ? 'selected' : '';
+                const isFirst = student.standing === 'first_division' ? 'selected' : '';
+                const isSecond = student.standing === 'second_division' ? 'selected' : '';
+                const isThird = student.standing === 'third_division' ? 'selected' : '';
+                const isAvg = student.standing === 'average' ? 'selected' : '';
+                const isBelowAvg = student.standing === 'below_average' ? 'selected' : '';
+                const isFail = student.standing === 'fail' ? 'selected' : '';
+
                 container.innerHTML += `
-                    <div class="result-card">
-                        <div class="result-header">
-                            <div class="result-left">
-                                <div class="result-icon"><i class="fa-solid fa-file-signature"></i></div>
-                                <div class="result-meta">
-                                    <h3>${name}</h3>
-                                    <p>Roll No: ${roll} • Score: ${student.score || 'N/A'}</p>
+                    <div style="margin-bottom:8px;">
+                        <div class="result-card animated-btn" onclick="toggleInlineForm('form_${student.id}')">
+                            <div class="result-header">
+                                <div class="result-left">
+                                    <div class="result-icon"><i class="fa-solid fa-user-pen"></i></div>
+                                    <div class="result-meta">
+                                        <h3>${name}</h3>
+                                        <p>Roll No: ${roll} • Score: ${student.score || 'N/A'}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="result-right">
-                                ${rankHTML}
+                                <div class="result-right">
+                                    ${rankHTML}
+                                </div>
                             </div>
                         </div>
 
                         <!-- Integrated Edit Form -->
-                        <div class="integrated-form">
+                        <div id="form_${student.id}" class="integrated-form hidden">
                             <div class="form-row">
                                 <div class="form-field">
                                     <label>Exam Title</label>
@@ -480,10 +553,13 @@
                                 <div class="form-field">
                                     <label>Standing Status</label>
                                     <select id="exStanding_${student.id}" class="input-box">
-                                        <option value="distinction" ${student.standing==='distinction'?'selected':''}>Distinction</option>
-                                        <option value="first_division" ${student.standing==='first_division'?'selected':''}>First Division</option>
-                                        <option value="second_division" ${student.standing==='second_division'?'selected':''}>Second Division</option>
-                                        <option value="improvement_needed" ${student.standing==='improvement_needed'?'selected':''}>Needs Improvement</option>
+                                        <option value="distinction" ${isDist}>Distinction</option>
+                                        <option value="first_division" ${isFirst}>First Division</option>
+                                        <option value="second_division" ${isSecond}>Second Division</option>
+                                        <option value="third_division" ${isThird}>Third Division</option>
+                                        <option value="average" ${isAvg}>Average</option>
+                                        <option value="below_average" ${isBelowAvg}>Below Average</option>
+                                        <option value="fail" ${isFail}>Fail</option>
                                     </select>
                                 </div>
                             </div>
@@ -499,14 +575,16 @@
 
                             <!-- CONFIDENTIAL REMARK MERGED HERE -->
                             <div class="confidential-box">
-                                <h4><i class="fa-solid fa-user-secret"></i> Send Confidential Remark</h4>
+                                <h4><i class="fa-solid fa-user-secret"></i> Send Confidential Remark to ${name}</h4>
                                 <div class="form-field">
-                                    <input type="text" id="remTitle_${student.id}" class="input-box" placeholder="Remark Title (e.g. Needs focus in Math)" style="margin-bottom:6px;">
-                                    <textarea id="remMsg_${student.id}" class="input-box" placeholder="Write private feedback for ${name}..."></textarea>
+                                    <input type="text" id="remTitle_${student.id}" class="input-box" placeholder="Remark Title (e.g. Needs focus in Math)" style="margin-bottom:6px; border-color:rgba(250,204,21,0.3);">
+                                    <textarea id="remMsg_${student.id}" class="input-box" placeholder="Write private feedback for ${name}..." style="border-color:rgba(250,204,21,0.3);"></textarea>
                                 </div>
                             </div>
 
-                            <button class="btn-primary animated-btn" id="btnSave_${student.id}" onclick="saveAllStudentData('${student.id}', '${student.email || student.id}')"><i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync All Data</button>
+                            <button class="btn-primary animated-btn" id="btnSave_${student.id}" onclick="saveAllStudentData('${student.id}', '${student.email || student.id}', '${name.replace(/'/g, "\\'")}')">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync Data
+                            </button>
                         </div>
                     </div>
                 `;
@@ -535,8 +613,8 @@
             reader.readAsDataURL(file);
         }
 
-        // ONE BUTTON SAVES MARKS, PDF AND SENDS CONFIDENTIAL REMARK
-        async function saveAllStudentData(studentId, email) {
+        // UPDATED: Save to `students` collection directly
+        async function saveAllStudentData(studentId, email, name) {
             const exName = document.getElementById(`exName_${studentId}`).value.trim() || 'Examination Report';
             const score = document.getElementById(`exScore_${studentId}`).value.trim();
             const rank = parseInt(document.getElementById(`exRank_${studentId}`).value) || null;
@@ -553,7 +631,7 @@
             btn.disabled = true;
 
             try {
-                // 1. Save Marks & Rank to User profile
+                // Save Academic Data to `students`
                 let updateData = {
                     examType: exName, score: score || "Pending", standing: standing,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -561,7 +639,7 @@
                 if(rank !== null) updateData.rank = rank;
                 if(reportCard !== "") updateData.reportCardUrl = reportCard;
 
-                await db.collection('users').doc(studentId).update(updateData);
+                await db.collection('students').doc(studentId).update(updateData);
                 
                 // Update local array for leaderboard refresh
                 const idx = currentStudents.findIndex(s => s.id === studentId);
@@ -573,16 +651,19 @@
                     currentStudents[idx].examType = exName;
                 }
 
-                // 2. Save Confidential Remark if typed
+                // Save Confidential Remark
                 if(remMsg !== "") {
                     await db.collection('feedbacks').add({
                         type: 'personal',
                         targetUser: email.toLowerCase(),
+                        targetName: name,
                         title: remTitle || 'Confidential Remark',
                         message: remMsg,
                         teacherName: teacher,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
+                    document.getElementById(`remTitle_${studentId}`).value = '';
+                    document.getElementById(`remMsg_${studentId}`).value = '';
                 }
 
                 applyPaginationAndRender();
@@ -591,11 +672,11 @@
                 
             } catch(e) { alert("Failed to save data. Check connection."); }
             
-            btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync All Data`;
+            btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync Data`;
             btn.disabled = false;
         }
 
-        // --- SPECIFIC LEADERBOARD ---
+        // ================= LEADERBOARD =================
         function renderLeaderboard() {
             const container = document.getElementById('leaderboardContainer');
             let leaders = currentStudents.filter(s => {
@@ -625,7 +706,7 @@
                             <div class="${rankClass}">${pos}</div>
                             <div>
                                 <div class="leader-name">${item.name || item.username || 'Student'}</div>
-                                <div style="font-size:10.5px; color:#64748b;">Roll No: ${item.rollNo || item.roll || 'N/A'}</div>
+                                <div style="font-size:10.5px; color:var(--subtext);">Roll No: ${item.rollNo || item.roll || 'N/A'}</div>
                             </div>
                         </div>
                         <div class="leader-score">${item.score || 'Rank #'+pos}</div>
@@ -634,7 +715,114 @@
             });
         }
 
-        // --- CLASS NOTICES ---
+        // ================= FEEDBACK & RECORD MANAGER (VIEW 4) =================
+        function listenClassFeedbacks() {
+            db.collection('feedbacks').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+                allClassFeedbacks = [];
+                snapshot.forEach(doc => {
+                    const fb = doc.data();
+                    
+                    let isTargetedPersonal = false;
+                    if (fb.type === 'personal') {
+                        isTargetedPersonal = currentStudents.some(s => (s.email || s.id).toLowerCase() === (fb.targetUser || '').toLowerCase());
+                    }
+
+                    let classMatch = !fb.targetClass || fb.targetClass === "All" || fb.targetClass === selectedClassObj.cls;
+                    let secMatch = !fb.targetSec || fb.targetSec === "All" || fb.targetSec === selectedClassObj.sec;
+                    
+                    if ((fb.type === 'general' && classMatch && secMatch) || isTargetedPersonal) {
+                        allClassFeedbacks.push({id: doc.id, ...fb});
+                    }
+                });
+                renderManageFeedbacks();
+            });
+        }
+
+        function handleFbSearch() {
+            fbSearchQuery = document.getElementById('fbSearch').value.toLowerCase().trim();
+            renderManageFeedbacks();
+        }
+
+        function renderManageFeedbacks() {
+            const container = document.getElementById('feedbacksListContainer');
+            container.innerHTML = '';
+
+            let filtered = allClassFeedbacks.filter(f => {
+                let t = `${f.title} ${f.message} ${f.targetUser} ${f.targetName}`.toLowerCase();
+                return t.includes(fbSearchQuery);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="no-data">No notices or remarks found.</div>`;
+                return;
+            }
+
+            filtered.forEach(fb => {
+                const isPers = fb.type === 'personal';
+                const dateTxt = fb.createdAt ? new Date(fb.createdAt.toDate()).toLocaleDateString() : 'Recent';
+                const typeBadge = isPers ? 
+                    `<span class="badge-pill gold" style="font-size:9px;">Personal To: ${fb.targetName || fb.targetUser}</span>` : 
+                    `<span class="badge-pill" style="font-size:9px;">Class Notice</span>`;
+
+                container.innerHTML += `
+                    <div style="margin-bottom:8px;">
+                        <div class="result-card animated-btn" onclick="toggleInlineForm('editFb_${fb.id}')" style="border-left:3px solid ${isPers ? 'var(--secondary)' : 'var(--primary)'}">
+                            <div class="result-header">
+                                <div class="result-left">
+                                    <div class="result-meta">
+                                        <h3 style="font-size:13px;">${fb.title || 'Notice'}</h3>
+                                        <p style="font-size:11px;">${dateTxt}</p>
+                                    </div>
+                                </div>
+                                <div class="result-right">
+                                    ${typeBadge}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="editFb_${fb.id}" class="integrated-form hidden">
+                            <div class="form-field">
+                                <label>Edit Title</label>
+                                <input type="text" id="upFbTitle_${fb.id}" class="input-box" value="${fb.title || ''}">
+                            </div>
+                            <div class="form-field">
+                                <label>Edit Message</label>
+                                <textarea id="upFbMsg_${fb.id}" class="input-box">${fb.message || ''}</textarea>
+                            </div>
+                            <div style="display:flex; gap:10px; margin-top:8px;">
+                                <button class="btn-primary" style="margin:0; font-size:12px;" onclick="updateFeedback('${fb.id}')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                                <button class="btn-primary" style="margin:0; font-size:12px; background:transparent; border-color:var(--danger); color:var(--danger); box-shadow:none;" onclick="deleteFeedback('${fb.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function updateFeedback(id) {
+            const title = document.getElementById(`upFbTitle_${id}`).value.trim();
+            const msg = document.getElementById(`upFbMsg_${id}`).value.trim();
+            if(!msg) return alert("Message cannot be empty.");
+
+            try {
+                await db.collection('feedbacks').doc(id).update({
+                    title: title, message: msg,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert("✅ Message Updated!");
+                toggleInlineForm(`editFb_${id}`);
+            } catch(e) { alert("Failed to update."); }
+        }
+
+        async function deleteFeedback(id) {
+            if(confirm("Are you sure you want to delete this message permanently?")) {
+                try {
+                    await db.collection('feedbacks').doc(id).delete();
+                } catch(e) { alert("Failed to delete."); }
+            }
+        }
+
+        // --- BROADCAST GENERAL NOTICE ---
         async function postClassRemark() {
             const title = document.getElementById('rmTitle').value.trim();
             const message = document.getElementById('rmMessage').value.trim();
@@ -656,6 +844,7 @@
                 alert("✅ Notice Broadcasted to Class!");
                 document.getElementById('rmTitle').value = '';
                 document.getElementById('rmMessage').value = '';
+                switchView('viewFilterMenu'); 
             } catch(e) { alert("Failed to post notice."); }
         }
     </script>
