@@ -17,27 +17,31 @@
             --border: rgba(56, 189, 248, 0.25);
         }
 
-        /* Front-End Security: Disable Text Selection & Dragging */
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; 
-            font-family: 'Poppins', sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
-            user-select: none; 
-            -webkit-user-drag: none; 
+        /* Security & Clean Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-drag: none;
+            scrollbar-width: none; /* Hide scrollbar Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar IE */
         }
 
         input, textarea, select { user-select: auto; }
+        ::-webkit-scrollbar { display: none; width: 0; background: transparent; }
 
-        /* PC & Mobile Responsive Fix (Desktop friendly width + Mobile 100dvh) */
-        html, body {
+        body {
             background-color: var(--bg);
             color: var(--text);
-            min-height: 100dvh;
-            overscroll-behavior-y: none;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 20px 15px;
+            padding: 15px;
             position: relative;
+            overscroll-behavior-y: none;
         }
 
         body::before {
@@ -48,292 +52,425 @@
             z-index: -1;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        /* 950px Exact Student Reference Width */
+        .container { width: 100%; max-width: 950px; padding-bottom: 30px; }
 
-        .container { 
-            width: 100%; 
-            max-width: 950px; /* PC पर शानदार चौड़ाई, मोबाइल पर ऑटो फिट */
-            padding-bottom: 40px; 
-            animation: fadeIn 0.4s ease-out; 
-        }
+        /* --- LAG-FREE ANIMATIONS --- */
+        .animated-btn { transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s; cursor: pointer; will-change: transform; }
+        .animated-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.15); }
+        .animated-btn:active { transform: scale(0.96); }
 
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Announcement Bar */
+        .announcement-bar { background: #162133; color: var(--text); padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 500; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+        .announcement-bar i { color: var(--primary); font-size: 16px; animation: pulseIcon 1.5s infinite; flex-shrink: 0; }
+        @keyframes pulseIcon { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        
+        .marquee-container { overflow: hidden; white-space: nowrap; width: 100%; cursor: pointer; }
+        .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite; will-change: transform; }
+        @keyframes marquee { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
         /* Top Bar */
-        .top-bar { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 18px 22px; background: rgba(15, 23, 42, 0.85); 
-            border: 1px solid var(--border); border-radius: 14px; 
-            margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); 
-            backdrop-filter: blur(8px); 
-        }
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 600; color: var(--text); }
-        .brand i { color: var(--primary); font-size: 20px; background: rgba(56, 189, 248, 0.1); padding: 9px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #111827; padding: 14px 20px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 12px; }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--text); }
+        .brand i { background: rgba(56, 189, 248, 0.1); padding: 9px; border-radius: 10px; color: var(--primary); font-size: 16px; border: 1px solid rgba(56, 189, 248, 0.2); }
         
-        .btn-home { 
-            background: rgba(56, 189, 248, 0.1); color: var(--primary); 
-            border: 1px solid var(--border); padding: 9px 16px; border-radius: 10px; 
-            font-size: 13px; font-weight: 600; text-decoration: none; 
-            display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; cursor: pointer; 
-        }
-        .btn-home:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3); }
+        .btn-dashboard { background: rgba(56, 189, 248, 0.1); color: var(--primary); text-decoration: none; padding: 8px 16px; border-radius: 9px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; border: 1px solid var(--border); transition: 0.2s; }
+        .btn-dashboard:hover { background: var(--primary); color: var(--bg); }
 
-        /* Type XYZ Menu Strips */
-        .strip { 
-            display: flex; align-items: center; background: rgba(15, 23, 42, 0.6); 
-            border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 14px; 
-            padding: 20px; margin-bottom: 16px; cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); backdrop-filter: blur(5px); 
-        }
-        .strip:hover { transform: translateY(-4px); background: rgba(15, 23, 42, 0.9); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2); }
-        .strip:active { transform: scale(0.98); }
+        /* Action Strips (For Teachers to Add Content) */
+        .action-strip { background: #162133; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 15px; }
+        .action-strip:hover { border-color: var(--primary); background: #1e293b; }
+        .strip-icon { background: rgba(56, 189, 248, 0.1); color: var(--primary); padding: 12px; border-radius: 10px; font-size: 18px; }
+        .strip-text h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+        .strip-text p { font-size: 12px; color: var(--subtext); }
+
+        /* Main Hub Cards (Reference Match) */
+        .main-hubs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 25px; }
+        .hub-main-card { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .hub-main-card:hover { border-color: var(--primary); background: #162133; }
+        .hub-main-icon { width: 50px; height: 50px; background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; transition: 0.3s; }
+        .hub-main-card:hover .hub-main-icon { background: var(--primary); color: var(--bg); }
+        .hub-main-content h3 { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+        .hub-main-content p { font-size: 12px; color: var(--subtext); line-height: 1.5; }
+        .hub-main-footer { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--primary); font-weight: 600; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* Section Header & Breadcrumb */
+        .section-header { background: #162133; padding: 14px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        .section-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--primary); text-transform: uppercase; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--subtext); margin-bottom: 15px; flex-wrap: wrap; }
+        .breadcrumb span { color: var(--primary); cursor: pointer; font-weight: 500; }
+        .breadcrumb span:hover { text-decoration: underline; }
+
+        /* Subject / Category Cards */
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .sub-card { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px; }
+        .sub-card:hover { border-color: var(--primary); background: #162133; }
+        .sub-card-icon { width: 40px; height: 40px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); color: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; margin-bottom: 12px; }
+        .sub-card-title { font-size: 14.5px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sub-card-desc { font-size: 11.5px; color: var(--subtext); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
-        .strip-icon { width: 52px; height: 52px; background: rgba(56, 189, 248, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 22px; margin-right: 18px; flex-shrink: 0; border: 1px solid var(--border); }
-        .strip-text h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-        .strip-text p { font-size: 12.5px; color: var(--subtext); }
-        .strip-arrow { margin-left: auto; color: var(--primary); font-size: 18px; transition: transform 0.3s; }
-        .strip:hover .strip-arrow { transform: translateX(6px); }
-
-        /* Modals (Popups) - Desktop Centered & Spacious */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(7, 13, 25, 0.85); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.3s ease; }
-        .modal.active { display: flex; opacity: 1; }
+        /* Exam Strips (Exact Match) */
+        .exams-list { display: flex; flex-direction: column; gap: 14px; }
+        .exam-card { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+        .exam-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--primary); }
+        .exam-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .exam-title h3 { font-size: 15.5px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .exam-title h3 i { color: var(--primary); }
+        .badge-date { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 5px 12px; border-radius: 7px; font-size: 11.5px; font-weight: 600; }
+        .badge-status { padding: 5px 12px; border-radius: 7px; font-size: 11.5px; font-weight: 600; border: 1px solid; }
+        .exam-desc-box { background: var(--card); border: 1px solid rgba(255,255,255,0.05); padding: 14px; border-radius: 10px; font-size: 12.5px; color: #cbd5e1; margin-bottom: 14px; line-height: 1.5; }
         
-        .modal-content { 
-            background: var(--card); width: 100%; max-width: 650px; 
-            border-radius: 20px; border: 1px solid var(--border); overflow: hidden; 
-            display: flex; flex-direction: column; max-height: 85vh; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7); transform: scale(0.95); 
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-        .modal.active .modal-content { transform: scale(1); }
-        
-        .modal-header { padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.05); }
-        .modal-header h2 { font-size: 17px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-        .close-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--subtext); width: 36px; height: 36px; border-radius: 50%; font-size: 15px; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; }
-        .close-btn:hover { background: #ef4444; color: #fff; border-color: #ef4444; transform: rotate(90deg); }
+        .exam-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 14px; flex-wrap: wrap; gap: 10px; }
+        .exam-time { font-size: 12px; color: var(--subtext); display: flex; align-items: center; gap: 6px; }
 
-        .modal-body { padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-
-        /* Forms inside Modal */
-        label { font-size: 11.5px; font-weight: 600; color: var(--subtext); margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
-        .input-box { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 13px 16px; border-radius: 10px; font-size: 13.5px; outline: none; color-scheme: dark; transition: all 0.3s ease; }
-        .input-box:focus { border-color: var(--primary); background: rgba(30, 41, 59, 0.6); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); }
-        select.input-box option { background-color: var(--card); color: var(--text); }
-        textarea.input-box { resize: vertical; min-height: 90px; }
-        
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-        .file-box { border: 1px dashed var(--primary); background: rgba(56, 189, 248, 0.05); padding: 18px; border-radius: 10px; text-align: center; position: relative; cursor: pointer; transition: all 0.2s; }
-        .file-box:hover { background: rgba(56, 189, 248, 0.1); }
-        .file-box input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-        .file-msg { color: var(--primary); font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .optional-tag { font-size: 10px; color: #64748b; font-weight: 400; text-transform: none; }
-
-        .action-btn { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 15px; border-radius: 10px; font-size: 14px; font-weight: 600; text-align: center; width: 100%; cursor: pointer; margin-top: 5px; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .action-btn:hover { background: var(--primary); color: var(--bg); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(56, 189, 248, 0.3); }
-        .action-btn:active { transform: scale(0.97); }
-        .action-btn:disabled { opacity: 0.6; pointer-events: none; }
-
-        /* List Elements */
-        .list-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-left: 4px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; gap: 12px; }
-        .list-item:hover { border-color: rgba(56, 189, 248, 0.3); background: rgba(30, 41, 59, 0.8); }
-        .list-info { flex: 1; min-width: 0; }
-        .list-info h4 { font-size: 14.5px; color: var(--text); margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 8px; }
-        .list-info p { font-size: 12px; color: var(--subtext); line-height: 1.4; margin-bottom: 4px; }
-        .list-meta { font-size: 10.5px; color: var(--primary); font-weight: 500; }
-
-        .btn-group { display: flex; gap: 8px; flex-shrink: 0; }
-        .btn-view { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+        /* Action Buttons */
+        .btn-action { padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1px solid transparent; transition: 0.2s; }
+        .btn-view { background: rgba(56, 189, 248, 0.1); color: var(--primary); border-color: var(--border); }
         .btn-view:hover { background: var(--primary); color: var(--bg); }
-        
-        .btn-delete { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; }
+        .btn-delete { background: rgba(239, 68, 68, 0.1); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
         .btn-delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
-        .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 30px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.2); }
+        /* Modals */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(7, 13, 25, 0.9); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; opacity: 0; pointer-events: none; transition: 0.2s; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-card { background: #111827; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 100%; max-width: 600px; padding: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); transform: scale(0.95); transition: 0.2s; max-height: 90vh; display: flex; flex-direction: column; }
+        .modal-overlay.active .modal-card { transform: scale(1); }
 
-        @media (max-width: 600px) {
-            .form-row { grid-template-columns: 1fr; gap: 14px; }
-            .container { max-width: 100%; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; }
+        .modal-header h3 { font-size: 16px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .modal-close { background: transparent; border: none; color: var(--subtext); font-size: 22px; cursor: pointer; transition: 0.2s; }
+        .modal-close:hover { color: #ef4444; }
+
+        .modal-body { display: flex; flex-direction: column; gap: 14px; overflow-y: auto; padding-right: 5px; margin-bottom: 20px; }
+        .modal-field label { font-size: 11px; color: var(--subtext); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 6px; }
+        
+        .input-box { width: 100%; background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 12px 14px; border-radius: 10px; font-size: 13.5px; outline: none; transition: 0.2s; color-scheme: dark; }
+        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        select.input-box option { background-color: var(--card); color: var(--text); }
+        textarea.input-box { resize: vertical; min-height: 90px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .file-box { border: 1px dashed var(--primary); background: rgba(56, 189, 248, 0.05); padding: 18px; border-radius: 10px; text-align: center; position: relative; cursor: pointer; }
+        .file-box input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .file-msg { color: var(--primary); font-size: 13px; font-weight: 500; }
+
+        .btn-submit { background: var(--primary); color: var(--bg); border: none; padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; gap: 8px; transition: 0.2s; }
+        .btn-submit:hover { background: #0284c7; }
+
+        .hidden { display: none !important; }
+        .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 30px; background: rgba(30, 41, 59, 0.4); border: 1px dashed rgba(255,255,255,0.1); border-radius: 14px; width: 100%; }
+
+        @media (max-width: 650px) {
+            .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .action-strip { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .form-row { grid-template-columns: 1fr; }
+            .exam-header { flex-direction: column; align-items: flex-start; }
+            .exam-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- UI Security Guard -->
     <script>
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false; 
         }
     </script>
 
-    <div class="container">
+    <div class="container fade-in">
         
+        <!-- Marquee Bar (Clickable to edit for Teachers) -->
+        <div class="announcement-bar animated-btn" onclick="openModal('editMarqueeModal')" title="Click to Edit Announcement">
+            <i class="fa-solid fa-bullhorn"></i>
+            <div class="marquee-container">
+                <div class="marquee-text" id="marqueeTextContent">
+                    Loading portal announcements... (Tap to edit)
+                </div>
+            </div>
+        </div>
+
         <!-- Top Bar -->
         <div class="top-bar">
             <div class="brand">
-                <i class="fa-solid fa-file-lines"></i>
-                <span>Exam & Syllabus Manager</span>
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Exam & Syllabus Control</span>
             </div>
-            <a href="teacher_dashboard.html" class="btn-home">
+            <a href="teacher_dashboard.html" class="btn-dashboard animated-btn">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
         </div>
 
-        <!-- TYPE XYZ STRIPS -->
-        <div class="strip" onclick="openModal('examModal')">
-            <div class="strip-icon"><i class="fa-solid fa-calendar-days"></i></div>
-            <div class="strip-text">
-                <h3>Publish Exam Timetable</h3>
-                <p>Upload schedule and exam datesheets</p>
+        <!-- Main Hubs -->
+        <div id="mainHubsView" class="fade-in">
+            <div class="main-hubs-grid">
+                <div class="hub-main-card animated-btn" onclick="openMainHub('syllabus')">
+                    <div class="hub-main-icon"><i class="fa-solid fa-book-bookmark"></i></div>
+                    <div class="hub-main-content">
+                        <h3>Syllabus Manager</h3>
+                        <p>Upload new syllabus documents, create subject folders, and manage existing files.</p>
+                    </div>
+                    <div class="hub-main-footer">
+                        <span>Manage Syllabus</span><i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <div class="hub-main-card animated-btn" onclick="openMainHub('exams')">
+                    <div class="hub-main-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div class="hub-main-content">
+                        <h3>Timetable Manager</h3>
+                        <p>Publish upcoming examination datesheets, timings, and download PDFs.</p>
+                    </div>
+                    <div class="hub-main-footer">
+                        <span>Manage Exams</span><i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
             </div>
-            <i class="fa-solid fa-chevron-right strip-arrow"></i>
         </div>
 
-        <div class="strip" onclick="openModal('syllabusModal')">
-            <div class="strip-icon"><i class="fa-solid fa-book-bookmark"></i></div>
-            <div class="strip-text">
-                <h3>Publish Exam Syllabus</h3>
-                <p>Share chapter-wise breakdown for exams</p>
+        <!-- Syllabus Manager View -->
+        <div id="syllabusView" class="hidden fade-in">
+            <div class="breadcrumb" id="syllabusBreadcrumb">
+                <span onclick="goToMainHubs()"><i class="fa-solid fa-house"></i> Hubs</span> 
+                <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> 
+                <strong style="color:var(--text);">Syllabus Manager</strong>
             </div>
-            <i class="fa-solid fa-chevron-right strip-arrow"></i>
+
+            <!-- Syllabus Actions -->
+            <div id="syllabusLayerCategories">
+                <div class="action-strip animated-btn" onclick="openModal('addCategoryModal')">
+                    <div class="action-left">
+                        <div class="strip-icon"><i class="fa-solid fa-folder-plus"></i></div>
+                        <div class="strip-text">
+                            <h3>Create Syllabus Category</h3>
+                            <p>E.g. Unit Test 1, Half Yearly, Pre-Board</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right action-arrow"></i>
+                </div>
+                <div class="action-strip animated-btn" onclick="openModal('addSyllabusModal')">
+                    <div class="action-left">
+                        <div class="strip-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
+                        <div class="strip-text">
+                            <h3>Upload Syllabus Document</h3>
+                            <p>Upload PDF inside a specific category</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right action-arrow"></i>
+                </div>
+
+                <div class="section-header" style="margin-top:20px;">
+                    <div class="section-title"><i class="fa-solid fa-folder-open"></i> Existing Categories</div>
+                </div>
+                <div class="grid-cards" id="categoriesGridContainer">
+                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+                </div>
+            </div>
+
+            <!-- Inside Category View -->
+            <div id="syllabusLayerSubjects" class="hidden">
+                <div class="section-header">
+                    <div class="section-title" id="subjectsHeaderTitle"><i class="fa-solid fa-book"></i> Uploaded Documents</div>
+                </div>
+                <div class="grid-cards" id="subjectsGridContainer">
+                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+                </div>
+            </div>
         </div>
 
-        <div class="strip" onclick="openModal('manageExamModal')">
-            <div class="strip-icon"><i class="fa-solid fa-list-check"></i></div>
-            <div class="strip-text">
-                <h3>Manage Exam Database</h3>
-                <p>View or delete published exam schedules</p>
+        <!-- Exams Manager View -->
+        <div id="examsView" class="hidden fade-in">
+            <div class="breadcrumb">
+                <span onclick="goToMainHubs()"><i class="fa-solid fa-house"></i> Hubs</span> 
+                <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> 
+                <strong style="color:var(--text);">Exam Schedules Manager</strong>
             </div>
-            <i class="fa-solid fa-chevron-right strip-arrow"></i>
+
+            <div class="action-strip animated-btn" onclick="openModal('addExamModal')">
+                <div class="action-left">
+                    <div class="strip-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+                    <div class="strip-text">
+                        <h3>Publish New Exam Timetable</h3>
+                        <p>Upload datesheet and exam details</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right action-arrow"></i>
+            </div>
+
+            <div class="section-header" style="margin-top:20px;">
+                <div class="section-title"><i class="fa-solid fa-clock"></i> Active Timetables</div>
+            </div>
+
+            <div class="exams-list" id="examsListContainer">
+                <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+            </div>
         </div>
 
     </div>
 
     <!-- ================= MODALS ================= -->
 
-    <!-- 1. Exam Timetable Modal -->
-    <div class="modal" id="examModal">
-        <div class="modal-content">
+    <!-- Edit Marquee Modal -->
+    <div class="modal-overlay" id="editMarqueeModal">
+        <div class="modal-card">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-calendar-days"></i> Publish Exam Timetable</h2>
-                <button class="close-btn" onclick="closeModal('examModal')"><i class="fa-solid fa-xmark"></i></button>
+                <h3><i class="fa-solid fa-pen-to-square"></i> Update Portal Announcement</h3>
+                <button class="modal-close animated-btn" onclick="closeModal('editMarqueeModal')"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <div>
-                    <label>Exam / Assessment Name (Mandatory)</label>
-                    <input type="text" id="examTitle" class="input-box" placeholder="e.g. Half Yearly Examination 2026">
+                <div class="modal-field">
+                    <label>Scrolling Announcement Text</label>
+                    <textarea id="marqueeInput" class="input-box" placeholder="Write urgent exam notice here..."></textarea>
                 </div>
-                
-                <div class="form-row">
-                    <div>
-                        <label>Target Class</label>
-                        <select id="examClass" class="input-box">
-                            <option value="All" selected>All Classes</option>
-                            <option value="9">Class 9th</option>
-                            <option value="10">Class 10th</option>
-                            <option value="11">Class 11th</option>
-                            <option value="12">Class 12th</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Starting Date</label>
-                        <input type="date" id="examDate" class="input-box">
-                    </div>
-                </div>
-
-                <div>
-                    <label>Schedule Details / Instructions (Mandatory)</label>
-                    <textarea id="examDesc" class="input-box" placeholder="Write timing, guidelines, or attach datesheet below..."></textarea>
-                </div>
-
-                <div>
-                    <label>Attach Datesheet PDF <span class="optional-tag">(Max 1.5MB or Link)</span></label>
-                    <div class="file-box">
-                        <input type="file" id="examFileInput" accept="application/pdf,image/*" onchange="handleExamFile(event)">
-                        <div class="file-msg" id="examFileStatus"><i class="fa-solid fa-file-arrow-up"></i> Select PDF or Image File</div>
-                    </div>
-                    <input type="url" id="examLinkInput" class="input-box" placeholder="Or paste Google Drive link here..." style="margin-top: 12px;">
-                </div>
-
-                <button class="action-btn" id="btnPublishExam" onclick="publishExamData('timetable')">
-                    <i class="fa-solid fa-paper-plane"></i> Publish Timetable
-                </button>
+                <button class="btn-submit animated-btn" onclick="updateMarquee()">Update Text</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. Syllabus Modal -->
-    <div class="modal" id="syllabusModal">
-        <div class="modal-content">
+    <!-- Add Category Modal -->
+    <div class="modal-overlay" id="addCategoryModal">
+        <div class="modal-card">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-book-bookmark"></i> Publish Exam Syllabus</h2>
-                <button class="close-btn" onclick="closeModal('syllabusModal')"><i class="fa-solid fa-xmark"></i></button>
+                <h3><i class="fa-solid fa-folder-plus"></i> Create Syllabus Category</h3>
+                <button class="modal-close animated-btn" onclick="closeModal('addCategoryModal')"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <div>
-                    <label>Subject & Exam Syllabus Name (Mandatory)</label>
-                    <input type="text" id="sylTitle" class="input-box" placeholder="e.g. Physics - Half Yearly Syllabus">
+                <div class="modal-field">
+                    <label>Category Name (e.g., Term 1 Exams)</label>
+                    <input type="text" id="catName" class="input-box" placeholder="Enter name...">
                 </div>
-                
-                <div class="form-row">
-                    <div>
-                        <label>Target Class</label>
-                        <select id="sylClass" class="input-box">
-                            <option value="All" selected>All Classes</option>
-                            <option value="9">Class 9th</option>
-                            <option value="10">Class 10th</option>
-                            <option value="11">Class 11th</option>
-                            <option value="12">Class 12th</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Subject</label>
-                        <input type="text" id="sylSubject" class="input-box" placeholder="e.g. Physics / Mathematics">
-                    </div>
+                <div class="modal-field">
+                    <label>Description</label>
+                    <input type="text" id="catDesc" class="input-box" placeholder="Short description...">
                 </div>
-
-<div>
-                    <label>Chapters / Topics Breakdown (Mandatory)</label>
-                    <textarea id="sylDesc" class="input-box" placeholder="List the chapters included in the examination..."></textarea>
-                </div>
-
-                <div>
-                    <label>Attach Syllabus PDF <span class="optional-tag">(Max 1.5MB or Link)</span></label>
-                    <div class="file-box">
-                        <input type="file" id="sylFileInput" accept="application/pdf,image/*" onchange="handleSylFile(event)">
-                        <div class="file-msg" id="sylFileStatus"><i class="fa-solid fa-file-arrow-up"></i> Select PDF or Image File</div>
-                    </div>
-                    <input type="url" id="sylLinkInput" class="input-box" placeholder="Or paste Google Drive link here..." style="margin-top: 12px;">
-                </div>
-
-                <button class="action-btn" id="btnPublishSyl" onclick="publishExamData('syllabus')">
-                    <i class="fa-solid fa-paper-plane"></i> Publish Syllabus
-                </button>
+                <button class="btn-submit animated-btn" onclick="saveCategory()">Create Folder</button>
             </div>
         </div>
     </div>
 
-    <!-- 3. Manage Exams Modal -->
-    <div class="modal" id="manageExamModal">
-        <div class="modal-content">
+    <!-- Add Syllabus Modal -->
+    <div class="modal-overlay" id="addSyllabusModal">
+        <div class="modal-card">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-list-check"></i> Manage Exam Records</h2>
-                <button class="close-btn" onclick="closeModal('manageExamModal')"><i class="fa-solid fa-xmark"></i></button>
+                <h3><i class="fa-solid fa-file-arrow-up"></i> Upload Syllabus</h3>
+                <button class="modal-close animated-btn" onclick="closeModal('addSyllabusModal')"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="modal-body" style="background: rgba(0,0,0,0.15);">
-                <div id="manageExamList">
-                    <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading exam records...</div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="modal-field">
+                        <label>Select Category</label>
+                        <select id="sylCategory" class="input-box"></select>
+                    </div>
+                    <div class="modal-field">
+                        <label>Subject / Title</label>
+                        <input type="text" id="sylTitle" class="input-box" placeholder="e.g. Class 10 Math">
+                    </div>
                 </div>
+                <div class="form-row">
+                    <div class="modal-field">
+                        <label>Class</label>
+                        <select id="sylClass" class="input-box" onchange="toggleStreamLogic('sylStreamGroup', this.value)">
+                            <option value="All">All Classes</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="LKG">LKG</option>
+                            <option value="UKG">UKG</option>
+                            <option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option>
+                            <option value="4">4th</option><option value="5">5th</option><option value="6">6th</option>
+                            <option value="7">7th</option><option value="8">8th</option><option value="9">9th</option>
+                            <option value="10">10th</option><option value="11">11th</option><option value="12">12th</option>
+                        </select>
+                    </div>
+                    <div class="modal-field" id="sylStreamGroup" style="display:none;">
+                        <label>Stream</label>
+                        <select id="sylStream" class="input-box">
+                            <option value="All">All Streams</option>
+                            <option value="PCM">PCM</option>
+                            <option value="PCB">PCB</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Arts">Arts</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-field">
+                    <label>PDF Attachment (Max 1.5MB) OR Link</label>
+                    <div class="file-box">
+                        <input type="file" accept="application/pdf,image/*" onchange="handleFileUpload(event, 'sylFileStatus')">
+                        <div class="file-msg" id="sylFileStatus"><i class="fa-solid fa-paperclip"></i> Tap to attach file</div>
+                    </div>
+                    <input type="url" id="sylLink" class="input-box" placeholder="Or paste link here..." style="margin-top: 8px;">
+                </div>
+                <button class="btn-submit animated-btn" id="btnSaveSyl" onclick="saveSyllabus()">Upload Document</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Exam Timetable Modal -->
+    <div class="modal-overlay" id="addExamModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-calendar-plus"></i> Publish Timetable</h3>
+                <button class="modal-close animated-btn" onclick="closeModal('addExamModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Exam Title</label>
+                    <input type="text" id="exTitle" class="input-box" placeholder="e.g. Final Exams 2026">
+                </div>
+                <div class="form-row">
+                    <div class="modal-field">
+                        <label>Start Date</label>
+                        <input type="date" id="exDate" class="input-box">
+                    </div>
+                    <div class="modal-field">
+                        <label>Time / Shift</label>
+                        <input type="text" id="exTime" class="input-box" placeholder="e.g. 09:00 AM - 12:00 PM">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="modal-field">
+                        <label>Class</label>
+                        <select id="exClass" class="input-box" onchange="toggleStreamLogic('exStreamGroup', this.value)">
+                            <option value="All">All Classes</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="LKG">LKG</option>
+                            <option value="UKG">UKG</option>
+                            <option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option>
+                            <option value="4">4th</option><option value="5">5th</option><option value="6">6th</option>
+                            <option value="7">7th</option><option value="8">8th</option><option value="9">9th</option>
+                            <option value="10">10th</option><option value="11">11th</option><option value="12">12th</option>
+                        </select>
+                    </div>
+                    <div class="modal-field" id="exStreamGroup" style="display:none;">
+                        <label>Stream</label>
+                        <select id="exStream" class="input-box">
+                            <option value="All">All Streams</option>
+                            <option value="PCM">PCM</option>
+                            <option value="PCB">PCB</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Arts">Arts</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-field">
+                    <label>Status</label>
+                    <select id="exStatus" class="input-box">
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="Rescheduled">Rescheduled</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label>PDF Attachment (Max 1.5MB) OR Link</label>
+                    <div class="file-box">
+                        <input type="file" accept="application/pdf,image/*" onchange="handleFileUpload(event, 'exFileStatus')">
+                        <div class="file-msg" id="exFileStatus"><i class="fa-solid fa-paperclip"></i> Tap to attach file</div>
+                    </div>
+                    <input type="url" id="exLink" class="input-box" placeholder="Or paste link here..." style="margin-top: 8px;">
+                </div>
+                <button class="btn-submit animated-btn" id="btnSaveEx" onclick="saveExam()">Publish Timetable</button>
             </div>
         </div>
     </div>
@@ -351,152 +488,267 @@
             messagingSenderId: "776171239833",
             appId: "1:776171239833:web:39eea44420db97384b3b08"
         };
-        
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let uploadedExamDataUrl = '';
-        let uploadedSylDataUrl = '';
+        let allCategories = [];
+        let allSubjects = [];
+        let allExams = [];
+        let currentCategory = null;
+        let uploadedFileBase64 = '';
 
         window.onload = function() {
-            listenExams();
+            loadAnnouncement();
+            loadCategories();
+            loadExams();
         };
 
         function openModal(id) { 
-            const modal = document.getElementById(id);
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
+            uploadedFileBase64 = ''; // Reset file on modal open
+            const statusElements = document.querySelectorAll('.file-msg');
+            statusElements.forEach(el => el.innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach file');
+            document.getElementById(id).classList.add('active'); 
         }
-        
-        function closeModal(id) { 
-            const modal = document.getElementById(id);
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 300);
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function openMainHub(hub) {
+            document.getElementById('mainHubsView').classList.add('hidden');
+            if(hub === 'syllabus') {
+                document.getElementById('syllabusView').classList.remove('hidden');
+                document.getElementById('examsView').classList.add('hidden');
+                resetSyllabusView();
+            } else {
+                document.getElementById('examsView').classList.remove('hidden');
+                document.getElementById('syllabusView').classList.add('hidden');
+            }
+        }
+        function goToMainHubs() {
+            document.getElementById('mainHubsView').classList.remove('hidden');
+            document.getElementById('syllabusView').classList.add('hidden');
+            document.getElementById('examsView').classList.add('hidden');
         }
 
-        function handleExamFile(event) {
+        // Logic to show/hide stream
+        function toggleStreamLogic(groupId, classVal) {
+            const group = document.getElementById(groupId);
+            if(classVal === '11' || classVal === '12') {
+                group.style.display = 'block';
+            } else {
+                group.style.display = 'none';
+            }
+        }
+
+        // File Handler
+        function handleFileUpload(event, statusId) {
             const file = event.target.files[0];
-            const statusBox = document.getElementById('examFileStatus');
-            if (!file) { uploadedExamDataUrl = ''; return; }
+            const statusBox = document.getElementById(statusId);
+            if (!file) return;
             if (file.size > 1.5 * 1024 * 1024) {
-                alert("⚠️ File size exceeds 1.5 MB. Please use a Google Drive link.");
-                event.target.value = ''; uploadedExamDataUrl = '';
+                alert("File too large. Use drive link.");
+                event.target.value = '';
                 return;
             }
             const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedExamDataUrl = e.target.result;
-                statusBox.innerHTML = `<i class="fa-solid fa-check" style="color:#4ade80;"></i> Attached: ${file.name}`;
+            reader.onload = e => {
+                uploadedFileBase64 = e.target.result;
+                statusBox.innerHTML = `<i class="fa-solid fa-check" style="color:#4ade80;"></i> Attached`;
             };
             reader.readAsDataURL(file);
         }
 
-        function handleSylFile(event) {
-            const file = event.target.files[0];
-            const statusBox = document.getElementById('sylFileStatus');
-            if (!file) { uploadedSylDataUrl = ''; return; }
-            if (file.size > 1.5 * 1024 * 1024) {
-                alert("⚠️ File size exceeds 1.5 MB. Please use a Google Drive link.");
-                event.target.value = ''; uploadedSylDataUrl = '';
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedSylDataUrl = e.target.result;
-                statusBox.innerHTML = `<i class="fa-solid fa-check" style="color:#4ade80;"></i> Attached: ${file.name}`;
-            };
-            reader.readAsDataURL(file);
+        // --- MARQUEE ---
+        function loadAnnouncement() {
+            db.collection('portal_settings').doc('exam_announcement').onSnapshot(doc => {
+                if(doc.exists && doc.data().text) {
+                    document.getElementById('marqueeTextContent').innerText = doc.data().text;
+                    document.getElementById('marqueeInput').value = doc.data().text;
+                }
+            });
+        }
+        async function updateMarquee() {
+            const txt = document.getElementById('marqueeInput').value.trim();
+            if(!txt) return;
+            await db.collection('portal_settings').doc('exam_announcement').set({ text: txt });
+            closeModal('editMarqueeModal');
         }
 
-        async function publishExamData(type) {
-            let title, cls, desc, fileUrl, extraField = {};
-            
-            if (type === 'timetable') {
-                title = document.getElementById('examTitle').value.trim();
-                cls = document.getElementById('examClass').value;
-                desc = document.getElementById('examDesc').value.trim();
-                fileUrl = uploadedExamDataUrl || document.getElementById('examLinkInput').value.trim();
-                extraField.date = document.getElementById('examDate').value;
-            } else {
-                title = document.getElementById('sylTitle').value.trim();
-                cls = document.getElementById('sylClass').value;
-                desc = document.getElementById('sylDesc').value.trim();
-                fileUrl = uploadedSylDataUrl || document.getElementById('sylLinkInput').value.trim();
-                extraField.subject = document.getElementById('sylSubject').value.trim();
-            }
-
-            if (!title || !desc) return alert("Title and Description are mandatory!");
-
-            try {
-                await db.collection('exams_syllabus').add({
-                    type: type,
-                    title: title,
-                    targetClass: cls,
-                    description: desc,
-                    fileUrl: fileUrl || '',
-                    ...extraField,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        // --- SYLLABUS LOGIC ---
+        function loadCategories() {
+            db.collection('exam_categories').orderBy('createdAt', 'desc').onSnapshot(snap => {
+                allCategories = [];
+                const selectEl = document.getElementById('sylCategory');
+                selectEl.innerHTML = '';
+                
+                snap.forEach(doc => {
+                    allCategories.push({id: doc.id, ...doc.data()});
+                    selectEl.innerHTML += `<option value="${doc.data().name}">${doc.data().name}</option>`;
                 });
-
-                alert(`✅ ${type === 'timetable' ? 'Timetable' : 'Syllabus'} Published Successfully!`);
-                closeModal(type === 'timetable' ? 'examModal' : 'syllabusModal');
-            } catch (error) {
-                alert("Failed to publish record.");
-            }
-        }
-
-        function openSafePDF(url) {
-            if (!url) return;
-            if (url.startsWith('data:')) {
-                try {
-                    const parts = url.split(',');
-                    const mime = parts[0].match(/:(.*?);/)[1];
-                    const bstr = atob(parts[1]);
-                    let n = bstr.length; const u8arr = new Uint8Array(n);
-                    while (n--) { u8arr[n] = bstr.charCodeAt(n); }
-                    const blob = new Blob([u8arr], { type: mime });
-                    window.open(URL.createObjectURL(blob), '_blank');
-                } catch (e) { window.open(url, '_blank'); }
-            } else {
-                window.open(url, '_blank');
-            }
-        }
-
-        function listenExams() {
-            db.collection('exams_syllabus').onSnapshot(snapshot => {
-                const manageList = document.getElementById('manageExamList');
-                let temp = [];
-                snapshot.forEach(doc => temp.push({id: doc.id, ...doc.data()}));
-                temp.sort((a,b) => (b.timestamp?.seconds||0) - (a.timestamp?.seconds||0));
-
-                manageList.innerHTML = temp.length === 0 ? `<div class="no-data">No exam records found.</div>` : '';
-
-                temp.forEach(data => {
-                    const safeUrl = data.fileUrl ? data.fileUrl.replace(/'/g, "\\'") : '';
-                    const badge = data.type === 'timetable' ? '📅 Timetable' : '📚 Syllabus';
-
-                    manageList.innerHTML += `
-                        <div class="list-item">
-                            <div class="list-info">
-                                <h4><span>[${badge}]</span> ${data.title}</h4>
-                                <p>${data.description}</p>
-                                <div class="list-meta">Class: ${data.targetClass || 'All'} • ${data.subject ? 'Subject: '+data.subject : 'Date: '+(data.date||'N/A')}</div>
-                            </div>
-                            <div class="btn-group">
-                                ${safeUrl ? `<button class="btn-view" onclick="openSafePDF('${safeUrl}')"><i class="fa-solid fa-eye"></i> View</button>` : ''}
-                                <button class="btn-delete" onclick="deleteExam('${data.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
-                            </div>
-                        </div>
-                    `;
-                });
+                renderCategories();
             });
         }
 
-        async function deleteExam(id) {
-            if (!confirm("Are you sure you want to delete this record?")) return;
-            try { await db.collection('exams_syllabus').doc(id).delete(); } 
-            catch (e) { alert("Error deleting record."); }
+        function renderCategories() {
+            const cont = document.getElementById('categoriesGridContainer');
+            if(allCategories.length === 0) { cont.innerHTML = '<div class="no-data">No categories found.</div>'; return; }
+            cont.innerHTML = '';
+            allCategories.forEach(cat => {
+                cont.innerHTML += `
+                    <div class="sub-card animated-btn">
+                        <div onclick="openCategory('${cat.name}')">
+                            <div class="sub-card-icon"><i class="fa-solid fa-folder"></i></div>
+                            <div class="sub-card-title">${cat.name}</div>
+                            <div class="sub-card-desc">${cat.description || 'Syllabus documents'}</div>
+                        </div>
+                        <div class="hub-main-footer">
+                            <span onclick="openCategory('${cat.name}')"><i class="fa-regular fa-folder-open"></i> Open</span>
+                            <button class="btn-action btn-delete" onclick="deleteDoc('exam_categories', '${cat.id}')"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
         }
+
+        async function saveCategory() {
+            const name = document.getElementById('catName').value.trim();
+            const desc = document.getElementById('catDesc').value.trim();
+            if(!name) return;
+            await db.collection('exam_categories').add({ name, description: desc, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            closeModal('addCategoryModal');
+            document.getElementById('catName').value = '';
+        }
+
+        function openCategory(name) {
+            currentCategory = name;
+            document.getElementById('syllabusLayerCategories').classList.add('hidden');
+            document.getElementById('syllabusLayerSubjects').classList.remove('hidden');
+            document.getElementById('syllabusBreadcrumb').innerHTML = `<span onclick="goToMainHubs()"><i class="fa-solid fa-house"></i> Hubs</span> <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> <span onclick="resetSyllabusView()">Categories</span> <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> <strong style="color:var(--text);">${name}</strong>`;
+            loadSubjects();
+        }
+
+        function loadSubjects() {
+            db.collection('exam_syllabus').where('category', '==', currentCategory).onSnapshot(snap => {
+                allSubjects = [];
+                snap.forEach(doc => allSubjects.push({id: doc.id, ...doc.data()}));
+                renderSubjects();
+            });
+        }
+
+        function renderSubjects() {
+            const cont = document.getElementById('subjectsGridContainer');
+            if(allSubjects.length === 0) { cont.innerHTML = '<div class="no-data">No documents in this folder.</div>'; return; }
+            cont.innerHTML = '';
+            allSubjects.forEach(sub => {
+                const streamTxt = (sub.class === '11' || sub.class === '12') ? `(${sub.stream})` : '';
+                cont.innerHTML += `
+                    <div class="sub-card animated-btn">
+                        <div>
+                            <div class="sub-card-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                            <div class="sub-card-title">${sub.name}</div>
+                            <div class="sub-card-desc">Class: ${sub.class} ${streamTxt}</div>
+                        </div>
+                        <div class="hub-main-footer">
+                            <a href="${sub.fileUrl}" target="_blank" class="btn-action btn-view"><i class="fa-solid fa-eye"></i> View</a>
+                            <button class="btn-action btn-delete" onclick="deleteDoc('exam_syllabus', '${sub.id}')"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function saveSyllabus() {
+            const cat = document.getElementById('sylCategory').value;
+            const title = document.getElementById('sylTitle').value.trim();
+            const cls = document.getElementById('sylClass').value;
+            const stm = (cls==='11'||cls==='12') ? document.getElementById('sylStream').value : 'All';
+            const link = document.getElementById('sylLink').value.trim();
+            const fileUrl = uploadedFileBase64 || link;
+
+            if(!cat || !title || !fileUrl) return alert("Category, Title, and File are required!");
+            
+            document.getElementById('btnSaveSyl').innerText = "Uploading...";
+            await db.collection('exam_syllabus').add({ category: cat, name: title, class: cls, stream: stm, fileUrl, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            
+            closeModal('addSyllabusModal');
+            document.getElementById('btnSaveSyl').innerText = "Upload Document";
+            document.getElementById('sylTitle').value = '';
+        }
+
+        function resetSyllabusView() {
+            document.getElementById('syllabusLayerCategories').classList.remove('hidden');
+            document.getElementById('syllabusLayerSubjects').classList.add('hidden');
+            document.getElementById('syllabusBreadcrumb').innerHTML = `<span onclick="goToMainHubs()"><i class="fa-solid fa-house"></i> Hubs</span> <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> <strong style="color:var(--text);">Syllabus Manager</strong>`;
+        }
+
+        // --- EXAM TIMETABLE LOGIC ---
+        function loadExams() {
+            db.collection('exams').orderBy('createdAt', 'desc').onSnapshot(snap => {
+                allExams = [];
+                snap.forEach(doc => allExams.push({id: doc.id, ...doc.data()}));
+                renderExams();
+            });
+        }
+
+        function renderExams() {
+            const cont = document.getElementById('examsListContainer');
+            if(allExams.length === 0) { cont.innerHTML = '<div class="no-data">No active timetables found.</div>'; return; }
+            cont.innerHTML = '';
+            
+            allExams.forEach(exam => {
+                const isResc = exam.status === 'Rescheduled';
+                let bColor = isResc ? 'rgba(239,68,68,0.1)' : 'rgba(56, 189, 248, 0.1)';
+                let tColor = isResc ? '#ef4444' : 'var(--primary)';
+                let brColor = isResc ? 'rgba(239,68,68,0.3)' : 'var(--border)';
+                const streamTxt = (exam.class === '11' || exam.class === '12') ? `(${exam.stream})` : '';
+
+                cont.innerHTML += `
+                    <div class="exam-card fade-in">
+                        <div class="exam-header">
+                            <div class="exam-title">
+                                <h3><i class="fa-solid fa-file-signature"></i> ${exam.title}</h3>
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                <span class="badge-date"><i class="fa-regular fa-calendar"></i> ${exam.dateText}</span>
+                                <span class="badge-status" style="background:${bColor}; color:${tColor}; border-color:${brColor};">${exam.status}</span>
+                            </div>
+                        </div>
+                        <div class="exam-desc-box">
+                            Class: ${exam.class} ${streamTxt} | Time: ${exam.timeText}
+                        </div>
+                        <div class="exam-footer">
+                            <a href="${exam.fileUrl}" target="_blank" class="btn-action btn-view"><i class="fa-solid fa-eye"></i> View Timetable</a>
+                            <button class="btn-action btn-delete" onclick="deleteDoc('exams', '${exam.id}')"><i class="fa-solid fa-trash"></i> Delete Timetable</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function saveExam() {
+            const title = document.getElementById('exTitle').value.trim();
+            const date = document.getElementById('exDate').value;
+            const time = document.getElementById('exTime').value.trim();
+            const cls = document.getElementById('exClass').value;
+            const stm = (cls==='11'||cls==='12') ? document.getElementById('exStream').value : 'All';
+            const status = document.getElementById('exStatus').value;
+            const link = document.getElementById('exLink').value.trim();
+            const fileUrl = uploadedFileBase64 || link;
+
+            if(!title || !date || !fileUrl) return alert("Title, Date, and File are required!");
+
+            document.getElementById('btnSaveEx').innerText = "Publishing...";
+            await db.collection('exams').add({ title, dateText: date, timeText: time, class: cls, stream: stm, status, fileUrl, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            
+            closeModal('addExamModal');
+            document.getElementById('btnSaveEx').innerText = "Publish Timetable";
+            document.getElementById('exTitle').value = '';
+        }
+
+        // Generic Delete
+        async function deleteDoc(collection, id) {
+            if(!confirm("Are you sure you want to delete this permanently?")) return;
+            await db.collection(collection).doc(id).delete();
+        }
+
     </script>
 </body>
 </html>
