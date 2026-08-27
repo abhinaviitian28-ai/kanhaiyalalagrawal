@@ -118,9 +118,9 @@
 
         /* Search Box */
         .search-box { position: relative; width: 100%; margin-bottom: 15px; }
-        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 14px; }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; }
         .search-input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: #fff; padding: 12px 14px 12px 40px; border-radius: 10px; font-size: 13.5px; outline: none; transition: 0.2s; }
-        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 12px var(--primary-glow); }
+        .search-input:focus { box-shadow: 0 0 12px var(--primary-glow); }
 
         /* List Cards (Result / Notice Strips) */
         .list-container { display: flex; flex-direction: column; gap: 14px; }
@@ -162,6 +162,12 @@
 
         .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 24px; width: 100%; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
 
+        /* Delete / Edit Buttons */
+        .btn-action-sm { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-action-sm.edit:hover { background: rgba(0, 229, 255, 0.15); color: var(--primary); border-color: var(--primary); }
+        .btn-action-sm.delete { color: var(--danger); border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.1); }
+        .btn-action-sm.delete:hover { background: var(--danger); color: #fff; }
+
         @media (max-width: 500px) {
             .result-header { flex-direction: column; align-items: flex-start; gap: 12px; }
             .form-row { grid-template-columns: 1fr; }
@@ -198,7 +204,10 @@
                     <div class="form-field">
                         <label>Target Class</label>
                         <select id="flClass" class="input-box" onchange="toggleStreamLogic()">
-                            <option value="" disabled selected>Select Class</option>
+                            <option value="All">All Classes (Global)</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="LKG">LKG</option>
+                            <option value="UKG">UKG</option>
                             <option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option>
                             <option value="4">4th</option><option value="5">5th</option><option value="6">6th</option>
                             <option value="7">7th</option><option value="8">8th</option><option value="9">9th</option>
@@ -207,7 +216,9 @@
                     </div>
                     <div class="form-field">
                         <label>Section</label>
+                        <!-- DEFAULT ALL SECTIONS TO FIX THE STUDENT HIDING GLITCH -->
                         <select id="flSection" class="input-box">
+                            <option value="All" selected>All Sections</option>
                             <option value="A">Sec A</option><option value="B">Sec B</option>
                             <option value="C">Sec C</option><option value="D">Sec D</option>
                         </select>
@@ -257,7 +268,7 @@
                         <i class="fa-solid fa-arrow-right menu-arrow"></i>
                     </div>
 
-                    <!-- 3. Manage Past Messages -->
+                    <!-- 3. Manage Past Messages (Edit/Delete) -->
                     <div class="menu-card" onclick="switchView('viewManageFeedbacks')">
                         <div class="menu-icon" style="color:var(--purple); background:rgba(168, 85, 247, 0.1); border-color:rgba(168, 85, 247, 0.3); box-shadow:0 0 15px var(--purple-glow);">
                             <i class="fa-solid fa-clock-rotate-left"></i>
@@ -281,7 +292,7 @@
 
             <div class="section-card">
                 <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <i class="fa-solid fa-magnifying-glass" style="color:var(--primary);"></i>
                     <input type="text" id="studentSearch" class="search-input" placeholder="Search Student ID, Email or Phone..." onkeyup="handleStudentSearch()">
                 </div>
 
@@ -319,7 +330,7 @@
             </div>
         </div>
 
-        <!-- ================= VIEW 4: MANAGE PAST RECORDS ================= -->
+        <!-- ================= VIEW 4: MANAGE PAST RECORDS (Edit/Delete Messages) ================= -->
         <div id="viewManageFeedbacks" class="hidden fade-in">
             <div class="nav-header">
                 <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
@@ -329,7 +340,7 @@
             <div class="section-card">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass" style="color:var(--purple);"></i>
-                    <input type="text" id="fbSearch" class="search-input" placeholder="Search notices by title, name, email or phone..." onkeyup="handleFbSearch()">
+                    <input type="text" id="fbSearch" class="search-input" placeholder="Search notices by title, name, email or phone..." onkeyup="handleFbSearch()" style="border-color:rgba(168, 85, 247, 0.4);">
                 </div>
 
                 <div class="students-list" id="feedbacksListContainer">
@@ -369,11 +380,12 @@
         let studentFiles = {}; 
         let selectedClassObj = { cls: '', sec: '', stm: '' };
 
+        // Feedback Arrays
         let allClassFeedbacks = [];
         let fbSearchQuery = "";
         let fbVisibleCount = 5;
 
-        // --- SESSION PERSISTENCE (REFRESH FIX) ---
+        // ================= SESSION PERSISTENCE (REFRESH GLITCH FIX) =================
         window.onload = function() {
             let savedObj = sessionStorage.getItem('ta_selectedClassObj');
             let savedView = sessionStorage.getItem('ta_currentView');
@@ -381,8 +393,8 @@
             if (savedObj) {
                 selectedClassObj = JSON.parse(savedObj);
                 document.getElementById('flClass').value = selectedClassObj.cls;
-                document.getElementById('flSection').value = selectedClassObj.sec;
-                document.getElementById('flStream').value = selectedClassObj.stm;
+                document.getElementById('flSection').value = selectedClassObj.sec || 'All'; // Default
+                document.getElementById('flStream').value = selectedClassObj.stm || 'All';
                 toggleStreamLogic();
                 
                 // Auto load without clicking
@@ -418,7 +430,7 @@
             document.getElementById(id).classList.toggle('hidden');
         }
 
-        // ================= DUAL-FETCH STUDENT DATA (THE GLITCH FIX) =================
+        // ================= DUAL-FETCH STUDENT DATA (THE FATAL GLITCH FIX) =================
         async function loadClassData(isAuto = false, viewToRestore = null) {
             const cls = document.getElementById('flClass').value;
             const sec = document.getElementById('flSection').value;
@@ -429,18 +441,13 @@
             selectedClassObj = { cls, sec, stm };
             saveState(viewToRestore || 'viewFilterMenu');
 
-            if(!isAuto) {
-                document.getElementById('workspaceMenu').classList.remove('hidden');
-            }
+            if(!isAuto) document.getElementById('workspaceMenu').classList.remove('hidden');
 
             await fetchStudents(cls, sec, stm);
             listenClassFeedbacks(); 
             
-            if(viewToRestore) {
-                switchView(viewToRestore);
-            } else {
-                document.getElementById('workspaceMenu').classList.remove('hidden');
-            }
+            if(viewToRestore) switchView(viewToRestore);
+            else document.getElementById('workspaceMenu').classList.remove('hidden');
         }
 
         async function fetchStudents(cls, sec, stm) {
@@ -448,7 +455,7 @@
             document.getElementById('leaderboardContainer').innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading ranks...</div>';
 
             try {
-                // Fetching from BOTH collections to ensure no student is missed
+                // FIXED: Fetching from BOTH collections concurrently! No missing students.
                 const [usersSnap, studentsSnap] = await Promise.all([
                     db.collection('users').get().catch(() => ({ docs: [] })),
                     db.collection('students').get().catch(() => ({ docs: [] }))
@@ -460,7 +467,6 @@
                 const processDoc = (doc) => {
                     const data = doc.data();
                     const role = (data.role || data.user_role || 'student').toString().toLowerCase();
-                    
                     if (role === 'teacher' || role === 'admin') return;
 
                     const sClass = String(data.studentClass || data.class || data.className || '').toLowerCase().trim();
@@ -469,11 +475,10 @@
                     const sStm = String(data.stream || data.subject || data.curriculum || 'General').toUpperCase().trim();
 
                     let cMatch = false;
-                    if (sClass === cls.toLowerCase() || sClass.includes(cls.toLowerCase()) || (targetClsNum !== '' && sClassNum === targetClsNum)) {
-                        cMatch = true;
-                    }
+                    if (cls === 'All' || !cls) { cMatch = true; } 
+                    else if (sClass.includes(cls.toLowerCase()) || (targetClsNum !== '' && sClassNum === targetClsNum)) { cMatch = true; }
 
-                    let secMatch = (sec === 'All' || sSec === sec || sSec === '');
+                    let secMatch = (sec === 'All' || !sec || sSec === sec);
                     let stmMatch = true;
 
                     if (cls === '11' || cls === '12') {
@@ -485,8 +490,11 @@
                     }
                 };
 
-                usersSnap.forEach(processDoc);
-                studentsSnap.forEach(processDoc);
+                usersSnap.docs?.forEach(processDoc);
+                studentsSnap.docs?.forEach(processDoc);
+                // Also handle direct iterable if native array returned
+                if(usersSnap.forEach) usersSnap.forEach(processDoc);
+                if(studentsSnap.forEach) studentsSnap.forEach(processDoc);
 
                 currentStudents = Array.from(studentMap.values());
 
@@ -532,7 +540,7 @@
             const container = document.getElementById('studentsListContainer');
             container.innerHTML = '';
 
-            // SAFE STRING SEARCH (CRASH PROOF)
+            // CRASH-PROOF STRING SEARCH LOGIC
             let filtered = currentStudents.filter(item => {
                 let textArray = [
                     item.name, item.username, item.fullName,
@@ -564,7 +572,6 @@
                     rankHTML = `<div class="badge-pill">${getFormatStanding(student.standing)}</div>`;
                 }
 
-                // FIXED MISSING OPTIONS
                 const isDist = student.standing === 'distinction' ? 'selected' : '';
                 const isFirst = student.standing === 'first_division' ? 'selected' : '';
                 const isSecond = student.standing === 'second_division' ? 'selected' : '';
@@ -590,6 +597,7 @@
                             </div>
                         </div>
 
+                        <!-- Integrated Edit Form -->
                         <div id="form_${student.id}" class="integrated-form hidden">
                             <div class="form-row">
                                 <div class="form-field">
@@ -630,6 +638,7 @@
                                 </div>
                             </div>
 
+                            <!-- CONFIDENTIAL REMARK MERGED HERE -->
                             <div class="confidential-box">
                                 <h4><i class="fa-solid fa-user-secret"></i> Send Confidential Remark to ${name}</h4>
                                 <div class="form-field">
@@ -669,9 +678,8 @@
             reader.readAsDataURL(file);
         }
 
-        // SAVE ACADEMIC DATA TO BOTH COLLECTIONS TO BE 100% SURE
         async function saveAllStudentData(studentId, email, name) {
-            const exName = document.getElementById(`exName_${studentId}`).value.trim();
+            const exName = document.getElementById(`exName_${studentId}`).value.trim() || 'Examination Report';
             const score = document.getElementById(`exScore_${studentId}`).value.trim();
             const rank = parseInt(document.getElementById(`exRank_${studentId}`).value) || null;
             const standing = document.getElementById(`exStanding_${studentId}`).value;
@@ -694,7 +702,7 @@
                 if(rank !== null) updateData.rank = rank;
                 if(reportCard !== "") updateData.reportCardUrl = reportCard;
 
-                // Sync to BOTH to prevent glitches
+                // Sync to BOTH collections just in case
                 try { await db.collection('students').doc(studentId).update(updateData); } catch(e){}
                 try { await db.collection('users').doc(studentId).update(updateData); } catch(e){}
                 
@@ -770,9 +778,10 @@
             });
         }
 
-        // ================= FEEDBACK & RECORD MANAGER =================
+        // ================= FEEDBACK & RECORD MANAGER (THE ALL-CLASS FIX) =================
         function listenClassFeedbacks() {
-            db.collection('feedbacks').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+            // FIXED: NO .orderBy() HERE! Fetch everything safely, sort in JS to avoid hidden items!
+            db.collection('feedbacks').onSnapshot(snapshot => {
                 allClassFeedbacks = [];
                 snapshot.forEach(doc => {
                     const fb = doc.data();
@@ -790,13 +799,21 @@
                     } else if (fType === 'personal') {
                         // Show personal notices ONLY if the student is in the current class list
                         let isTargetedPersonal = currentStudents.some(s => 
-                            (s.email || '').toLowerCase() === (fb.targetUser || '').toLowerCase() || 
-                            (s.id || '').toLowerCase() === (fb.targetUser || '').toLowerCase()
+                            String(s.email||'').toLowerCase() === String(fb.targetUser||'').toLowerCase() || 
+                            String(s.id||'').toLowerCase() === String(fb.targetUser||'').toLowerCase() ||
+                            String(s.phone||'') === String(fb.targetUser||'')
                         );
                         if (isTargetedPersonal) {
                             allClassFeedbacks.push({id: doc.id, ...fb});
                         }
                     }
+                });
+
+                // SAFE JS SORTING (Won't drop documents missing createdAt)
+                allClassFeedbacks.sort((a, b) => {
+                    let tA = a.createdAt ? (a.createdAt.seconds || 0) : 0;
+                    let tB = b.createdAt ? (b.createdAt.seconds || 0) : 0;
+                    return tB - tA;
                 });
                 
                 fbSearchQuery = "";
@@ -842,9 +859,16 @@
             displayedFb.forEach(fb => {
                 const isPers = fb.type === 'personal';
                 const dateTxt = fb.createdAt ? new Date(fb.createdAt.toDate()).toLocaleDateString() : 'Recent';
-                const typeBadge = isPers ? 
-                    `<span class="badge-pill gold" style="font-size:9px;">Personal To: ${fb.targetName || fb.targetUser}</span>` : 
-                    `<span class="badge-pill" style="font-size:9px;">${!fb.targetClass || fb.targetClass==='All' ? 'All Classes' : 'Class Notice'}</span>`;
+                
+                // Show clear ALL CLASSES badge for global notices
+                let typeBadge = '';
+                if(isPers) {
+                    typeBadge = `<span class="badge-pill gold" style="font-size:9px;">Personal To: ${fb.targetName || fb.targetUser}</span>`;
+                } else if(!fb.targetClass || fb.targetClass==='All' || fb.targetClass==='') {
+                    typeBadge = `<span class="badge-pill" style="font-size:9px; background:rgba(0, 229, 255, 0.3); border-color:var(--primary); color:#fff;">All Classes / Global</span>`;
+                } else {
+                    typeBadge = `<span class="badge-pill" style="font-size:9px;">Class Notice</span>`;
+                }
 
                 container.innerHTML += `
                     <div style="margin-bottom:8px;">
