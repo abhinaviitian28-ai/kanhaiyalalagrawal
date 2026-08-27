@@ -17,6 +17,7 @@
             --border: rgba(56, 189, 248, 0.25);
         }
 
+        /* Security & Core Resets */
         * {
             margin: 0;
             padding: 0;
@@ -25,20 +26,21 @@
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-user-drag: none;
-            /* गंदी डंडी (Scrollbar) को पूरी तरह छिपाने का कोड */
+            /* गंदी डंडी (Scrollbar) को हमेशा के लिए छिपाने का कोड */
             scrollbar-width: none; 
             -ms-overflow-style: none;
         }
 
         input, textarea, select { user-select: auto; }
 
-        /* Scrollbar Hidden for all elements */
+        /* Hide Webkit Scrollbar */
         ::-webkit-scrollbar { display: none; width: 0; background: transparent; }
 
+        /* 100dvh & Mobile Scroll Glitch Fix */
         body {
             background-color: var(--bg);
             color: var(--text);
-            min-height: 100vh; /* 100dvh for mobile scroll fix */
+            min-height: 100dvh;
             display: flex;
             justify-content: center;
             padding: 15px;
@@ -57,13 +59,14 @@
             z-index: -1;
         }
 
+        /* Reference Sizing: Perfect Laptop Width (950px) */
         .container {
             width: 100%;
-            max-width: 950px; /* Exact Laptop width from reference */
+            max-width: 950px;
             padding-bottom: 30px;
         }
 
-        /* --- ANIMATIONS (RESTORED EXACTLY) --- */
+        /* --- ANIMATIONS --- */
         .animated-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
         .animated-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2); }
         .animated-btn:active { transform: scale(0.96); }
@@ -71,178 +74,213 @@
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Running Announcement Bar */
-        .announcement-bar {
-            background: rgba(30, 41, 59, 0.6);
-            color: var(--text);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            overflow: hidden;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(8px);
-        }
-
-        .announcement-bar i {
-            color: var(--primary);
-            font-size: 16px;
-            animation: pulseIcon 1.5s infinite;
-            flex-shrink: 0;
-        }
-
-        @keyframes pulseIcon { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-
-        .marquee-container { overflow: hidden; white-space: nowrap; width: 100%; }
-        .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 22s linear infinite; }
-        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
-
         /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(30, 41, 59, 0.5);
-            padding: 14px 20px;
+            padding: 16px 20px;
             border-radius: 14px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border: 1px solid var(--border);
             backdrop-filter: blur(8px);
             flex-wrap: wrap;
             gap: 12px;
         }
 
-        .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--text); }
-        .brand i { background: rgba(56, 189, 248, 0.1); padding: 9px; border-radius: 10px; color: var(--primary); font-size: 16px; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; color: var(--text); }
+        .brand i { background: rgba(56, 189, 248, 0.1); padding: 10px; border-radius: 10px; color: var(--primary); font-size: 18px; border: 1px solid rgba(56, 189, 248, 0.2); }
 
-        .header-right-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        
         .btn-dashboard {
             background: rgba(56, 189, 248, 0.1);
             color: var(--primary);
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 9px;
+            padding: 9px 18px;
+            border-radius: 10px;
             font-size: 13px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             border: 1px solid var(--border);
         }
         .btn-dashboard:hover { background: var(--primary); color: var(--bg); }
 
-        /* Section Header & Filters */
-        .section-header { 
-            background: rgba(30, 41, 59, 0.4); 
-            padding: 14px 20px; 
-            border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.08); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px; 
-            flex-wrap: wrap; 
-            gap: 12px; 
-            backdrop-filter: blur(5px); 
+        /* Main Directory Card */
+        .directory-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
-        .section-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--primary); text-transform: uppercase; }
 
-        .filters-container { display: flex; gap: 10px; flex-wrap: wrap; flex-grow: 1; justify-content: flex-end; }
-        
-        .search-bar-wrapper { position: relative; flex-grow: 1; max-width: 280px; }
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 12px;
+        }
+
+        /* Filter Row */
+        .filter-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar-wrapper { position: relative; width: 100%; }
         .search-bar-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--subtext); font-size: 13px; }
-        
-        .search-input { width: 100%; background: var(--card); border: 1px solid rgba(255,255,255,0.1); border-radius: 9px; padding: 10px 14px 10px 36px; color: var(--text); font-size: 13px; outline: none; transition: 0.2s; color-scheme: dark; }
-        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
-        
-        select.search-input { padding-left: 14px; max-width: 140px; cursor: pointer; }
-        select.search-input option { background: var(--card); color: var(--text); }
 
-        /* Student List Patti (Perfect sizing from reference) */
-        .student-list-container { display: flex; flex-direction: column; gap: 14px; overflow-y: auto; max-height: 500px; padding-bottom: 10px; }
-        
-        .student-card { 
-            background: rgba(30, 41, 59, 0.4); 
-            border: 1px solid rgba(255,255,255,0.08); 
-            border-radius: 14px; 
-            padding: 20px; 
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2); 
-            position: relative; 
-            overflow: hidden; 
-            backdrop-filter: blur(5px); 
+        .input-box {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            outline: none;
+            transition: 0.3s;
+            color-scheme: dark;
         }
-        .student-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--primary); }
-        .student-card:hover { border-color: var(--primary); }
+        .search-input { padding-left: 38px; }
+        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); background: rgba(30, 41, 59, 0.8); }
+        select.input-box option { background: var(--card); color: var(--text); }
 
-        .student-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
-        .student-title h3 { font-size: 15.5px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
-        .student-title h3 i { color: var(--primary); }
+        /* Original Student List Styles */
+        .student-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .student-item {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .student-item:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(30, 41, 59, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .student-info { flex: 1; min-width: 0; }
+        .student-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .student-info h4 span {
+            font-size: 11.5px;
+            color: var(--primary);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .student-info p { font-size: 12.5px; color: var(--subtext); line-height: 1.5; }
+
+        .student-actions { display: flex; gap: 10px; flex-shrink: 0; }
+
+        .action-btn {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .action-btn:hover { background: var(--primary); color: var(--bg); }
         
-        .badge-status { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 5px 12px; border-radius: 7px; font-size: 11.5px; font-weight: 600; }
-
-        .student-desc-box { background: var(--card); border: 1px solid rgba(255,255,255,0.05); padding: 14px; border-radius: 10px; font-size: 12.5px; color: #cbd5e1; margin-bottom: 14px; line-height: 1.5; display: flex; flex-wrap: wrap; gap: 15px; }
-        .student-desc-box div { display: flex; align-items: center; gap: 6px; }
-        .student-desc-box i { color: var(--subtext); }
-
-        .student-footer { display: flex; justify-content: flex-end; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 14px; flex-wrap: wrap; gap: 10px; }
-        
-        /* Action Buttons */
-        .action-btn { background: var(--card); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s; }
-        .action-btn.edit { background: rgba(56, 189, 248, 0.1); color: var(--primary); border-color: var(--border); }
-        .action-btn.edit:hover { background: var(--primary); color: var(--bg); }
-        .action-btn.delete { background: rgba(239, 68, 68, 0.1); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+        .action-btn.delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
         .action-btn.delete:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 
+        .no-data { text-align: center; padding: 40px; color: var(--subtext); font-size: 13.5px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.2); }
+
         /* See More Button */
-        .see-more-container { text-align: center; margin: 20px 0; }
-        .see-more-btn { background: var(--card); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 10px 20px; border-radius: 8px; font-size: 12.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s; }
+        .see-more-container { text-align: center; margin-top: 15px; }
+        .see-more-btn {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text);
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
         .see-more-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: var(--primary); color: var(--primary); }
 
-        .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 30px; background: rgba(30, 41, 59, 0.4); border: 1px dashed rgba(255,255,255,0.1); border-radius: 14px; width: 100%; }
-
-        /* Modal / Popups (Exact Reference Match) */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 25, 0.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; opacity: 0; pointer-events: none; transition: 0.2s; }
+        /* Modal Overlay & Card */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 13, 25, 0.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 15px; opacity: 0; pointer-events: none; transition: 0.3s ease; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
-        .modal-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 500px; padding: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); transform: scale(0.95); transition: 0.2s; }
+        .modal-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; width: 100%; max-width: 500px; padding: 25px; box-shadow: 0 15px 50px rgba(0,0,0,0.6); transform: scale(0.95); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; max-height: 85vh; }
         .modal-overlay.active .modal-card { transform: scale(1); }
 
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; }
-        .modal-header h3 { font-size: 16px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .modal-close { background: transparent; border: none; color: var(--subtext); font-size: 22px; cursor: pointer; transition: 0.2s; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 15px; }
+        .modal-header h3 { font-size: 17px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .modal-close { background: transparent; border: none; color: var(--subtext); font-size: 20px; cursor: pointer; transition: 0.2s; }
         .modal-close:hover { color: #ef4444; }
 
-        .modal-body { display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
-        .modal-field { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 14px; border-radius: 10px; }
-        .modal-field label { font-size: 11px; color: var(--subtext); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 6px; }
+        .modal-body { display: flex; flex-direction: column; gap: 16px; overflow-y: auto; padding-right: 5px; margin-bottom: 20px; }
+        .modal-body label { font-size: 11.5px; color: var(--subtext); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 6px; letter-spacing: 0.5px; }
         
-        .modal-input { width: 100%; background: var(--card); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 10px 14px; border-radius: 8px; font-size: 13.5px; outline: none; transition: 0.2s; color-scheme: dark; }
-        .modal-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
-        select.modal-input option { background: var(--card); color: var(--text); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn-save { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--primary); padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 600; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.3s ease; }
+        .btn-save:hover { background: var(--primary); color: var(--bg); box-shadow: 0 6px 18px rgba(56, 189, 248, 0.3); }
 
-        .btn-save { background: rgba(56, 189, 248, 0.1); color: var(--primary); border: 1px solid var(--border); padding: 12px; border-radius: 10px; font-size: 13.5px; font-weight: 600; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s; }
-        .btn-save:hover { background: var(--primary); color: var(--bg); }
-
-        /* Strict Mobile Fixes */
+        /* Strict Mobile View Responsiveness (650px from Reference) */
         @media (max-width: 650px) {
-            .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
-            .header-right-group { width: 100%; justify-content: space-between; }
-            .section-header { flex-direction: column; align-items: flex-start; }
-            .filters-container { width: 100%; justify-content: space-between; }
-            .search-bar-wrapper { max-width: 100%; width: 100%; }
-            select.search-input { max-width: 48%; }
-            .student-header { flex-direction: column; align-items: flex-start; }
-            .student-desc-box { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .student-footer { width: 100%; justify-content: flex-end; }
+            .top-bar { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .btn-dashboard { width: 100%; justify-content: center; }
+            .filter-row { grid-template-columns: 1fr; gap: 12px; }
+            .student-item { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .student-actions { width: 100%; justify-content: flex-end; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; }
+            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -260,71 +298,63 @@
         }
     </script>
 
-    <div class="container">
+    <div class="container fade-in">
         
-        <!-- Marquee Bar -->
-        <div class="announcement-bar animated-btn fade-in">
-            <i class="fa-solid fa-bullhorn"></i>
-            <div class="marquee-container">
-                <div class="marquee-text">
-                    Ensure student records, rolls, and sections are updated for the current academic session.
-                </div>
-            </div>
-        </div>
-
         <!-- Top Bar -->
-        <div class="top-bar fade-in">
+        <div class="top-bar">
             <div class="brand">
                 <i class="fa-solid fa-users-viewfinder"></i>
-                <span>Student Directory Hub</span>
+                <span>Student Directory Panel</span>
             </div>
-            <div class="header-right-group">
-                <a href="teacher_dashboard.html" class="btn-dashboard animated-btn">
-                    <i class="fa-solid fa-house"></i> Dashboard
-                </a>
-            </div>
+            <a href="teacher_dashboard.html" class="btn-dashboard animated-btn">
+                <i class="fa-solid fa-house"></i> Dashboard
+            </a>
         </div>
 
-        <!-- Section Header & Search -->
-        <div class="section-header fade-in">
-            <div class="section-title"><i class="fa-solid fa-address-book"></i> Enrolled Students</div>
-            <div class="filters-container">
+        <!-- Directory Main Card -->
+        <div class="directory-card fade-in">
+            <div class="section-title">
+                <i class="fa-solid fa-address-book"></i> Enrolled Students Database
+            </div>
+
+            <!-- Search and Filter Row -->
+            <div class="filter-row">
                 <div class="search-bar-wrapper">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="searchBox" class="search-input" placeholder="Search by name, email..." onkeyup="filterStudents()">
+                    <input type="text" id="searchBox" class="input-box search-input" placeholder="Search by name, email or phone..." onkeyup="filterStudents()">
                 </div>
-                <select id="filterClass" class="search-input" onchange="filterStudents()">
-                    <option value="ALL">Class</option>
-                    <option value="9">9th</option>
-                    <option value="10">10th</option>
-                    <option value="11">11th</option>
-                    <option value="12">12th</option>
+                <select id="filterClass" class="input-box" onchange="filterStudents()">
+                    <option value="ALL">All Classes</option>
+                    <option value="9">Class 9th</option>
+                    <option value="10">Class 10th</option>
+                    <option value="11">Class 11th</option>
+                    <option value="12">Class 12th</option>
                 </select>
-                <select id="filterSec" class="search-input" onchange="filterStudents()">
-                    <option value="ALL">Sec</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
+                <select id="filterSec" class="input-box" onchange="filterStudents()">
+                    <option value="ALL">All Sections</option>
+                    <option value="A">Section A</option>
+                    <option value="B">Section B</option>
+                    <option value="C">Section C</option>
+                    <option value="D">Section D</option>
                 </select>
             </div>
-        </div>
 
-        <!-- Student List Container -->
-        <div class="student-list-container" id="studentListContainer">
-            <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading database...</div>
-        </div>
+            <!-- Student List Container -->
+            <div id="studentListContainer" class="student-list">
+                <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading database...</div>
+            </div>
 
-        <!-- See More Button -->
-        <div class="see-more-container">
-            <button id="seeMoreBtn" class="see-more-btn animated-btn" onclick="loadMoreStudents()" style="display:none;">
-                <i class="fa-solid fa-chevron-down"></i> See More Students
-            </button>
+            <!-- See More Button -->
+            <div class="see-more-container">
+                <button id="seeMoreBtn" class="see-more-btn animated-btn" onclick="loadMoreStudents()" style="display:none;">
+                    <i class="fa-solid fa-chevron-down"></i> See More Students
+                </button>
+            </div>
         </div>
 
     </div>
 
-    <!-- Edit Modal Overlay -->
+    <!-- Edit Student Modal -->
     <div class="modal-overlay" id="editStudentModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -333,33 +363,33 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="editDocId">
-                <div class="modal-field">
+                <div>
                     <label>Full Name</label>
-                    <input type="text" id="editName" class="modal-input">
+                    <input type="text" id="editName" class="input-box">
                 </div>
-                <div class="modal-field">
+                <div>
                     <label>Registered Contact (Read-only)</label>
-                    <input type="text" id="editContact" class="modal-input" readonly style="opacity: 0.6; cursor: not-allowed;">
+                    <input type="text" id="editContact" class="input-box" readonly style="opacity: 0.6; cursor: not-allowed; background: rgba(0,0,0,0.2);">
                 </div>
                 <div class="form-row">
-                    <div class="modal-field">
+                    <div>
                         <label>Roll Number</label>
-                        <input type="number" id="editRoll" class="modal-input">
+                        <input type="number" id="editRoll" class="input-box">
                     </div>
-                    <div class="modal-field">
+                    <div>
                         <label>Section</label>
-                        <select id="editSec" class="modal-input">
-                            <option value="A">Sec A</option>
-                            <option value="B">Sec B</option>
-                            <option value="C">Sec C</option>
-                            <option value="D">Sec D</option>
+                        <select id="editSec" class="input-box">
+                            <option value="A">Section A</option>
+                            <option value="B">Section B</option>
+                            <option value="C">Section C</option>
+                            <option value="D">Section D</option>
                         </select>
                     </div>
                 </div>
-                <button class="btn-save animated-btn" onclick="updateStudentProfile()">
-                    <i class="fa-solid fa-floppy-disk"></i> Save Changes
-                </button>
             </div>
+            <button class="btn-save animated-btn" onclick="updateStudentProfile()">
+                <i class="fa-solid fa-floppy-disk"></i> Save Changes
+            </button>
         </div>
     </div>
 
@@ -396,17 +426,18 @@
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const role = (data.role || data.user_role || '').toString().toLowerCase();
+                    // Filters out admins & teachers
                     if (role !== 'teacher' && role !== 'admin') {
                         allStudents.push({ id: doc.id, ...data });
                     }
                 });
-                visibleCount = 5; // Reset count on load
+                visibleCount = 5; // Reset count
                 renderStudents();
             });
         }
 
         function filterStudents() {
-            visibleCount = 5; // Reset count on search/filter
+            visibleCount = 5; // Reset count on search
             renderStudents();
         }
 
@@ -435,7 +466,7 @@
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="no-data"><i class="fa-solid fa-user-slash"></i> No students match your criteria.</div>`;
+                container.innerHTML = `<div class="no-data"><i class="fa-solid fa-user-slash"></i> No students match your search criteria.</div>`;
                 document.getElementById('seeMoreBtn').style.display = 'none';
                 return;
             }
@@ -445,27 +476,20 @@
 
             visibleList.forEach(s => {
                 const name = s.username || s.fullName || s.name || 'Unnamed Student';
-                const contactInfo = s.phone || s.email || s.id || 'No Contact';
+                const contactInfo = s.phone || s.email || s.id || 'No Contact Info';
                 const roll = s.rollNo || s.roll || 'N/A';
                 const cls = s.studentClass || s.class || 'N/A';
                 const sec = s.section || s.sec || 'A';
 
                 container.innerHTML += `
-                    <div class="student-card fade-in animated-btn">
-                        <div class="student-header">
-                            <div class="student-title">
-                                <h3><i class="fa-solid fa-user-graduate"></i> ${name}</h3>
-                            </div>
-                            <div class="badge-status">Roll: ${roll}</div>
+                    <div class="student-item fade-in">
+                        <div class="student-info">
+                            <h4><i class="fa-solid fa-user-graduate"></i> ${name} <span>Roll: ${roll}</span></h4>
+                            <p>Contact: ${contactInfo} &nbsp;•&nbsp; Class: ${cls}th (Sec ${sec})</p>
                         </div>
-                        <div class="student-desc-box">
-                            <div><i class="fa-solid fa-envelope"></i> ${contactInfo}</div>
-                            <div><i class="fa-solid fa-chalkboard-user"></i> Class: ${cls}th</div>
-                            <div><i class="fa-solid fa-layer-group"></i> Section: ${sec}</div>
-                        </div>
-                        <div class="student-footer">
+                        <div class="student-actions">
                             <button class="action-btn edit animated-btn" onclick="openEditModal('${s.id}', '${name.replace(/'/g, "\\'")}', '${contactInfo}', '${roll}', '${sec}')">
-                                <i class="fa-solid fa-pen"></i> Edit Profile
+                                <i class="fa-solid fa-pen"></i> Edit
                             </button>
                             <button class="action-btn delete animated-btn" onclick="deleteStudent('${s.id}')">
                                 <i class="fa-solid fa-trash"></i> Delete
