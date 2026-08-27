@@ -3,363 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Student Dashboard - Profile</title>
+    <title>Student Profile - SS KanhaiyaLal Agrawal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --bg: #070d19;
-            --card: #0f172a;
-            --primary: #38bdf8;
-            --text: #ffffff;
-            --subtext: #94a3b8;
-            --border: rgba(56, 189, 248, 0.25);
-        }
-
-        /* Front-End Security: Disable Text Selection & Dragging */
+        /* === CORE COMPACT SIZING & LIGHT GLOW THEME === */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Poppins', sans-serif; 
             -webkit-tap-highlight-color: transparent; 
-            user-select: none; 
-            -webkit-user-drag: none; 
+            user-select: none; -webkit-user-drag: none; 
+            scrollbar-width: none; -ms-overflow-style: none;
         }
 
         input, textarea, select { user-select: auto; }
+        ::-webkit-scrollbar { display: none; width: 0; background: transparent; }
 
-        /* Mobile White-Bar & Scroll Glitch Fix */
-        html, body {
-            background-color: var(--bg);
-            color: var(--text);
-            min-height: 100dvh;
+        :root {
+            --bg: #f1f5f9; /* Premium Soft Slate Background */
+            --card: #ffffff; /* Pure White Cards */
+            --primary: #0284c7; /* Professional Deep Blue */
+            --primary-glow: rgba(2, 132, 199, 0.25);
+            --secondary: #d97706; /* Professional Amber */
+            --secondary-glow: rgba(217, 119, 6, 0.25);
+            --text: #0f172a; /* Dark Navy Text */
+            --subtext: #64748b; /* Slate Gray Labels */
+            --border: rgba(2, 132, 199, 0.15);
+            --danger: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg); color: var(--text);
+            min-height: 100vh; display: flex; justify-content: center;
+            padding: 14px 12px 30px; position: relative; overflow-x: hidden;
             overscroll-behavior-y: none;
-            display: flex;
-            justify-content: center;
-            padding: 15px;
-            position: relative;
         }
 
         body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             z-index: -1;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-
+        /* Exactly matching the 760px sleek width of achievements */
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-            animation: fadeIn 0.4s ease-out;
+            width: 100%; max-width: 760px; display: flex;
+            flex-direction: column; gap: 14px; animation: pageFade 0.25s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes pageFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hidden { display: none !important; }
+        .animated-btn { transition: all 0.2s ease; cursor: pointer; will-change: transform; }
+        .animated-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--primary-glow); }
+        .animated-btn:active { transform: scale(0.97); }
+
+        /* Top Bar (Compact & Clean) */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--card); padding: 12px 16px;
+            border-radius: 12px; border: 1px solid var(--border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
         }
 
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            background-color: var(--card);
-            color: var(--primary);
-            border: 1px solid var(--border);
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 13.5px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.2s ease;
-        }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; color: var(--primary); letter-spacing: 0.2px; }
+        .brand i { background: rgba(2, 132, 199, 0.1); padding: 7px 9px; border-radius: 8px; color: var(--primary); font-size: 14px; border: 1px solid rgba(2, 132, 199, 0.2); }
 
-        .back-btn:hover {
-            background-color: rgba(56, 189, 248, 0.1);
-            transform: translateY(-2px);
+        .btn-dashboard {
+            background: rgba(2, 132, 199, 0.08); color: var(--primary); border: 1px solid rgba(2, 132, 199, 0.2);
+            text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s ease;
         }
+        .btn-dashboard:hover { background: var(--primary); color: #ffffff; }
 
-        /* 🚨 Glowing Warning Marquee Styling */
-        .warning-ticker-box {
-            width: 100%;
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            white-space: nowrap;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        /* Static Alert Box (Replaces the Laggy Marquee Line) */
+        .alert-box {
+            background: #fffbeb; border: 1px solid rgba(217, 119, 6, 0.3);
+            border-radius: 10px; padding: 10px 14px; display: flex; align-items: flex-start; gap: 10px;
+            box-shadow: 0 4px 12px var(--secondary-glow);
         }
+        .alert-box i { color: var(--secondary); font-size: 16px; margin-top: 2px; }
+        .alert-box p { font-size: 11.5px; color: #b45309; font-weight: 600; line-height: 1.4; }
+        .alert-box p b { color: #92400e; }
 
-        .ticker-content {
-            display: inline-block;
-            padding-left: 100%;
-            animation: tickerMove 20s linear infinite;
-            color: #fbbf24;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        @keyframes tickerMove {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-
-        .warning-ticker-box:hover .ticker-content {
-            animation-play-state: paused;
-            cursor: pointer;
-        }
-
-        /* Premium Header */
-        .header {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: var(--text);
-            padding: 20px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .header-icon {
-            font-size: 26px;
-            background: rgba(56, 189, 248, 0.1);
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            color: var(--primary);
-        }
-
-        .header h1 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 0;
-        }
-
-        /* Profile Card */
-        .profile-card {
-            background: var(--card);
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            margin-bottom: 25px;
+        /* Profile Section Card */
+        .section-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
             overflow: hidden;
         }
 
-        .profile-header-section {
-            background: rgba(56, 189, 248, 0.05);
-            color: var(--text);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        .profile-header {
+            background: #f8fafc; padding: 16px; display: flex; align-items: center; gap: 14px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
+        /* Compact Avatar */
         .avatar {
-            width: 75px;
-            height: 75px;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary);
-            font-size: 34px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%; 
-            border: 2px solid var(--border);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 56px; height: 56px; background: rgba(2, 132, 199, 0.1);
+            color: var(--primary); font-size: 26px; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; border: 2px solid var(--primary); box-shadow: 0 4px 12px var(--primary-glow);
+            flex-shrink: 0;
         }
+        .avatar.female-avatar { border-color: #ec4899; color: #ec4899; background: rgba(236, 72, 153, 0.1); box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2); }
 
-        .avatar.male-avatar { background: rgba(56, 189, 248, 0.1); border-color: var(--primary); color: var(--primary); }
-        .avatar.female-avatar { background: rgba(244, 114, 182, 0.1); border-color: #f472b6; color: #f472b6; }
+        .user-info { flex-grow: 1; min-width: 0; }
+        .user-info h2 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .user-info h2 { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-
-        .edit-btn {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary);
-            border: 1px solid var(--border);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 600;
+        .edit-name-btn {
+            background: #ffffff; color: var(--primary); border: 1px solid var(--border);
+            padding: 4px 10px; border-radius: 6px; font-size: 10.5px; font-weight: 600;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s;
         }
+        .edit-name-btn:hover { background: var(--primary); color: #fff; }
 
-        .edit-btn:hover { background: var(--primary); color: var(--bg); }
-
-        .edit-username-box {
-            display: none;
-            background: rgba(15, 23, 42, 0.95);
-            padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+        /* Inline Edit Box */
+        .edit-username-box { display: none; background: #f1f5f9; padding: 14px 16px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 10px; }
+        .input-box {
+            width: 100%; background: #ffffff; border: 1px solid #cbd5e1; color: var(--text);
+            padding: 10px 12px; border-radius: 8px; font-size: 12.5px; outline: none; transition: 0.2s;
         }
-
-        .edit-username-box input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text);
-            border-radius: 8px;
-            font-size: 13.5px;
-            outline: none;
-            color-scheme: dark;
-        }
-
-        .edit-username-box input:focus { border-color: var(--primary); }
-
+        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow); }
+        
         .action-btns { display: flex; gap: 10px; }
+        .btn-save-sm { background: var(--primary); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 600; cursor: pointer; flex: 1; transition: 0.2s; }
+        .btn-save-sm:hover { background: #0369a1; }
+        .btn-cancel-sm { background: #fff; color: var(--subtext); border: 1px solid #cbd5e1; padding: 8px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 600; cursor: pointer; flex: 1; }
 
-        .btn-save { background: var(--primary); color: var(--bg); border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; }
-        .btn-cancel { background: rgba(255,255,255,0.05); color: var(--subtext); border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; }
+        .error-msg { color: var(--danger); font-size: 11.5px; margin-bottom: 8px; display: none; font-weight: 600; }
 
-        .error-msg { color: #f87171; font-size: 12.5px; margin-bottom: 10px; display: none; font-weight: 600; }
-
+        /* Details Grid (Compact & Sleek) */
         .details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; padding: 16px;
         }
 
         .detail-item {
-            background: rgba(255,255,255,0.03);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-left: 4px solid var(--primary);
+            background: #f8fafc; padding: 12px; border-radius: 10px;
+            border: 1px solid #e2e8f0; border-left: 3px solid var(--primary);
+            transition: 0.2s;
         }
-
-        .detail-label {
-            font-size: 11px;
-            color: var(--subtext);
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        .detail-value { font-size: 15px; color: var(--text); font-weight: 600; }
+        .detail-item:hover { box-shadow: 0 4px 12px var(--primary-glow); transform: translateY(-1px); border-color: var(--border); }
+        
+        .detail-label { font-size: 10.5px; color: var(--subtext); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .detail-value { font-size: 13.5px; color: var(--text); font-weight: 700; }
 
         .phone-protected {
-            user-select: none;
-            -webkit-user-select: none;
-            pointer-events: none;
-            background: rgba(255,255,255,0.05);
-            padding: 5px 10px;
-            border-radius: 6px;
-            color: var(--subtext);
-            font-family: monospace;
-            font-size: 14px;
-            display: inline-block;
+            user-select: none; pointer-events: none; background: #e2e8f0;
+            padding: 3px 8px; border-radius: 6px; color: var(--subtext);
+            font-family: monospace; font-size: 12px; display: inline-block;
         }
 
-        .edit-details-btn-wrapper { padding: 0 20px 20px 20px; }
-
-        .btn-edit-details {
-            width: 100%;
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 13.5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        /* Bottom Action Buttons */
+        .card-footer { padding: 0 16px 16px 16px; }
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: #ffffff;
+            border: 1px solid rgba(2, 132, 199, 0.5); padding: 12px; border-radius: 10px;
+            font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; display: flex;
+            justify-content: center; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 12px var(--primary-glow);
         }
-
-        .btn-edit-details:hover { background-color: var(--primary); color: var(--bg); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 18px var(--primary-glow); }
 
         .logout-btn {
-            width: 100%;
-            background-color: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.35);
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 30px;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+            width: 100%; background-color: #fff; color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.4); padding: 12px; border-radius: 10px;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
         }
+        .logout-btn:hover { background-color: var(--danger); color: white; transform: translateY(-2px); }
 
-        .logout-btn:hover { background-color: #ef4444; color: white; }
-
-        /* Modal Overlay */
+        /* Modal Overlay (Compact) */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(7, 13, 25, 0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            backdrop-filter: blur(6px);
+            display: none; position: fixed; inset: 0;
+            background: rgba(15, 23, 42, 0.6); z-index: 1000;
+            justify-content: center; align-items: center; padding: 15px; backdrop-filter: blur(4px);
         }
 
         .modal-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            width: 100%;
-            max-width: 450px;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            background: var(--card); border: 1px solid var(--border); width: 100%; max-width: 420px;
+            border-radius: 14px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); animation: pageFade 0.2s ease-out;
         }
+        .modal-card h3 { margin-bottom: 16px; color: var(--primary); font-size: 16px; display: flex; align-items: center; gap: 8px; }
 
-        .modal-card h3 { margin-bottom: 18px; color: var(--primary); font-size: 18px; display: flex; align-items: center; gap: 8px; }
+        .form-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+        .form-field label { font-size: 11px; font-weight: 700; color: var(--subtext); text-transform: uppercase; }
+        
+        .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
 
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 11px; color: var(--subtext); font-weight: 600; margin-bottom: 5px; text-transform: uppercase; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 11px 12px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px; font-size: 13.5px;
-            outline: none; color: var(--text); color-scheme: dark;
+        @media (max-width: 500px) {
+            .form-row { grid-template-columns: 1fr; }
         }
-        .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
-        select.form-control option { background-color: var(--card); color: var(--text); }
-
-        .form-row { display: flex; gap: 12px; }
-        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-
-        .btn-modal-save { background: var(--primary); color: var(--bg); border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; }
-        .btn-modal-cancel { background: rgba(255,255,255,0.05); color: var(--subtext); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; }
     </style>
 </head>
 <body>
 
-    <!-- 🔒 Security Script (Anti-Inspect & Anti-Copy) -->
+    <!-- 🔒 Security Script -->
     <script>
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
@@ -371,41 +211,45 @@
         }
     </script>
 
-    <div class="container">
-        <!-- Exact Matching File Link -->
-        <a href="database.html" class="back-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            <span>Back to Dashboard</span>
-        </a>
-
-        <!-- ⚠️ Running Warning Banner -->
-        <div class="warning-ticker-box">
-            <div class="ticker-content">
-                <span>⚠️ <b>महत्वपूर्ण सूचना:</b> आप हर 30 दिन में केवल <b>1 बार</b> ही अपनी प्रोफ़ाइल डिटेल्स (क्लास, रोल नंबर, सेक्शन, जेंडर, स्ट्रीम) बदल सकते हैं। Username आप कभी भी बदल सकते हैं! आपात स्थिति में अपने क्लास टीचर से संपर्क करें।</span>
+    <div class="container fade-in">
+        
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="brand">
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Student Profile</span>
             </div>
+            <a href="database.html" class="btn-dashboard animated-btn">
+                <i class="fa-solid fa-house"></i> Dashboard
+            </a>
         </div>
 
-        <div class="header">
-            <div class="header-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-            <h1>Student Portal</h1>
+        <!-- ⚠️ Static Warning Box (Replaced Laggy Marquee) -->
+        <div class="alert-box">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p><b>महत्वपूर्ण:</b> आप हर 30 दिन में केवल 1 बार अपनी डिटेल्स (क्लास/रोल नंबर) बदल सकते हैं। गलत डिटेल्स भरने पर आपका रिजल्ट ब्लॉक हो सकता है।</p>
         </div>
 
-        <div class="profile-card">
-            <div class="profile-header-section">
+        <!-- Profile Section Card -->
+        <div class="section-card" style="padding: 0;">
+            <div class="profile-header">
                 <div class="avatar" id="avatarInitial">👨‍🎓</div>
                 <div class="user-info">
                     <h2 id="displayUsername">Loading...</h2>
-                    <button class="edit-btn" onclick="toggleEditBox()">✏️ Edit Username</button>
+                    <button class="edit-name-btn" onclick="toggleEditBox()"><i class="fa-solid fa-pen"></i> Edit Name</button>
                 </div>
             </div>
 
+            <!-- Inline Username Edit Box -->
             <div class="edit-username-box" id="editBox">
                 <div id="errorMsg" class="error-msg">Usernames do not match!</div>
-                <input type="text" id="newUsername" placeholder="Enter New Username">
-                <input type="text" id="confirmUsername" placeholder="Confirm Username">
+                <div class="form-row">
+                    <input type="text" id="newUsername" class="input-box" placeholder="New Full Name">
+                    <input type="text" id="confirmUsername" class="input-box" placeholder="Confirm Full Name">
+                </div>
                 <div class="action-btns">
-                    <button class="btn-cancel" onclick="toggleEditBox()">Cancel</button>
-                    <button class="btn-save" onclick="saveUsername()">Save</button>
+                    <button class="btn-cancel-sm" onclick="toggleEditBox()">Cancel</button>
+                    <button class="btn-save-sm" onclick="saveUsername()">Save Name</button>
                 </div>
             </div>
 
@@ -421,7 +265,7 @@
                 </div>
 
                 <div class="detail-item">
-                    <div class="detail-label">Email</div>
+                    <div class="detail-label">Login ID</div>
                     <div class="detail-value">
                         <span class="phone-protected" id="displayEmail">Loading...</span>
                     </div>
@@ -438,68 +282,60 @@
                 </div>
             </div>
 
-            <div class="edit-details-btn-wrapper">
-                <button class="btn-edit-details" onclick="openDetailsModal()">✏️ Edit Student Details</button>
+            <div class="card-footer">
+                <button class="btn-primary animated-btn" onclick="openDetailsModal()"><i class="fa-solid fa-user-gear"></i> Update Academic Details</button>
             </div>
         </div>
 
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        <button class="logout-btn animated-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Secure Logout</button>
     </div>
 
+    <!-- Edit Details Modal -->
     <div class="modal-overlay" id="detailsModal">
         <div class="modal-card">
-            <h3>📝 Edit Details</h3>
+            <h3><i class="fa-solid fa-sliders"></i> Edit Academic Info</h3>
 
-            <div class="form-group">
-                <label>Roll Number (1 - 150)</label>
-                <input type="number" id="inputRoll" min="1" max="150" placeholder="e.g. 24">
-            </div>
-
-            <div class="form-group">
-                <label>Gender</label>
-                <select id="inputGender">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Roll No (1-150)</label>
+                    <input type="number" id="inputRoll" class="input-box" min="1" max="150" placeholder="e.g. 24">
+                </div>
+                <div class="form-field">
+                    <label>Gender</label>
+                    <select id="inputGender" class="input-box">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group" style="flex: 2;">
+                <div class="form-field" style="flex: 2;">
                     <label>Class</label>
-                    <select id="inputClass" onchange="handleClassChange()">
-                        <option value="1st">1st Class</option>
-                        <option value="2nd">2nd Class</option>
-                        <option value="3rd">3rd Class</option>
-                        <option value="4th">4th Class</option>
-                        <option value="5th">5th Class</option>
-                        <option value="6th">6th Class</option>
-                        <option value="7th">7th Class</option>
-                        <option value="8th">8th Class</option>
-                        <option value="9th">9th Class</option>
-                        <option value="10th">10th Class</option>
-                        <option value="11th">11th Class</option>
-                        <option value="12th">12th Class</option>
+                    <select id="inputClass" class="input-box" onchange="handleClassChange()">
+                        <option value="1st">1st Class</option><option value="2nd">2nd Class</option><option value="3rd">3rd Class</option>
+                        <option value="4th">4th Class</option><option value="5th">5th Class</option><option value="6th">6th Class</option>
+                        <option value="7th">7th Class</option><option value="8th">8th Class</option><option value="9th">9th Class</option>
+                        <option value="10th">10th Class</option><option value="11th">11th Class</option><option value="12th">12th Class</option>
                     </select>
                 </div>
-
-                <div class="form-group" style="flex: 1;">
+                <div class="form-field" style="flex: 1;">
                     <label>Section</label>
-                    <select id="inputSection">
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
+                    <select id="inputSection" class="input-box">
+                        <option value="A">A</option><option value="B">B</option>
+                        <option value="C">C</option><option value="D">D</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-field">
                 <label>Stream / Curriculum</label>
-                <select id="inputStream"></select>
+                <select id="inputStream" class="input-box"></select>
             </div>
 
             <div class="modal-actions">
-                <button class="btn-modal-cancel" onclick="closeDetailsModal()">Cancel</button>
-                <button class="btn-modal-save" onclick="saveDetailsToFirebase()">Save Changes</button>
+                <button class="btn-cancel-sm" onclick="closeDetailsModal()">Cancel</button>
+                <button class="btn-save-sm" onclick="saveDetailsToFirebase()"><i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync</button>
             </div>
         </div>
     </div>
@@ -515,17 +351,18 @@
             projectId: "ss-kanhaiyalal-agrawal",
             storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
             messagingSenderId: "776171239833",
-            appId: "1:776171239833:web:39eea44420db97384b3b08",
-            measurementId: "G-TQKTRTKBEJ"
+            appId: "1:776171239833:web:39eea44420db97384b3b08"
         };
-
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        const loggedInEmail = localStorage.getItem('user_email');
+        // FAILSAFE LOGIN ID CHECK
+        const rawEmail = localStorage.getItem('user_email') || localStorage.getItem('email') || '';
+        const rawPhone = localStorage.getItem('user_phone') || localStorage.getItem('phone') || '';
+        const loggedInId = (rawEmail || rawPhone).trim().toLowerCase();
 
         window.addEventListener('DOMContentLoaded', () => {
-            if (!loggedInEmail) {
+            if (!loggedInId) {
                 alert("Please login first!");
                 window.location.href = "index.html";
                 return;
@@ -533,32 +370,31 @@
             loadUserProfileFromFirebase();
         });
 
-        window.addEventListener('pageshow', function(event) {
-            if (!localStorage.getItem('loggedInUser') || !localStorage.getItem('user_email')) {
-                window.location.href = "index.html";
-            }
-        });
+        // DUAL-FETCH FOR BULLETPROOF LOADING
+        async function loadUserProfileFromFirebase() {
+            try {
+                let docSnap = await db.collection("students").doc(loggedInId).get();
+                if (!docSnap.exists) {
+                    docSnap = await db.collection("users").doc(loggedInId).get();
+                }
 
-        function loadUserProfileFromFirebase() {
-            db.collection("users").doc(loggedInEmail).get().then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
+                if (docSnap.exists) {
+                    const data = docSnap.data();
                     updateUI(
-                        data.username || 'Student',
-                        data.email || loggedInEmail,
-                        data.rollNo || 'Not Set',
+                        data.username || data.name || data.fullName || 'Student',
+                        loggedInId,
+                        data.rollNo || data.roll || 'Not Set',
                         data.gender || 'Male',
-                        data.studentClass || '10th',
-                        data.section || 'A',
-                        data.stream || 'General / All Subjects'
+                        data.studentClass || data.class || '10th',
+                        data.section || data.sec || 'A',
+                        data.stream || data.subject || 'General / All Subjects'
                     );
                 } else {
-                    updateUI("User", loggedInEmail, "Not Set", "Male", "10th", "A", "General / All Subjects");
+                    updateUI("Student", loggedInId, "Not Set", "Male", "10th", "A", "General / All Subjects");
                 }
-            }).catch((error) => {
-                console.error("Firebase profile fetch error:", error);
-                updateUI("User", loggedInEmail, "Not Set", "Male", "10th", "A", "General / All Subjects");
-            });
+            } catch (err) {
+                updateUI("Student", loggedInId, "Not Set", "Male", "10th", "A", "General / All Subjects");
+            }
         }
 
         function updateUI(name, email, roll, gender, cls, sec, stream) {
@@ -595,15 +431,13 @@
 
             if (cls === '11th' || cls === '12th') {
                 streamSelect.innerHTML = `
-                    <option value="Science(PCM)">Science(PCM)</option>
-                    <option value="Science(PCB)">Science(PCB)</option>
+                    <option value="PCM">Science (PCM)</option>
+                    <option value="PCB">Science (PCB)</option>
                     <option value="Commerce">Commerce</option>
                     <option value="Arts">Arts</option>
                 `;
             } else {
-                streamSelect.innerHTML = `
-                    <option value="General / All Subjects">General / All Subjects</option>
-                `;
+                streamSelect.innerHTML = `<option value="General / All Subjects">General / All Subjects</option>`;
             }
         }
 
@@ -616,141 +450,106 @@
             if (document.getElementById('inputRoll')) document.getElementById('inputRoll').value = (roll !== 'Not Set') ? roll : '';
             if (document.getElementById('inputGender')) document.getElementById('inputGender').value = (gender === 'Female') ? 'Female' : 'Male';
 
-            if (classSec.length === 2) {
-                if (document.getElementById('inputClass')) document.getElementById('inputClass').value = classSec[0];
-                if (document.getElementById('inputSection')) document.getElementById('inputSection').value = classSec[1];
+            if (classSec.length >= 2) {
+                if (document.getElementById('inputClass')) document.getElementById('inputClass').value = classSec[0].trim();
+                if (document.getElementById('inputSection')) document.getElementById('inputSection').value = classSec[1].trim();
             }
 
             handleClassChange();
-            if (document.getElementById('detailsModal')) document.getElementById('detailsModal').style.display = 'flex';
+            document.getElementById('detailsModal').style.display = 'flex';
         }
 
         function closeDetailsModal() {
-            if (document.getElementById('detailsModal')) document.getElementById('detailsModal').style.display = 'none';
+            document.getElementById('detailsModal').style.display = 'none';
         }
 
-        function saveDetailsToFirebase() {
+        // DUAL-WRITE SYNC
+        async function saveDetailsToFirebase() {
             const roll = parseInt(document.getElementById('inputRoll').value);
             const gender = document.getElementById('inputGender').value;
             const cls = document.getElementById('inputClass').value;
             const sec = document.getElementById('inputSection').value;
             const stream = document.getElementById('inputStream').value;
 
-            if (isNaN(roll) || roll < 1 || roll > 150) {
-                alert("Please enter a valid Roll Number between 1 and 150!");
-                return;
-            }
+            if (isNaN(roll) || roll < 1 || roll > 150) return alert("Enter valid Roll No (1-150)");
 
-            if (!loggedInEmail) {
-                alert("User not logged in!");
-                return;
-            }
+            try {
+                let docSnap = await db.collection("students").doc(loggedInId).get();
+                if (!docSnap.exists) docSnap = await db.collection("users").doc(loggedInId).get();
 
-            db.collection("users").doc(loggedInEmail).get().then((doc) => {
-                if (doc.exists) {
-                    const userData = doc.data();
-                    const now = new Date();
-
+                if (docSnap.exists) {
+                    const userData = docSnap.data();
                     if (userData.lastProfileUpdate) {
-                        const lastUpdateDate = userData.lastProfileUpdate.toDate();
-                        const timeDiff = now.getTime() - lastUpdateDate.getTime();
-                        const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
-
+                        const daysDiff = Math.floor((new Date().getTime() - userData.lastProfileUpdate.toDate().getTime()) / (1000 * 3600 * 24));
                         if (daysDiff < 30) {
-                            const daysLeft = 30 - daysDiff;
-                            alert(`🚫 आप 30 दिनों में केवल 1 बार ही प्रोफ़ाइल डिटेल्स बदल सकते हैं!\n\n(${daysLeft} दिन बाद फिर कोशिश करें या आपात स्थिति में अपने क्लास टीचर से संपर्क करें)`);
+                            alert(`🚫 आप 30 दिनों में केवल 1 बार ही डिटेल्स बदल सकते हैं! (${30 - daysDiff} दिन बाकी हैं)`);
                             return;
                         }
                     }
-
-                    db.collection("users").doc(loggedInEmail).update({
-                        rollNo: roll.toString(),
-                        gender: gender,
-                        studentClass: cls,
-                        section: sec,
-                        stream: stream,
-                        lastProfileUpdate: firebase.firestore.FieldValue.serverTimestamp(),
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    }).then(() => {
-                        const currentUsername = document.getElementById('displayUsername').innerText;
-                        updateUI(currentUsername, loggedInEmail, roll.toString(), gender, cls, sec, stream);
-                        closeDetailsModal();
-                        alert("✅ Student details updated successfully!");
-                    }).catch((err) => {
-                        alert("Failed to update details in database!");
-                    });
                 }
-            }).catch((err) => {
-                alert("Error checking profile update limits!");
-            });
+
+                const updates = {
+                    rollNo: roll.toString(), roll: roll.toString(),
+                    gender: gender, studentClass: cls, class: cls,
+                    section: sec, sec: sec, stream: stream,
+                    lastProfileUpdate: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                await Promise.all([
+                    db.collection("students").doc(loggedInId).set(updates, { merge: true }).catch(()=>{}),
+                    db.collection("users").doc(loggedInId).set(updates, { merge: true }).catch(()=>{})
+                ]);
+
+                const currentUsername = document.getElementById('displayUsername').innerText;
+                updateUI(currentUsername, loggedInId, roll.toString(), gender, cls, sec, stream);
+                closeDetailsModal();
+                alert("✅ Record updated and synced to Teacher Portal!");
+
+            } catch (err) { alert("Database Error!"); }
         }
 
         function toggleEditBox() {
             const box = document.getElementById('editBox');
-            const errorMsg = document.getElementById('errorMsg');
-            if (!box) return;
-
             if (box.style.display === 'block') {
                 box.style.display = 'none';
             } else {
                 box.style.display = 'block';
-                if (document.getElementById('newUsername')) document.getElementById('newUsername').value = '';
-                if (document.getElementById('confirmUsername')) document.getElementById('confirmUsername').value = '';
-                if (errorMsg) errorMsg.style.display = 'none';
+                document.getElementById('newUsername').value = '';
+                document.getElementById('confirmUsername').value = '';
+                document.getElementById('errorMsg').style.display = 'none';
             }
         }
 
-        function saveUsername() {
+        async function saveUsername() {
             const newName = document.getElementById('newUsername').value.trim();
             const confirmName = document.getElementById('confirmUsername').value.trim();
             const errorMsg = document.getElementById('errorMsg');
 
-            if (newName === '' || confirmName === '') {
-                if (errorMsg) {
-                    errorMsg.innerText = "Fields cannot be empty!";
-                    errorMsg.style.display = 'block';
-                }
-                return;
-            }
+            if (newName === '' || confirmName === '') { errorMsg.innerText = "Cannot be empty!"; errorMsg.style.display = 'block'; return; }
+            if (newName !== confirmName) { errorMsg.innerText = "Names do not match!"; errorMsg.style.display = 'block'; return; }
 
-            if (newName !== confirmName) {
-                if (errorMsg) {
-                    errorMsg.innerText = "Usernames do not match!";
-                    errorMsg.style.display = 'block';
-                }
-                return;
-            }
+            const updates = { username: newName, name: newName, fullName: newName, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
 
-            if (!loggedInEmail) {
-                alert("User not logged in!");
-                return;
-            }
+            try {
+                await Promise.all([
+                    db.collection("students").doc(loggedInId).set(updates, { merge: true }).catch(()=>{}),
+                    db.collection("users").doc(loggedInId).set(updates, { merge: true }).catch(()=>{})
+                ]);
 
-            db.collection("users").doc(loggedInEmail).update({
-                username: newName,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                const roll = document.getElementById('displayRoll') ? document.getElementById('displayRoll').innerText : 'Not Set';
-                const gender = document.getElementById('displayGender') ? document.getElementById('displayGender').innerText : 'Male';
-                const classSecElem = document.getElementById('displayClassSection');
-                const classSec = classSecElem ? classSecElem.innerText.split(' - ') : ['10th', 'A'];
-                const stream = document.getElementById('displayStream') ? document.getElementById('displayStream').innerText : 'General / All Subjects';
+                const roll = document.getElementById('displayRoll').innerText;
+                const gender = document.getElementById('displayGender').innerText;
+                const classSec = document.getElementById('displayClassSection').innerText.split(' - ');
+                const stream = document.getElementById('displayStream').innerText;
 
-                updateUI(newName, loggedInEmail, roll, gender, classSec[0] || '10th', classSec[1] || 'A', stream);
+                updateUI(newName, loggedInId, roll, gender, classSec[0], classSec[1], stream);
                 toggleEditBox();
-                alert("✅ Username updated successfully!");
-            }).catch((error) => {
-                if (errorMsg) {
-                    errorMsg.innerText = "Failed to update database!";
-                    errorMsg.style.display = 'block';
-                }
-            });
+                alert("✅ Name Updated Successfully!");
+            } catch (err) { errorMsg.innerText = "Failed to update!"; errorMsg.style.display = 'block'; }
         }
 
         function logout() {
-            localStorage.removeItem('user_email');
-            localStorage.removeItem('user_phone');
-            localStorage.removeItem('loggedInUser');
+            localStorage.clear();
             window.location.href = "index.html";
         }
     </script>
