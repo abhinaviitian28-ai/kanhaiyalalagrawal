@@ -1,1 +1,498 @@
-zcx
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendance Portal - SS KanhaiyaLal Agrawal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg: #070d19;
+            --card: #162133;
+            --primary: #38bdf8;
+            --secondary: #eab308;
+            --text: #f8fafc;
+            --subtext: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --present: #4ade80;
+            --absent: #f87171;
+            --leave: #fbbf24;
+        }
+
+        /* === CORE SETTINGS & NO SCROLLBAR === */
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none; -webkit-user-drag: none;
+            scrollbar-width: none; -ms-overflow-style: none;
+        }
+
+        input, textarea, select { user-select: auto; }
+        ::-webkit-scrollbar { display: none; width: 0; background: transparent; }
+
+        body {
+            background-color: var(--bg); color: var(--text);
+            min-height: 100vh; display: flex; justify-content: center;
+            padding: 15px; position: relative; overscroll-behavior-y: none;
+        }
+
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
+            z-index: -1;
+        }
+
+        /* 950px Exact Student Reference Width */
+        .container { width: 100%; max-width: 950px; padding-bottom: 40px; }
+
+        .animated-btn { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; will-change: transform; }
+        .animated-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.25); }
+        .animated-btn:active { transform: scale(0.97); }
+
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hidden { display: none !important; }
+
+        /* Top Bar */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: var(--card); padding: 14px 20px; border-radius: 14px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); margin-bottom: 20px; border: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--text); }
+        .brand i { background: rgba(56, 189, 248, 0.1); padding: 9px; border-radius: 10px; color: var(--primary); font-size: 16px; border: 1px solid rgba(56, 189, 248, 0.2); }
+        
+        .btn-dashboard { background: rgba(56, 189, 248, 0.1); color: var(--primary); text-decoration: none; padding: 8px 16px; border-radius: 9px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(56, 189, 248, 0.2); transition: 0.2s; }
+        .btn-dashboard:hover { background: var(--primary); color: var(--bg); }
+
+        /* Form Card (Inline Filter) */
+        .form-card { background: #111827; border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        .form-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 18px; }
+        .form-header h3 { font-size: 15.5px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 15px; }
+        .form-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-field label { font-size: 11.5px; font-weight: 600; color: var(--subtext); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .input-box { width: 100%; background: #162133; border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 12px 14px; border-radius: 8px; font-size: 13.5px; outline: none; transition: 0.2s; color-scheme: dark; }
+        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.15); }
+        select.input-box { cursor: pointer; }
+
+        .btn-primary { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: 1px solid #0369a1; padding: 12px; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2); margin-top: 5px;}
+        .btn-primary:hover { background: #0369a1; }
+
+        /* Bulk Actions Strip (All Present, All Absent, Holiday) */
+        .bulk-actions { display: flex; gap: 10px; background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        .bulk-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        
+        .btn-bulk { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1px solid transparent; transition: 0.2s; }
+        .btn-all-p { background: rgba(74, 222, 128, 0.15); color: var(--present); border-color: rgba(74, 222, 128, 0.3); }
+        .btn-all-p:hover { background: var(--present); color: #000; }
+        
+        .btn-all-a { background: rgba(248, 113, 113, 0.15); color: var(--absent); border-color: rgba(248, 113, 113, 0.3); }
+        .btn-all-a:hover { background: var(--absent); color: #fff; }
+        
+        .btn-holiday { background: rgba(234, 179, 8, 0.15); color: var(--secondary); border-color: rgba(234, 179, 8, 0.3); }
+        .btn-holiday:hover { background: var(--secondary); color: #000; }
+
+        .lock-badge { background: rgba(239, 68, 68, 0.15); color: var(--absent); padding: 8px 16px; border-radius: 8px; font-size: 12.5px; font-weight: 600; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        /* Students List */
+        .students-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        
+        .student-row { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; flex-wrap: wrap; gap: 15px; }
+        .student-row:hover { border-color: var(--primary); background: #1e293b; }
+
+        .student-info { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+        .student-name { font-size: 14.5px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .student-roll { font-size: 11.5px; color: var(--primary); background: rgba(56, 189, 248, 0.1); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2); }
+
+        /* Radio Buttons (Premium Pill Design) */
+        .att-options { display: flex; gap: 8px; background: #0f172a; padding: 6px; border-radius: 10px; border: 1px solid var(--border); }
+        .att-radio { display: none; }
+        
+        .att-label { padding: 6px 16px; border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid transparent; color: var(--subtext); display: flex; align-items: center; gap: 5px; }
+        .att-label:hover { background: rgba(255,255,255,0.05); }
+
+        /* Checked States */
+        .att-radio[value="P"]:checked + .att-label { background: rgba(74, 222, 128, 0.15); color: var(--present); border-color: rgba(74, 222, 128, 0.4); }
+        .att-radio[value="A"]:checked + .att-label { background: rgba(248, 113, 113, 0.15); color: var(--absent); border-color: rgba(248, 113, 113, 0.4); }
+        .att-radio[value="L"]:checked + .att-label { background: rgba(251, 191, 36, 0.15); color: var(--leave); border-color: rgba(251, 191, 36, 0.4); }
+
+        /* Locked State Overlay */
+        .locked-overlay { opacity: 0.6; pointer-events: none; filter: grayscale(100%); }
+
+        .btn-submit-final { background: var(--primary); color: #000; border: none; padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
+        .btn-submit-final:hover { background: #0284c7; color: #fff; }
+        .btn-submit-final:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
+
+        .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 30px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; width: 100%; }
+
+        @media (max-width: 650px) {
+            .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .form-row { grid-template-columns: 1fr; }
+            .bulk-actions { flex-direction: column; align-items: stretch; gap: 15px; }
+            .bulk-group { justify-content: space-between; }
+            .btn-bulk { flex: 1; justify-content: center; }
+            .student-row { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px; }
+            .att-options { width: 100%; justify-content: space-between; }
+            .att-label { flex: 1; justify-content: center; padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) return false; 
+        }
+    </script>
+
+    <div class="container fade-in">
+        
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="brand">
+                <i class="fa-solid fa-clipboard-user"></i>
+                <span>Attendance Portal</span>
+            </div>
+            <a href="teacher_dashboard.html" class="btn-dashboard animated-btn">
+                <i class="fa-solid fa-house"></i> Dashboard
+            </a>
+        </div>
+
+        <!-- Filter Form -->
+        <div class="form-card fade-in">
+            <div class="form-header">
+                <h3><i class="fa-solid fa-filter"></i> Select Class Details</h3>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Date</label>
+                    <input type="date" id="attDate" class="input-box">
+                </div>
+                <div class="form-field">
+                    <label>Target Class</label>
+                    <select id="attClass" class="input-box" onchange="toggleStreamLogic()">
+                        <option value="" disabled selected>Select Class</option>
+                        <option value="Nursery">Nursery</option>
+                        <option value="LKG">LKG</option>
+                        <option value="UKG">UKG</option>
+                        <option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option>
+                        <option value="4">4th</option><option value="5">5th</option><option value="6">6th</option>
+                        <option value="7">7th</option><option value="8">8th</option><option value="9">9th</option>
+                        <option value="10">10th</option><option value="11">11th</option><option value="12">12th</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Section</label>
+                    <select id="attSection" class="input-box">
+                        <option value="A">Section A</option>
+                        <option value="B">Section B</option>
+                        <option value="C">Section C</option>
+                        <option value="D">Section D</option>
+                    </select>
+                </div>
+                <div class="form-field hidden" id="attStreamGroup">
+                    <label>Stream</label>
+                    <select id="attStream" class="input-box">
+                        <option value="All">All Streams</option>
+                        <option value="PCM">PCM</option>
+                        <option value="PCB">PCB</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Arts">Arts</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-primary animated-btn" onclick="fetchStudents()"><i class="fa-solid fa-users-viewfinder"></i> Load Students</button>
+        </div>
+
+        <!-- Attendance Workspace -->
+        <div id="attendanceWorkspace" class="hidden fade-in">
+            
+            <!-- Bulk Actions & Lock Status -->
+            <div class="bulk-actions" id="bulkActionsPanel">
+                <div class="bulk-group">
+                    <button class="btn-bulk btn-all-p animated-btn" onclick="markAll('P')"><i class="fa-solid fa-check"></i> Mark All Present</button>
+                    <button class="btn-bulk btn-all-a animated-btn" onclick="markAll('A')"><i class="fa-solid fa-xmark"></i> Mark All Absent</button>
+                </div>
+                <div class="bulk-group">
+                    <button class="btn-bulk btn-holiday animated-btn" onclick="declareHoliday()"><i class="fa-solid fa-umbrella-beach"></i> Declare Holiday</button>
+                    <div id="lockStatusBadge" class="lock-badge hidden"><i class="fa-solid fa-lock"></i> Locked</div>
+                </div>
+            </div>
+
+            <!-- Student List -->
+            <div class="students-list" id="studentsListContainer">
+                <!-- Students will be injected here -->
+            </div>
+
+            <button class="btn-submit-final animated-btn" id="btnSubmitAtt" onclick="submitAttendance()"><i class="fa-solid fa-cloud-arrow-up"></i> Save & Lock Attendance</button>
+        </div>
+
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1mrLB5XX6KgDTHyEDEoOhujQWcXHsbn4",
+            authDomain: "ss-kanhaiyalal-agrawal.firebaseapp.com",
+            projectId: "ss-kanhaiyalal-agrawal",
+            storageBucket: "ss-kanhaiyalal-agrawal.firebasestorage.app",
+            messagingSenderId: "776171239833",
+            appId: "1:776171239833:web:39eea44420db97384b3b08"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let currentStudents = [];
+        let isLocked = false;
+        let attendanceRecordId = null;
+
+        window.onload = function() {
+            // Set today's date
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('attDate');
+            if (dateInput) dateInput.value = today;
+        };
+
+        function toggleStreamLogic() {
+            const classVal = document.getElementById('attClass').value;
+            const group = document.getElementById('attStreamGroup');
+            if(classVal === '11' || classVal === '12') {
+                group.classList.remove('hidden');
+            } else {
+                group.classList.add('hidden');
+            }
+        }
+
+        async function fetchStudents() {
+            const date = document.getElementById('attDate').value;
+            const cls = document.getElementById('attClass').value;
+            const sec = document.getElementById('attSection').value;
+            const stm = (cls === '11' || cls === '12') ? document.getElementById('attStream').value : 'All';
+
+            if(!date || !cls) return alert("Please select Date and Class first.");
+
+            const workspace = document.getElementById('attendanceWorkspace');
+            const container = document.getElementById('studentsListContainer');
+            
+            workspace.classList.remove('hidden');
+            container.innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Fetching student database...</div>';
+
+            try {
+                // 1. Fetch Students
+                const userSnap = await db.collection('users').get();
+                currentStudents = [];
+                userSnap.forEach(doc => {
+                    const data = doc.data();
+                    const role = (data.role || data.user_role || '').toString().toLowerCase();
+                    const sClass = (data.studentClass || data.class || '').toString();
+                    const sSec = (data.section || data.sec || '').toString().toUpperCase();
+                    const sStm = (data.stream || 'General').toString();
+
+                    if (role !== 'teacher' && role !== 'admin') {
+                        if(sClass === cls && sSec === sec) {
+                            if(cls === '11' || cls === '12') {
+                                if(stm === 'All' || sStm === stm) currentStudents.push({id: doc.id, ...data});
+                            } else {
+                                currentStudents.push({id: doc.id, ...data});
+                            }
+                        }
+                    }
+                });
+
+                if(currentStudents.length === 0) {
+                    container.innerHTML = '<div class="no-data">No students found for this Class & Section.</div>';
+                    document.getElementById('btnSubmitAtt').classList.add('hidden');
+                    document.getElementById('bulkActionsPanel').classList.add('hidden');
+                    return;
+                }
+
+                // Sort by roll no
+                currentStudents.sort((a,b) => (parseInt(a.rollNo) || 999) - (parseInt(b.rollNo) || 999));
+
+                // 2. Check if Attendance already exists (Checking for the Lock)
+                const attId = `${date}_${cls}_${sec}_${stm}`;
+                const attSnap = await db.collection('attendance').doc(attId).get();
+                
+                let savedData = {};
+                isLocked = false;
+                attendanceRecordId = attId;
+
+                if (attSnap.exists) {
+                    savedData = attSnap.data().records || {};
+                    isLocked = attSnap.data().locked || false;
+                    
+                    if (attSnap.data().isHoliday) {
+                        container.innerHTML = `<div class="no-data" style="color:var(--secondary); border-color:var(--secondary);"><i class="fa-solid fa-umbrella-beach" style="font-size:20px; display:block; margin-bottom:10px;"></i>Holiday Declared for this Date.</div>`;
+                        applyLockUI(true);
+                        return;
+                    }
+                }
+
+                // 3. Render Students (Default Empty or Saved Data)
+                container.innerHTML = '';
+                document.getElementById('btnSubmitAtt').classList.remove('hidden');
+                document.getElementById('bulkActionsPanel').classList.remove('hidden');
+
+                currentStudents.forEach(student => {
+                    const name = student.username || student.fullName || student.name || 'Unnamed';
+                    const roll = student.rollNo || student.roll || 'N/A';
+                    
+                    // Check saved status, otherwise leave blank (no default)
+                    const status = savedData[student.id] || ''; 
+                    
+                    const pCheck = status === 'P' ? 'checked' : '';
+                    const aCheck = status === 'A' ? 'checked' : '';
+                    const lCheck = status === 'L' ? 'checked' : '';
+
+                    container.innerHTML += `
+                        <div class="student-row fade-in" id="row_${student.id}">
+                            <div class="student-info">
+                                <div class="student-name"><i class="fa-solid fa-user-graduate" style="color:var(--primary);"></i> ${name}</div>
+                                <div><span class="student-roll">Roll: ${roll}</span></div>
+                            </div>
+                            <div class="att-options" id="opt_${student.id}">
+                                <input type="radio" name="att_${student.id}" id="p_${student.id}" value="P" class="att-radio" ${pCheck}>
+                                <label for="p_${student.id}" class="att-label">P</label>
+                                
+                                <input type="radio" name="att_${student.id}" id="a_${student.id}" value="A" class="att-radio" ${aCheck}>
+                                <label for="a_${student.id}" class="att-label">A</label>
+                                
+                                <input type="radio" name="att_${student.id}" id="l_${student.id}" value="L" class="att-radio" ${lCheck}>
+                                <label for="l_${student.id}" class="att-label">L</label>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                applyLockUI(isLocked);
+
+            } catch (e) {
+                container.innerHTML = '<div class="no-data">Failed to load database. Check connection.</div>';
+            }
+        }
+
+        // Apply Lock UI (The "Present Ka Lock")
+        function applyLockUI(locked) {
+            const badge = document.getElementById('lockStatusBadge');
+            const submitBtn = document.getElementById('btnSubmitAtt');
+            const bulkBtns = document.querySelectorAll('.btn-bulk');
+            const container = document.getElementById('studentsListContainer');
+
+            if (locked) {
+                badge.classList.remove('hidden');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Attendance Locked`;
+                bulkBtns.forEach(b => b.disabled = true);
+                container.classList.add('locked-overlay');
+                // Disable all radios
+                document.querySelectorAll('.att-radio').forEach(r => r.disabled = true);
+            } else {
+                badge.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Save & Lock Attendance`;
+                bulkBtns.forEach(b => b.disabled = false);
+                container.classList.remove('locked-overlay');
+                document.querySelectorAll('.att-radio').forEach(r => r.disabled = false);
+            }
+        }
+
+        function markAll(status) {
+            if(isLocked) return;
+            currentStudents.forEach(student => {
+                const radio = document.getElementById(`${status.toLowerCase()}_${student.id}`);
+                if(radio) radio.checked = true;
+            });
+        }
+
+        async function declareHoliday() {
+            if(isLocked) return;
+            if(!confirm("Declare Holiday for this class? This will lock the attendance for this date.")) return;
+
+            const author = localStorage.getItem('loggedInTeacher') || 'Faculty Member';
+            
+            document.getElementById('btnSubmitAtt').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Locking...`;
+
+            try {
+                await db.collection('attendance').doc(attendanceRecordId).set({
+                    isHoliday: true,
+                    locked: true,
+                    teacher: author,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert("✅ Holiday Declared & Locked Successfully.");
+                fetchStudents(); // Reload to show holiday UI
+            } catch(e) {
+                alert("Failed to declare holiday.");
+                document.getElementById('btnSubmitAtt').innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Save & Lock Attendance`;
+            }
+        }
+
+        async function submitAttendance() {
+            if(isLocked) return;
+
+            let records = {};
+            let missing = false;
+
+            currentStudents.forEach(student => {
+                const selected = document.querySelector(`input[name="att_${student.id}"]:checked`);
+                if(selected) {
+                    records[student.id] = selected.value;
+                } else {
+                    missing = true; // Check if default empty is still empty
+                    document.getElementById(`row_${student.id}`).style.borderColor = "var(--absent)";
+                }
+            });
+
+            if(missing) {
+                alert("⚠️ Please mark attendance for ALL students before saving. Some are left blank.");
+                return;
+            }
+
+            if(!confirm("Are you sure? Saving will LOCK the attendance for this date. You cannot edit it later.")) return;
+
+            const author = localStorage.getItem('loggedInTeacher') || 'Faculty Member';
+            const btn = document.getElementById('btnSubmitAtt');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving & Locking...`;
+
+            try {
+                const dateVal = document.getElementById('attDate').value;
+                const cls = document.getElementById('attClass').value;
+                const sec = document.getElementById('attSection').value;
+
+                await db.collection('attendance').doc(attendanceRecordId).set({
+                    date: dateVal,
+                    class: cls,
+                    section: sec,
+                    records: records,
+                    isHoliday: false,
+                    locked: true, // THE LOCK MECHANISM
+                    teacher: author,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert("✅ Attendance Saved and Locked Successfully!");
+                isLocked = true;
+                applyLockUI(true);
+
+            } catch (e) {
+                alert("Failed to save attendance.");
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Save & Lock Attendance`;
+            }
+        }
+    </script>
+</body>
+</html>
