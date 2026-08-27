@@ -28,6 +28,8 @@
             --secondary: #facc15; /* Vibrant Yellow */
             --secondary-glow: rgba(250, 204, 21, 0.4);
             --danger: #ff4757;
+            --purple: #a855f7;
+            --purple-glow: rgba(168, 85, 247, 0.4);
             --text: #ffffff;
             --subtext: #a8b2d1;
             --border: rgba(0, 229, 255, 0.2);
@@ -101,14 +103,18 @@
         .btn-primary { background: linear-gradient(135deg, #00e5ff 0%, #0088cc 100%); color: #000; border: none; padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; transition: 0.2s; box-shadow: 0 4px 15px var(--primary-glow); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow); }
 
-        /* Main Menu Cards */
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 10px; }
-        .menu-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
+        /* Main Menu Cards (3 Options) */
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 10px; }
+        .menu-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
         .menu-card::before { content: ''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
         .menu-card:hover { border-color: var(--primary); background: rgba(30, 41, 59, 0.9); transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary-glow); }
-        .menu-icon { width: 48px; height: 48px; background: rgba(0, 229, 255, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px; border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 0 15px var(--primary-glow); }
+        
+        .menu-icon { width: 52px; height: 52px; background: rgba(0, 229, 255, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 22px; border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 0 15px var(--primary-glow); flex-shrink: 0;}
+        .menu-text { flex-grow: 1; }
         .menu-text h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
         .menu-text p { font-size: 12px; color: var(--subtext); line-height: 1.4; }
+        .menu-arrow { font-size: 18px; color: #64748b; transition: 0.3s; }
+        .menu-card:hover .menu-arrow { color: var(--primary); transform: translateX(5px); }
 
         /* Search Box */
         .search-box { position: relative; width: 100%; margin-bottom: 15px; }
@@ -116,14 +122,14 @@
         .search-input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: #fff; padding: 12px 14px 12px 40px; border-radius: 10px; font-size: 13.5px; outline: none; transition: 0.2s; }
         .search-input:focus { border-color: var(--primary); box-shadow: 0 0 12px var(--primary-glow); }
 
-        /* Student Evaluation Cards */
-        .students-list { display: flex; flex-direction: column; gap: 14px; }
+        /* List Cards (Result / Notice Strips) */
+        .list-container { display: flex; flex-direction: column; gap: 14px; }
         .result-card { background: linear-gradient(145deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 15px; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .result-card:hover { border-color: var(--primary); }
         
         .result-header { display: flex; justify-content: space-between; align-items: center; }
         .result-left { display: flex; align-items: center; gap: 14px; }
-        .result-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); color: var(--primary); display: flex; justify-content: center; align-items: center; font-size: 18px; box-shadow: 0 0 10px var(--primary-glow); }
+        .result-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); color: var(--primary); display: flex; justify-content: center; align-items: center; font-size: 18px; box-shadow: 0 0 10px var(--primary-glow); flex-shrink:0;}
         .result-meta h3 { font-size: 15.5px; font-weight: 700; color: #fff; }
         .result-meta p { font-size: 12px; color: var(--subtext); margin-top: 2px; }
 
@@ -131,7 +137,7 @@
         .badge-pill.gold { background: rgba(250, 204, 21, 0.15); border-color: rgba(250, 204, 21, 0.4); color: var(--secondary); box-shadow: 0 0 8px var(--secondary-glow); }
 
         /* Integrated Form inside Card */
-        .integrated-form { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 14px; border: 1px solid rgba(255,255,255,0.05); margin-top: 5px; }
+        .integrated-form { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.05); margin-top: 5px; animation: pageFade 0.2s ease-out;}
         .confidential-box { background: rgba(250, 204, 21, 0.05); border: 1px dashed rgba(250, 204, 21, 0.3); padding: 14px; border-radius: 10px; margin-top: 14px; }
         .confidential-box h4 { font-size: 12px; color: var(--secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 
@@ -141,7 +147,7 @@
         .file-msg { color: var(--primary); font-size: 12px; font-weight: 600; }
 
         /* Leaderboard */
-        .leaderboard-list { display: flex; flex-direction: column; gap: 10px; }
+        .leaderboard-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px;}
         .leaderboard-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06); }
         .leader-left { display: flex; align-items: center; gap: 12px; }
         .rank-num { width: 30px; height: 30px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: 700; background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1); color: var(--subtext); }
@@ -156,7 +162,7 @@
 
         .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 24px; width: 100%; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
 
-        /* Delete / Edit Buttons */
+        /* Action Sm Buttons */
         .btn-action-sm { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
         .btn-action-sm.edit:hover { background: rgba(0, 229, 255, 0.15); color: var(--primary); border-color: var(--primary); }
         .btn-action-sm.delete { color: var(--danger); border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.1); }
@@ -257,7 +263,7 @@
 
                     <!-- 3. Manage Past Messages (Edit/Delete) -->
                     <div class="menu-card" onclick="switchView('viewManageFeedbacks')">
-                        <div class="menu-icon" style="color:#a855f7; background:rgba(168, 85, 247, 0.1); border-color:rgba(168, 85, 247, 0.3); box-shadow:0 0 15px rgba(168, 85, 247, 0.4);">
+                        <div class="menu-icon" style="color:var(--purple); background:rgba(168, 85, 247, 0.1); border-color:rgba(168, 85, 247, 0.3); box-shadow:0 0 15px var(--purple-glow);">
                             <i class="fa-solid fa-clock-rotate-left"></i>
                         </div>
                         <div class="menu-text">
@@ -279,7 +285,8 @@
             <div class="section-card">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="studentSearch" class="search-input" placeholder="Search student by name or roll no..." onkeyup="handleStudentSearch()">
+                    <!-- UPDATED PLACEHOLDER FOR SHORT & MULTI-SEARCH -->
+                    <input type="text" id="studentSearch" class="search-input" placeholder="Search Student ID, Email or Phone..." onkeyup="handleStudentSearch()">
                 </div>
 
                 <div class="students-list" id="studentsListContainer">
@@ -320,17 +327,24 @@
         <div id="viewManageFeedbacks" class="hidden fade-in">
             <div class="nav-header">
                 <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                <div class="page-title" style="color:#a855f7; text-shadow:0 0 8px rgba(168, 85, 247, 0.4);">Manage Past Messages</div>
+                <div class="page-title" style="color:var(--purple); text-shadow:0 0 8px var(--purple-glow);">Manage Past Messages</div>
             </div>
 
             <div class="section-card">
                 <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass" style="color:#a855f7;"></i>
-                    <input type="text" id="fbSearch" class="search-input" placeholder="Search past notices by title or student name..." onkeyup="handleFbSearch()">
+                    <i class="fa-solid fa-magnifying-glass" style="color:var(--purple);"></i>
+                    <input type="text" id="fbSearch" class="search-input" placeholder="Search notices by title, name, email or phone..." onkeyup="handleFbSearch()">
                 </div>
 
                 <div class="students-list" id="feedbacksListContainer">
                     <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading past records...</div>
+                </div>
+
+                <!-- See More for Past Messages -->
+                <div style="text-align: center;">
+                    <button id="seeMoreFbBtn" class="btn-see-more animated-btn" style="color:var(--purple); border-color:rgba(168, 85, 247, 0.3); background:rgba(168, 85, 247, 0.1); box-shadow: 0 0 10px var(--purple-glow);" onclick="loadMoreFb()" style="display:none;">
+                        <i class="fa-solid fa-chevron-down"></i> Load More Notices
+                    </button>
                 </div>
             </div>
         </div>
@@ -363,6 +377,7 @@
         // Feedback Management Arrays
         let allClassFeedbacks = [];
         let fbSearchQuery = "";
+        let fbVisibleCount = 5;
 
         function switchView(viewId) {
             document.getElementById('viewFilterMenu').classList.add('hidden');
@@ -397,7 +412,7 @@
             selectedClassObj = { cls, sec, stm };
             document.getElementById('workspaceMenu').classList.remove('hidden');
             
-            // FETCH FROM `students` Collection (To perfectly sync with student app)
+            // FETCH FROM `students` Collection
             await fetchStudents(cls, sec, stm);
             listenClassFeedbacks(); // Load feedbacks for the 3rd card
         }
@@ -411,12 +426,11 @@
                 const studentSnap = await db.collection('students').get();
                 currentStudents = [];
                 
-                const targetClsNum = cls.replace(/\D/g, ''); // Extract digits only
+                const targetClsNum = cls.replace(/\D/g, ''); 
 
                 studentSnap.forEach(doc => {
                     const data = doc.data();
                     
-                    // Smart loose match
                     const sClass = (data.studentClass || data.class || data.className || '').toString().toLowerCase().trim();
                     const sClassNum = sClass.replace(/\D/g, ''); 
                     const sSec = (data.section || data.sec || '').toString().toUpperCase().trim();
@@ -476,7 +490,7 @@
 
         function getFormatStanding(standing) {
             if(!standing) return 'ACTIVE';
-            return standing.replace('_', ' ').toUpperCase();
+            return standing.replace(/_/g, ' ').toUpperCase();
         }
 
         function applyPaginationAndRender() {
@@ -484,7 +498,8 @@
             container.innerHTML = '';
 
             let filtered = currentStudents.filter(item => {
-                let textToSearch = `${item.name} ${item.username} ${item.email} ${item.rollNo} ${item.roll}`.toLowerCase();
+                // ADDED EMAIL, PHONE, AND ID SEARCHING LOGIC
+                let textToSearch = `${item.name} ${item.username} ${item.email} ${item.rollNo} ${item.roll} ${item.phone} ${item.phoneNumber} ${item.studentId} ${item.id}`.toLowerCase();
                 return textToSearch.includes(searchQuery);
             });
 
@@ -583,7 +598,7 @@
                             </div>
 
                             <button class="btn-primary animated-btn" id="btnSave_${student.id}" onclick="saveAllStudentData('${student.id}', '${student.email || student.id}', '${name.replace(/'/g, "\\'")}')">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync Data
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync All Data
                             </button>
                         </div>
                     </div>
@@ -613,7 +628,6 @@
             reader.readAsDataURL(file);
         }
 
-        // UPDATED: Save to `students` collection directly
         async function saveAllStudentData(studentId, email, name) {
             const exName = document.getElementById(`exName_${studentId}`).value.trim() || 'Examination Report';
             const score = document.getElementById(`exScore_${studentId}`).value.trim();
@@ -631,7 +645,6 @@
             btn.disabled = true;
 
             try {
-                // Save Academic Data to `students`
                 let updateData = {
                     examType: exName, score: score || "Pending", standing: standing,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -641,7 +654,6 @@
 
                 await db.collection('students').doc(studentId).update(updateData);
                 
-                // Update local array for leaderboard refresh
                 const idx = currentStudents.findIndex(s => s.id === studentId);
                 if(idx > -1) {
                     currentStudents[idx].rank = rank;
@@ -651,7 +663,6 @@
                     currentStudents[idx].examType = exName;
                 }
 
-                // Save Confidential Remark
                 if(remMsg !== "") {
                     await db.collection('feedbacks').add({
                         type: 'personal',
@@ -672,7 +683,7 @@
                 
             } catch(e) { alert("Failed to save data. Check connection."); }
             
-            btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync Data`;
+            btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync All Data`;
             btn.disabled = false;
         }
 
@@ -734,12 +745,22 @@
                         allClassFeedbacks.push({id: doc.id, ...fb});
                     }
                 });
+                // Reset search & pagination for feedbacks when newly loaded
+                fbSearchQuery = "";
+                document.getElementById('fbSearch').value = "";
+                fbVisibleCount = 5;
                 renderManageFeedbacks();
             });
         }
 
         function handleFbSearch() {
             fbSearchQuery = document.getElementById('fbSearch').value.toLowerCase().trim();
+            fbVisibleCount = 5;
+            renderManageFeedbacks();
+        }
+
+        function loadMoreFb() {
+            fbVisibleCount += 5;
             renderManageFeedbacks();
         }
 
@@ -754,10 +775,13 @@
 
             if (filtered.length === 0) {
                 container.innerHTML = `<div class="no-data">No notices or remarks found.</div>`;
+                document.getElementById('seeMoreFbBtn').style.display = 'none';
                 return;
             }
 
-            filtered.forEach(fb => {
+            let displayedFb = filtered.slice(0, fbVisibleCount);
+
+            displayedFb.forEach(fb => {
                 const isPers = fb.type === 'personal';
                 const dateTxt = fb.createdAt ? new Date(fb.createdAt.toDate()).toLocaleDateString() : 'Recent';
                 const typeBadge = isPers ? 
@@ -797,6 +821,14 @@
                     </div>
                 `;
             });
+
+            const btn = document.getElementById('seeMoreFbBtn');
+            if(filtered.length > fbVisibleCount) {
+                btn.style.display = 'inline-flex';
+                btn.innerHTML = `<i class="fa-solid fa-chevron-down"></i> Load More (${filtered.length - fbVisibleCount})`;
+            } else {
+                btn.style.display = 'none';
+            }
         }
 
         async function updateFeedback(id) {
@@ -806,7 +838,8 @@
 
             try {
                 await db.collection('feedbacks').doc(id).update({
-                    title: title, message: msg,
+                    title: title,
+                    message: msg,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 alert("✅ Message Updated!");
