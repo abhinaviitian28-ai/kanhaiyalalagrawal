@@ -326,7 +326,7 @@
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // ================= DUAL-FETCH LOGIC =================
+        // ================= DUAL-FETCH LOGIC (DEDUPLICATED) =================
         async function loadStudents() {
             const container = document.getElementById('studentListContainer');
             try {
@@ -342,7 +342,20 @@
                     const data = doc.data();
                     const role = String(data.role || data.user_role || 'student').toLowerCase();
                     if (role === 'teacher' || role === 'admin') return; // Filter out staff
-                    studentMap.set(doc.id, { id: doc.id, ...data });
+
+                    // Deduplication logic using email/phone as the reliable key
+                    const uniqueKey = String(data.email || data.phone || doc.id).toLowerCase().trim();
+
+                    if(studentMap.has(uniqueKey)) {
+                        // Merge to get the most updated fields if found in both
+                        studentMap.set(uniqueKey, { ...studentMap.get(uniqueKey), ...data });
+                    } else {
+                        studentMap.set(uniqueKey, { 
+                            id: doc.id, // Original ID fallback
+                            docEmail: uniqueKey, // Reliable sync reference
+                            ...data 
+                        });
+                    }
                 };
 
                 if(usersSnap.forEach) usersSnap.forEach(processDoc);
@@ -351,7 +364,7 @@
                 allStudents = Array.from(studentMap.values());
                 
                 // Sort by Roll Number
-                allStudents.sort((a,b) => (parseInt(a.rollNo) || 999) - (parseInt(b.rollNo) || 999));
+                allStudents.sort((a,b) => (parseInt(a.rollNo || a.roll) || 999) - (parseInt(b.rollNo || b.roll) || 999));
                 
                 visibleCount = 5;
                 renderStudents();
@@ -378,7 +391,7 @@
             const secVal = document.getElementById('filterSec').value;
 
             const filtered = allStudents.filter(s => {
-                // Robust Search
+                // Crash-Proof Safe Search
                 let textArray = [
                     s.name, s.username, s.fullName,
                     s.email, s.phone, s.id, s.studentId,
@@ -420,10 +433,10 @@
                             <p>ID: ${contactInfo} &nbsp;•&nbsp; Class: ${cls} (Sec ${sec})</p>
                         </div>
                         <div class="student-actions">
-                            <button class="action-btn edit animated-btn" onclick="openEditModal('${s.id}', '${name.replace(/'/g, "\\'")}', '${contactInfo}', '${roll}', '${sec}', '${s.email || ''}')">
+                            <button class="action-btn edit animated-btn" onclick="openEditModal('${s.id}', '${name.replace(/'/g, "\\'")}', '${contactInfo}', '${roll}', '${sec}', '${s.docEmail || ''}')">
                                 <i class="fa-solid fa-pen"></i> Edit
                             </button>
-                            <button class="action-btn delete animated-btn" onclick="deleteStudent('${s.id}')">
+                            <button class="action-btn delete animated-btn" onclick="deleteStudent('${s.id}', '${s.docEmail || ''}')">
                                 <i class="fa-solid fa-trash"></i> Delete
                             </button>
                         </div>
@@ -442,7 +455,7 @@
 
         function openEditModal(id, name, contact, roll, sec, email) {
             document.getElementById('editDocId').value = id;
-            document.getElementById('editDocEmail').value = email || id; // Fallback
+            document.getElementById('editDocEmail').value = email || id; // Bulletproof sync reference
             document.getElementById('editName').value = name;
             document.getElementById('editContact').value = contact;
             document.getElementById('editRoll').value = roll !== 'N/A' ? roll : '';
@@ -450,7 +463,7 @@
             openModal('editStudentModal');
         }
 
-        // ================= DUAL-WRITE FIX (INSTANT SYNC) =================
+        // ================= DUAL-WRITE FIX (BULLETPROOF SYNC) =================
         async function updateStudentProfile() {
             const docId = document.getElementById('editDocId').value;
             const docEmail = document.getElementById('editDocEmail').value.toLowerCase();
@@ -472,23 +485,36 @@
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
-                // DUAL WRITE: Update in both collections based on ID or Email to be safe
                 let promises = [];
-                promises.push(db.collection('users').doc(docId).set(updates, {merge: true}).catch(()=>{}));
-                promises.push(db.collection('students').doc(docId).set(updates, {merge: true}).catch(()=>{}));
-                if (docEmail && docEmail !== docId) {
-                    promises.push(db.collection('students').doc(docEmail).set(updates, {merge: true}).catch(()=>{}));
+                
+                // 1. Force update the 'users' collection (which uses email as ID)
+                if (docEmail && docEmail.includes('@')) {
+                    promises.push(db.collection('users').doc(docEmail).set(updates, {merge: true}).catch(()=>{}));
+                } else {
+                    promises.push(db.collection('users').doc(docId).set(updates, {merge: true}).catch(()=>{}));
+                }
+
+                // 2. Force update the 'students' collection (which uses Auto-ID, we query by email)
+                const studentQuery = await db.collection('students').where('email', '==', docEmail).get();
+                if (!studentQuery.empty) {
+                    studentQuery.forEach(doc => {
+                        promises.push(db.collection('students').doc(doc.id).set(updates, {merge: true}).catch(()=>{}));
+                    });
+                } else {
+                    // Fallback to original ID just in case
+                    promises.push(db.collection('students').doc(docId).set(updates, {merge: true}).catch(()=>{}));
                 }
                 
                 await Promise.all(promises);
 
                 // LOCAL ARRAY UPDATE: Instant UI Change without refresh
-                const idx = allStudents.findIndex(s => s.id === docId);
+                const idx = allStudents.findIndex(s => s.docEmail === docEmail || s.id === docId);
                 if(idx > -1) {
                     allStudents[idx].username = name;
                     allStudents[idx].name = name;
                     allStudents[idx].rollNo = roll;
                     allStudents[idx].section = sec;
+                    allStudents[idx].sec = sec;
                 }
 
                 alert("✅ Profile updated and synced perfectly.");
@@ -503,19 +529,30 @@
             btn.disabled = false;
         }
 
-        // DUAL-DELETE
-        async function deleteStudent(id) {
-            if (!confirm("Are you sure you want to delete this student account permanently?")) return;
+        // ================= BULLETPROOF DELETE =================
+        async function deleteStudent(id, docEmail) {
+            if (!confirm("Are you sure you want to delete this student account permanently from the entire database?")) return;
             try {
-                await Promise.all([
-                    db.collection('users').doc(id).delete().catch(()=>{}),
-                    db.collection('students').doc(id).delete().catch(()=>{})
-                ]);
+                let promises = [];
+                // Delete from users collection
+                if (docEmail && docEmail.includes('@')) {
+                    promises.push(db.collection('users').doc(docEmail).delete().catch(()=>{}));
+                }
+                promises.push(db.collection('users').doc(id).delete().catch(()=>{}));
                 
-                // Remove from local array
-                allStudents = allStudents.filter(s => s.id !== id);
-                renderStudents(); // Re-render instantly
-                alert("🗑️ Student removed securely.");
+                // Delete from students collection
+                promises.push(db.collection('students').doc(id).delete().catch(()=>{}));
+                const studentQuery = await db.collection('students').where('email', '==', docEmail).get();
+                studentQuery.forEach(doc => {
+                    promises.push(db.collection('students').doc(doc.id).delete().catch(()=>{}));
+                });
+
+                await Promise.all(promises);
+                
+                // Remove from local array instantly
+                allStudents = allStudents.filter(s => s.id !== id && s.docEmail !== docEmail);
+                renderStudents(); 
+                alert("🗑️ Student removed securely from all databases.");
             } catch (e) {
                 alert("Failed to delete user account.");
             }
