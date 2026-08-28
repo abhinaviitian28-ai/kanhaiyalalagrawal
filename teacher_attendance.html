@@ -275,6 +275,7 @@
             }
         }
 
+        // === ENGINE FIX: DUAL-FETCH & DEDUPLICATION ===
         async function fetchStudents() {
             const date = document.getElementById('attDate').value;
             const cls = document.getElementById('attClass').value;
@@ -290,26 +291,44 @@
             container.innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Fetching student database...</div>';
 
             try {
-                // 1. Fetch Students
-                const userSnap = await db.collection('users').get();
-                currentStudents = [];
-                userSnap.forEach(doc => {
-                    const data = doc.data();
-                    const role = (data.role || data.user_role || '').toString().toLowerCase();
-                    const sClass = (data.studentClass || data.class || '').toString();
-                    const sSec = (data.section || data.sec || '').toString().toUpperCase();
-                    const sStm = (data.stream || 'General').toString();
+                // 1. DUAL-FETCH FROM BOTH COLLECTIONS
+                const [usersSnap, studentsSnap] = await Promise.all([
+                    db.collection('users').get().catch(() => ({ docs: [] })),
+                    db.collection('students').get().catch(() => ({ docs: [] }))
+                ]);
 
-                    if (role !== 'teacher' && role !== 'admin') {
-                        if(sClass === cls && sSec === sec) {
-                            if(cls === '11' || cls === '12') {
-                                if(stm === 'All' || sStm === stm) currentStudents.push({id: doc.id, ...data});
-                            } else {
-                                currentStudents.push({id: doc.id, ...data});
-                            }
+                let studentMap = new Map();
+
+                const processDoc = (doc) => {
+                    const data = doc.data();
+                    const role = String(data.role || data.user_role || 'student').toLowerCase();
+                    if (role === 'teacher' || role === 'admin') return;
+
+                    // Flexible Schema Check (Handling mismatches from screenshots)
+                    const sClass = String(data.studentClass || data.class || data.className || '').toLowerCase();
+                    const sSec = String(data.section || data.sec || '').toUpperCase();
+                    const sStm = String(data.stream || data.subject || 'General');
+
+                    if (sClass === cls.toLowerCase() && sSec === sec) {
+                        if (cls === '11' || cls === '12') {
+                            if (stm !== 'All' && sStm.toUpperCase() !== stm.toUpperCase()) return;
+                        }
+
+                        // Map Deduplication using reliable unique key
+                        const uniqueKey = String(data.email || data.phone || doc.id).toLowerCase().trim();
+                        
+                        if (studentMap.has(uniqueKey)) {
+                            studentMap.set(uniqueKey, { ...studentMap.get(uniqueKey), ...data });
+                        } else {
+                            studentMap.set(uniqueKey, { id: doc.id, docEmail: uniqueKey, ...data });
                         }
                     }
-                });
+                };
+
+                if(usersSnap.forEach) usersSnap.forEach(processDoc);
+                if(studentsSnap.forEach) studentsSnap.forEach(processDoc);
+
+                currentStudents = Array.from(studentMap.values());
 
                 if(currentStudents.length === 0) {
                     container.innerHTML = '<div class="no-data">No students found for this Class & Section.</div>';
@@ -318,10 +337,10 @@
                     return;
                 }
 
-                // Sort by roll no
-                currentStudents.sort((a,b) => (parseInt(a.rollNo) || 999) - (parseInt(b.rollNo) || 999));
+                // Proper Number Sorting for Roll No
+                currentStudents.sort((a,b) => (parseInt(a.rollNo || a.roll) || 999) - (parseInt(b.rollNo || b.roll) || 999));
 
-                // 2. Check if Attendance already exists (Checking for the Lock)
+                // 2. Check if Attendance already exists
                 const attId = `${date}_${cls}_${sec}_${stm}`;
                 const attSnap = await db.collection('attendance').doc(attId).get();
                 
@@ -340,7 +359,7 @@
                     }
                 }
 
-                // 3. Render Students (Default Empty or Saved Data)
+                // 3. Render Students
                 container.innerHTML = '';
                 document.getElementById('btnSubmitAtt').classList.remove('hidden');
                 document.getElementById('bulkActionsPanel').classList.remove('hidden');
@@ -349,8 +368,8 @@
                     const name = student.username || student.fullName || student.name || 'Unnamed';
                     const roll = student.rollNo || student.roll || 'N/A';
                     
-                    // Check saved status, otherwise leave blank (no default)
-                    const status = savedData[student.id] || ''; 
+                    // ENGINE FIX: Checks both IDs just in case of mismatch
+                    const status = savedData[student.id] || savedData[student.docEmail] || ''; 
                     
                     const pCheck = status === 'P' ? 'checked' : '';
                     const aCheck = status === 'A' ? 'checked' : '';
@@ -383,7 +402,7 @@
             }
         }
 
-        // Apply Lock UI (The "Present Ka Lock")
+        // Apply Lock UI
         function applyLockUI(locked) {
             const badge = document.getElementById('lockStatusBadge');
             const submitBtn = document.getElementById('btnSubmitAtt');
@@ -396,7 +415,6 @@
                 submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Attendance Locked`;
                 bulkBtns.forEach(b => b.disabled = true);
                 container.classList.add('locked-overlay');
-                // Disable all radios
                 document.querySelectorAll('.att-radio').forEach(r => r.disabled = true);
             } else {
                 badge.classList.add('hidden');
@@ -439,6 +457,7 @@
             }
         }
 
+        // === ENGINE FIX: DUAL-ID ATTENDANCE SAVING ===
         async function submitAttendance() {
             if(isLocked) return;
 
@@ -448,9 +467,13 @@
             currentStudents.forEach(student => {
                 const selected = document.querySelector(`input[name="att_${student.id}"]:checked`);
                 if(selected) {
+                    // Store under both possible IDs to guarantee sync
                     records[student.id] = selected.value;
+                    if(student.docEmail && student.docEmail !== student.id) {
+                        records[student.docEmail] = selected.value;
+                    }
                 } else {
-                    missing = true; // Check if default empty is still empty
+                    missing = true;
                     document.getElementById(`row_${student.id}`).style.borderColor = "var(--absent)";
                 }
             });
@@ -476,9 +499,9 @@
                     date: dateVal,
                     class: cls,
                     section: sec,
-                    records: records,
+                    records: records, // Saves dual-mapped records securely
                     isHoliday: false,
-                    locked: true, // THE LOCK MECHANISM
+                    locked: true,
                     teacher: author,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
