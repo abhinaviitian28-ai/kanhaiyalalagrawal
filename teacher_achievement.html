@@ -8,7 +8,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* === CORE BRIGHT XYZ SETTINGS === */
+        /* === SOBER THEME VARIABLES (Matching other pages) === */
+        :root {
+            --bg: #070d19;
+            --card: #162133;
+            --primary: #38bdf8;
+            --secondary: #eab308;
+            --text: #f8fafc;
+            --subtext: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --danger: #ef4444;
+            --purple: #a855f7;
+        }
+
         * {
             margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
@@ -20,153 +32,136 @@
         input, textarea, select { user-select: auto; }
         ::-webkit-scrollbar { display: none; width: 0; background: transparent; }
 
-        :root {
-            --bg: #070b14;
-            --card: #0f172a;
-            --primary: #00e5ff; /* Vibrant Neon Cyan */
-            --primary-glow: rgba(0, 229, 255, 0.4);
-            --secondary: #facc15; /* Vibrant Yellow */
-            --secondary-glow: rgba(250, 204, 21, 0.4);
-            --danger: #ff4757;
-            --purple: #a855f7;
-            --purple-glow: rgba(168, 85, 247, 0.4);
-            --text: #ffffff;
-            --subtext: #a8b2d1;
-            --border: rgba(0, 229, 255, 0.2);
-        }
-
         body {
             background-color: var(--bg); color: var(--text);
             min-height: 100vh; display: flex; justify-content: center;
             padding: 15px; position: relative; overflow-x: hidden;
+            overscroll-behavior-y: none;
         }
 
         body::before {
             content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 0%, #111a2f 0%, #070b14 80%);
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #070d19 80%);
             z-index: -1;
         }
 
+        /* Container matched to 950px */
         .container {
-            width: 100%; max-width: 760px; display: flex;
-            flex-direction: column; gap: 15px; animation: pageFade 0.3s ease-out;
+            width: 100%; max-width: 950px; display: flex;
+            flex-direction: column; gap: 18px; padding-bottom: 40px;
+            animation: pageFade 0.3s ease-out;
         }
 
         @keyframes pageFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         .hidden { display: none !important; }
         .animated-btn { transition: all 0.2s ease; cursor: pointer; will-change: transform; }
-        .animated-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--primary-glow); }
+        .animated-btn:hover { transform: translateY(-2px); }
         .animated-btn:active { transform: scale(0.97); }
 
         /* Top Bar */
         .top-bar {
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(15, 23, 42, 0.85); padding: 12px 18px;
-            border-radius: 12px; border: 1px solid var(--border);
-            backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            background: var(--card); padding: 14px 20px;
+            border-radius: 14px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border); flex-wrap: wrap; gap: 12px;
         }
 
-        .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
-        .brand i { background: rgba(0, 229, 255, 0.15); padding: 8px 10px; border-radius: 8px; color: var(--primary); font-size: 16px; border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 0 10px var(--primary-glow); }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: var(--text); }
+        .brand i { background: rgba(56, 189, 248, 0.1); padding: 9px; border-radius: 10px; color: var(--primary); font-size: 16px; border: 1px solid rgba(56, 189, 248, 0.2); }
 
         .btn-dashboard {
-            background: rgba(0, 229, 255, 0.1); color: var(--primary); border: 1px solid rgba(0, 229, 255, 0.3);
-            text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
-            display: flex; align-items: center; gap: 6px; transition: all 0.2s ease;
+            background: rgba(56, 189, 248, 0.12); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.3);
+            text-decoration: none; padding: 8px 14px; border-radius: 9px; font-size: 12.5px; font-weight: 600;
+            display: flex; align-items: center; gap: 6px; transition: 0.2s;
         }
-        .btn-dashboard:hover { background: var(--primary); color: #000; box-shadow: 0 0 12px var(--primary-glow); }
+        .btn-dashboard:hover { background: rgba(56, 189, 248, 0.25); color: #fff; }
 
-        /* Navigation Header (For New Pages) */
+        /* Navigation Header */
         .nav-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-        .btn-back { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
-        .btn-back:hover { background: #fff; color: #000; }
-        .page-title { font-size: 16px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 0 8px var(--primary-glow); }
+        .btn-back { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text); padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+        .btn-back:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: var(--primary); }
+        .page-title { font-size: 16px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Section Cards */
         .section-card {
-            background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px; padding: 18px; backdrop-filter: blur(8px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 22px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
-        .section-title { font-size: 14px; font-weight: 700; color: var(--secondary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 0 8px var(--secondary-glow); }
+        .section-title { font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Forms & Inputs */
-        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 14px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 14px; }
         .form-field { display: flex; flex-direction: column; gap: 6px; }
-        .form-field label { font-size: 11px; font-weight: 600; color: var(--subtext); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-field label { font-size: 11.5px; font-weight: 600; color: var(--subtext); text-transform: uppercase; letter-spacing: 0.5px; }
         
-        .input-box { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 255, 255, 0.15); color: #ffffff; padding: 12px 14px; border-radius: 8px; font-size: 13px; outline: none; transition: 0.2s; color-scheme: dark; }
-        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); background: rgba(15, 23, 42, 0.9); }
+        .input-box { width: 100%; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12); color: #ffffff; padding: 12px 14px; border-radius: 10px; font-size: 13px; outline: none; transition: 0.2s; color-scheme: dark; }
+        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.15); }
         textarea.input-box { resize: vertical; min-height: 80px; }
 
-        .btn-primary { background: linear-gradient(135deg, #00e5ff 0%, #0088cc 100%); color: #000; border: none; padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; transition: 0.2s; box-shadow: 0 4px 15px var(--primary-glow); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow); }
+        .btn-primary { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; border: 1px solid rgba(56, 189, 248, 0.35); padding: 14px; border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; transition: 0.2s; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2); }
+        .btn-primary:hover { transform: translateY(-2px); background: #0369a1; }
 
         /* Main Menu Cards (3 Options) */
-        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 10px; }
-        .menu-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
-        .menu-card::before { content: ''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
-        .menu-card:hover { border-color: var(--primary); background: rgba(30, 41, 59, 0.9); transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary-glow); }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 10px; }
+        .menu-card { background: rgba(30, 41, 59, 0.65); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 16px; position: relative; overflow: hidden; }
+        .menu-card::before { content: ''; position: absolute; top:0; left:0; width:4px; height:100%; background: var(--primary); opacity: 0.8; }
+        .menu-card:hover { border-color: var(--primary); background: #1e293b; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
         
-        .menu-icon { width: 52px; height: 52px; background: rgba(0, 229, 255, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 22px; border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 0 15px var(--primary-glow); flex-shrink: 0;}
+        .menu-icon { width: 50px; height: 50px; background: rgba(56, 189, 248, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px; border: 1px solid rgba(56, 189, 248, 0.2); flex-shrink: 0;}
         .menu-text { flex-grow: 1; }
-        .menu-text h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .menu-text h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
         .menu-text p { font-size: 12px; color: var(--subtext); line-height: 1.4; }
-        .menu-arrow { font-size: 18px; color: #64748b; transition: 0.3s; }
+        .menu-arrow { font-size: 16px; color: #64748b; transition: 0.3s; }
         .menu-card:hover .menu-arrow { color: var(--primary); transform: translateX(5px); }
 
         /* Search Box */
-        .search-box { position: relative; width: 100%; margin-bottom: 15px; }
-        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; }
-        .search-input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: #fff; padding: 12px 14px 12px 40px; border-radius: 10px; font-size: 13.5px; outline: none; transition: 0.2s; }
-        .search-input:focus { box-shadow: 0 0 12px var(--primary-glow); }
+        .search-box { position: relative; width: 100%; margin-bottom: 18px; }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--subtext); }
+        .search-input { width: 100%; background: #0f172a; border: 1px solid var(--border); color: #fff; padding: 12px 14px 12px 40px; border-radius: 10px; font-size: 13.5px; outline: none; transition: 0.2s; }
+        .search-input:focus { border-color: var(--primary); }
 
         /* List Cards (Result / Notice Strips) */
         .list-container { display: flex; flex-direction: column; gap: 14px; }
-        .result-card { background: linear-gradient(145deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 15px; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .result-card:hover { border-color: var(--primary); box-shadow: 0 6px 20px var(--primary-glow); }
+        .result-card { background: rgba(30, 41, 59, 0.65); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 15px; transition: all 0.2s ease; }
+        .result-card:hover { border-color: var(--primary); background: #1e293b; }
         
-        .result-header { display: flex; justify-content: space-between; align-items: center; }
+        .result-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;}
         .result-left { display: flex; align-items: center; gap: 14px; }
-        .result-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); color: var(--primary); display: flex; justify-content: center; align-items: center; font-size: 18px; box-shadow: 0 0 10px var(--primary-glow); flex-shrink:0;}
-        .result-meta h3 { font-size: 15.5px; font-weight: 700; color: #fff; }
+        .result-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); color: var(--primary); display: flex; justify-content: center; align-items: center; font-size: 16px; flex-shrink:0;}
+        .result-meta h3 { font-size: 15px; font-weight: 600; color: var(--text); }
         .result-meta p { font-size: 12px; color: var(--subtext); margin-top: 2px; }
 
-        .badge-pill { background: rgba(0, 229, 255, 0.15); border: 1px solid rgba(0, 229, 255, 0.4); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 11.5px; font-weight: 700; white-space: nowrap; box-shadow: 0 0 8px var(--primary-glow); }
-        .badge-pill.gold { background: rgba(250, 204, 21, 0.15); border-color: rgba(250, 204, 21, 0.4); color: var(--secondary); box-shadow: 0 0 8px var(--secondary-glow); }
+        .badge-pill { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+        .badge-pill.gold { background: rgba(234, 179, 8, 0.1); border-color: rgba(234, 179, 8, 0.3); color: var(--secondary); }
 
         /* Integrated Form inside Card */
-        .integrated-form { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.05); margin-top: 5px; animation: pageFade 0.2s ease-out;}
-        .confidential-box { background: rgba(250, 204, 21, 0.05); border: 1px dashed rgba(250, 204, 21, 0.3); padding: 14px; border-radius: 10px; margin-top: 14px; }
-        .confidential-box h4 { font-size: 12px; color: var(--secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .integrated-form { background: #0f172a; border-radius: 12px; padding: 18px; border: 1px solid rgba(255,255,255,0.05); margin-top: 5px; animation: pageFade 0.2s ease-out;}
+        
+        .confidential-box { background: rgba(234, 179, 8, 0.05); border: 1px dashed rgba(234, 179, 8, 0.3); padding: 16px; border-radius: 10px; margin-top: 14px; }
+        .confidential-box h4 { font-size: 12px; color: var(--secondary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .file-box { border: 1px dashed var(--primary); background: rgba(0, 229, 255, 0.05); padding: 14px; border-radius: 8px; text-align: center; position: relative; cursor: pointer; transition: 0.2s; }
-        .file-box:hover { background: rgba(0, 229, 255, 0.1); }
+        .file-box { border: 1px dashed var(--primary); background: rgba(56, 189, 248, 0.05); padding: 14px; border-radius: 8px; text-align: center; position: relative; cursor: pointer; transition: 0.2s; }
+        .file-box:hover { background: rgba(56, 189, 248, 0.1); }
         .file-box input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
         .file-msg { color: var(--primary); font-size: 12px; font-weight: 600; }
 
         /* Leaderboard */
         .leaderboard-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px;}
-        .leaderboard-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06); }
-        .leader-left { display: flex; align-items: center; gap: 12px; }
-        .rank-num { width: 30px; height: 30px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: 700; background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1); color: var(--subtext); }
-        .rank-num.r1 { background: rgba(250, 204, 21, 0.15); border-color: var(--secondary); color: var(--secondary); box-shadow: 0 0 10px var(--secondary-glow); }
-        .rank-num.r2 { background: rgba(203, 213, 225, 0.15); border-color: rgba(203, 213, 225, 0.4); color: #e2e8f0; }
-        .rank-num.r3 { background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.4); color: #fb923c; }
-        .leader-name { font-size: 14px; font-weight: 700; color: #fff; }
-        .leader-score { font-size: 13px; font-weight: 700; color: var(--primary); background: rgba(0, 229, 255, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 0 8px var(--primary-glow); }
+        .leaderboard-item { display: flex; justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.65); padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .leader-left { display: flex; align-items: center; gap: 14px; }
+        .rank-num { width: 32px; height: 32px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: 700; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1); color: var(--subtext); }
+        .rank-num.r1 { background: rgba(234, 179, 8, 0.15); border-color: var(--secondary); color: var(--secondary); }
+        .rank-num.r2 { background: rgba(203, 213, 225, 0.15); border-color: rgba(203, 213, 225, 0.3); color: #e2e8f0; }
+        .rank-num.r3 { background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.3); color: #fb923c; }
+        .leader-name { font-size: 14px; font-weight: 600; color: var(--text); }
+        .leader-score { font-size: 13px; font-weight: 600; color: var(--primary); background: rgba(56, 189, 248, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2); }
 
-        .btn-see-more { background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); color: var(--primary); padding: 10px 24px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; margin-top: 15px; box-shadow: 0 0 10px var(--primary-glow); }
-        .btn-see-more:hover { background: var(--primary); color: #000; }
+        .btn-see-more { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text); padding: 10px 24px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; margin-top: 15px; }
+        .btn-see-more:hover { background: rgba(56, 189, 248, 0.1); color: var(--primary); border-color: var(--primary); }
 
-        .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 24px; width: 100%; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(0,0,0,0.2); }
-
-        /* Delete / Edit Buttons */
-        .btn-action-sm { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
-        .btn-action-sm.edit:hover { background: rgba(0, 229, 255, 0.15); color: var(--primary); border-color: var(--primary); }
-        .btn-action-sm.delete { color: var(--danger); border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.1); }
-        .btn-action-sm.delete:hover { background: var(--danger); color: #fff; }
+        .no-data { color: var(--subtext); font-size: 13px; text-align: center; padding: 24px; width: 100%; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; background: rgba(30, 41, 59, 0.4); }
 
         @media (max-width: 500px) {
             .result-header { flex-direction: column; align-items: flex-start; gap: 12px; }
@@ -199,7 +194,7 @@
         <!-- ================= VIEW 1: FILTER & MENU ================= -->
         <div id="viewFilterMenu" class="fade-in">
             <div class="section-card">
-                <div class="section-title"><i class="fa-solid fa-filter" style="color:var(--primary);"></i> Setup Classroom Environment</div>
+                <div class="section-title"><i class="fa-solid fa-filter"></i> Setup Classroom Environment</div>
                 <div class="form-row">
                     <div class="form-field">
                         <label>Target Class</label>
@@ -238,7 +233,7 @@
             <div id="workspaceMenu" class="hidden fade-in" style="margin-top:20px;">
                 
                 <div class="section-card" style="margin-bottom:20px;">
-                    <div class="section-title"><i class="fa-solid fa-trophy" style="color:var(--secondary);"></i> Live Top 5 Leaderboard</div>
+                    <div class="section-title" style="color:var(--secondary);"><i class="fa-solid fa-trophy"></i> Live Top 5 Leaderboard</div>
                     <div class="leaderboard-list" id="leaderboardContainer">
                         <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading ranks...</div>
                     </div>
@@ -257,7 +252,7 @@
 
                     <!-- 2. Broadcast General Notice -->
                     <div class="menu-card" onclick="switchView('viewClassNotice')">
-                        <div class="menu-icon" style="color:var(--secondary); background:rgba(250,204,21,0.1); border-color:rgba(250,204,21,0.3); box-shadow:0 0 15px var(--secondary-glow);">
+                        <div class="menu-icon" style="color:var(--secondary); background:rgba(234, 179, 8, 0.1); border-color:rgba(234, 179, 8, 0.2);">
                             <i class="fa-solid fa-bullhorn"></i>
                         </div>
                         <div class="menu-text">
@@ -267,9 +262,9 @@
                         <i class="fa-solid fa-arrow-right menu-arrow"></i>
                     </div>
 
-                    <!-- 3. Manage Past Messages (Edit/Delete) -->
+                    <!-- 3. Manage Past Messages -->
                     <div class="menu-card" onclick="switchView('viewManageFeedbacks')">
-                        <div class="menu-icon" style="color:var(--purple); background:rgba(168, 85, 247, 0.1); border-color:rgba(168, 85, 247, 0.3); box-shadow:0 0 15px var(--purple-glow);">
+                        <div class="menu-icon" style="color:var(--purple); background:rgba(168, 85, 247, 0.1); border-color:rgba(168, 85, 247, 0.2);">
                             <i class="fa-solid fa-clock-rotate-left"></i>
                         </div>
                         <div class="menu-text">
@@ -291,8 +286,8 @@
 
             <div class="section-card">
                 <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass" style="color:var(--primary);"></i>
-                    <input type="text" id="studentSearch" class="search-input" placeholder="Search Student ID, Email or Phone..." onkeyup="handleStudentSearch()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="studentSearch" class="search-input" placeholder="Search Student ID, Name or Roll No..." onkeyup="handleStudentSearch()">
                 </div>
 
                 <div class="students-list" id="studentsListContainer">
@@ -311,7 +306,7 @@
         <div id="viewClassNotice" class="hidden fade-in">
             <div class="nav-header">
                 <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                <div class="page-title" style="color:var(--secondary); text-shadow:0 0 8px var(--secondary-glow);">Class Announcements</div>
+                <div class="page-title" style="color:var(--secondary);">Class Announcements</div>
             </div>
 
             <div class="section-card">
@@ -323,23 +318,23 @@
                     <label style="color:var(--secondary);">Message</label>
                     <textarea id="rmMessage" class="input-box" placeholder="Write feedback for this specific class..."></textarea>
                 </div>
-                <button class="btn-primary animated-btn" style="background:linear-gradient(135deg, #facc15 0%, #ca8a04 100%); color:#000; box-shadow:0 4px 15px var(--secondary-glow);" onclick="postClassRemark()">
+                <button class="btn-primary animated-btn" style="background:linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color:#000; border-color:#ca8a04;" onclick="postClassRemark()">
                     <i class="fa-solid fa-paper-plane"></i> Broadcast to Class
                 </button>
             </div>
         </div>
 
-        <!-- ================= VIEW 4: MANAGE PAST RECORDS (Edit/Delete Messages) ================= -->
+        <!-- ================= VIEW 4: MANAGE PAST RECORDS ================= -->
         <div id="viewManageFeedbacks" class="hidden fade-in">
             <div class="nav-header">
                 <button class="btn-back" onclick="switchView('viewFilterMenu')"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                <div class="page-title" style="color:var(--purple); text-shadow:0 0 8px var(--purple-glow);">Manage Past Messages</div>
+                <div class="page-title" style="color:var(--purple);">Manage Past Messages</div>
             </div>
 
             <div class="section-card">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass" style="color:var(--purple);"></i>
-                    <input type="text" id="fbSearch" class="search-input" placeholder="Search notices by title, name, email or phone..." onkeyup="handleFbSearch()" style="border-color:rgba(168, 85, 247, 0.4);">
+                    <input type="text" id="fbSearch" class="search-input" placeholder="Search notices by title, name, email or phone..." onkeyup="handleFbSearch()" style="border-color:rgba(168, 85, 247, 0.2);">
                 </div>
 
                 <div class="students-list" id="feedbacksListContainer">
@@ -347,7 +342,7 @@
                 </div>
 
                 <div style="text-align: center;">
-                    <button id="seeMoreFbBtn" class="btn-see-more animated-btn" style="color:var(--purple); border-color:rgba(168, 85, 247, 0.3); background:rgba(168, 85, 247, 0.1); box-shadow: 0 0 10px var(--purple-glow);" onclick="loadMoreFb()" style="display:none;">
+                    <button id="seeMoreFbBtn" class="btn-see-more animated-btn" style="color:var(--purple); border-color:rgba(168, 85, 247, 0.3); background:rgba(168, 85, 247, 0.1);" onclick="loadMoreFb()" style="display:none;">
                         <i class="fa-solid fa-chevron-down"></i> Load More Notices
                     </button>
                 </div>
@@ -383,6 +378,7 @@
         let fbSearchQuery = "";
         let fbVisibleCount = 5;
 
+        // ================= SESSION PERSISTENCE =================
         window.onload = function() {
             let savedObj = sessionStorage.getItem('ta_selectedClassObj');
             let savedView = sessionStorage.getItem('ta_currentView');
@@ -411,7 +407,6 @@
             
             document.getElementById(viewId).classList.remove('hidden');
             window.scrollTo(0,0);
-            
             saveState(viewId);
         }
 
@@ -426,7 +421,7 @@
             document.getElementById(id).classList.toggle('hidden');
         }
 
-        // === ENGINE FIX 1: DEDUPLICATION & DUAL-FETCH ===
+        // ================= ENGINE FIX 1: DUAL-FETCH & DEDUPLICATION =================
         async function loadClassData(isAuto = false, viewToRestore = null) {
             const cls = document.getElementById('flClass').value;
             const sec = document.getElementById('flSection').value;
@@ -461,7 +456,7 @@
 
                 const processDoc = (doc) => {
                     const data = doc.data();
-                    const role = (data.role || data.user_role || 'student').toString().toLowerCase();
+                    const role = String(data.role || data.user_role || 'student').toLowerCase();
                     if (role === 'teacher' || role === 'admin') return;
 
                     const sClass = String(data.studentClass || data.class || data.className || '').toLowerCase().trim();
@@ -481,7 +476,6 @@
                     }
 
                     if (cMatch && secMatch && stmMatch) {
-                        // Deduplication Fix: Merging duplicate profiles correctly
                         const uniqueKey = String(data.email || data.phone || doc.id).toLowerCase().trim();
                         if(studentMap.has(uniqueKey)) {
                             studentMap.set(uniqueKey, { ...studentMap.get(uniqueKey), ...data });
@@ -491,8 +485,6 @@
                     }
                 };
 
-                usersSnap.docs?.forEach(processDoc);
-                studentsSnap.docs?.forEach(processDoc);
                 if(usersSnap.forEach) usersSnap.forEach(processDoc);
                 if(studentsSnap.forEach) studentsSnap.forEach(processDoc);
 
@@ -505,11 +497,11 @@
                     return;
                 }
 
-                currentStudents.sort((a,b) => (parseInt(a.rollNo) || 999) - (parseInt(b.rollNo) || 999));
+                currentStudents.sort((a,b) => (parseInt(a.rollNo || a.roll) || 999) - (parseInt(b.rollNo || b.roll) || 999));
                 
                 visibleCount = 5;
                 searchQuery = "";
-                document.getElementById('studentSearch').value = "";
+                if(document.getElementById('studentSearch')) document.getElementById('studentSearch').value = "";
                 
                 applyPaginationAndRender();
                 renderLeaderboard(); 
@@ -640,8 +632,8 @@
                             <div class="confidential-box">
                                 <h4><i class="fa-solid fa-user-secret"></i> Send Confidential Remark to ${name}</h4>
                                 <div class="form-field">
-                                    <input type="text" id="remTitle_${student.id}" class="input-box" placeholder="Remark Title (e.g. Needs focus in Math)" style="margin-bottom:6px; border-color:rgba(250,204,21,0.3);">
-                                    <textarea id="remMsg_${student.id}" class="input-box" placeholder="Write private feedback for ${name}..." style="border-color:rgba(250,204,21,0.3);"></textarea>
+                                    <input type="text" id="remTitle_${student.id}" class="input-box" placeholder="Remark Title (e.g. Needs focus in Math)" style="margin-bottom:6px; border-color:rgba(234, 179, 8, 0.3);">
+                                    <textarea id="remMsg_${student.id}" class="input-box" placeholder="Write private feedback for ${name}..." style="border-color:rgba(234, 179, 8, 0.3);"></textarea>
                                 </div>
                             </div>
 
@@ -712,10 +704,12 @@
                 let promises = [];
                 promises.push(db.collection('students').doc(studentId).set(updateData, {merge:true}).catch(()=>{}));
                 promises.push(db.collection('users').doc(studentId).set(updateData, {merge:true}).catch(()=>{}));
+                
                 if(email && email.includes('@')) {
                     promises.push(db.collection('students').doc(email).set(updateData, {merge:true}).catch(()=>{}));
                     promises.push(db.collection('users').doc(email).set(updateData, {merge:true}).catch(()=>{}));
                 }
+                
                 await Promise.all(promises);
                 
                 const idx = currentStudents.findIndex(s => s.id === studentId || s.docEmail === email);
@@ -871,7 +865,7 @@
                 if(isPers) {
                     typeBadge = `<span class="badge-pill gold" style="font-size:9px;">Personal To: ${fb.targetName || fb.targetUser}</span>`;
                 } else if(!fb.targetClass || fb.targetClass==='All' || fb.targetClass==='') {
-                    typeBadge = `<span class="badge-pill" style="font-size:9px; background:rgba(0, 229, 255, 0.3); border-color:var(--primary); color:#fff;">All Classes / Global</span>`;
+                    typeBadge = `<span class="badge-pill" style="font-size:9px; background:rgba(56, 189, 248, 0.1); border-color:var(--primary); color:var(--primary);">All Classes / Global</span>`;
                 } else {
                     typeBadge = `<span class="badge-pill" style="font-size:9px;">Class Notice</span>`;
                 }
@@ -902,8 +896,8 @@
                                 <textarea id="upFbMsg_${fb.id}" class="input-box">${fb.message || ''}</textarea>
                             </div>
                             <div style="display:flex; gap:10px; margin-top:8px;">
-                                <button class="btn-primary" style="margin:0; font-size:12px;" onclick="updateFeedback('${fb.id}')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
-                                <button class="btn-primary" style="margin:0; font-size:12px; background:transparent; border-color:var(--danger); color:var(--danger); box-shadow:none;" onclick="deleteFeedback('${fb.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                <button class="btn-primary" style="margin:0; font-size:12px; padding:10px;" onclick="updateFeedback('${fb.id}')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                                <button class="btn-action-sm delete" style="padding:10px; border-radius:10px;" onclick="deleteFeedback('${fb.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
                             </div>
                         </div>
                     </div>
