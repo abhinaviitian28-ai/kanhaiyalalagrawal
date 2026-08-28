@@ -196,6 +196,11 @@
 
         .no-data { color: #64748b; font-size: 12px; text-align: center; padding: 24px; }
 
+        /* Added simple search bar wrapper for modal */
+        .search-bar-wrapper { position: relative; width: 100%; margin-bottom: 12px; }
+        .search-bar-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 13px; }
+        .search-bar-wrapper .input-box { padding-left: 38px; }
+
         @media (max-width: 600px) {
             .section-card { padding: 16px 14px; }
             .form-row { grid-template-columns: 1fr; gap: 12px; }
@@ -254,7 +259,7 @@
                         <div class="action-icon"><i class="fa-solid fa-list-check"></i></div>
                         <div class="action-text">
                             <h3>Manage Active Notices</h3>
-                            <p>View, track, and delete active updates</p>
+                            <p>Search, track, and delete active updates</p>
                         </div>
                     </div>
                     <i class="fa-solid fa-chevron-right action-arrow"></i>
@@ -266,7 +271,7 @@
 
     <!-- ================= MODALS ================= -->
 
-    <!-- 1. Create Notice Modal (ALL Logic Fixed) -->
+    <!-- 1. Create Notice Modal -->
     <div class="modal-overlay" id="createNoticeModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -296,7 +301,7 @@
                     </div>
                 </div>
                 
-                <!-- Class, Section, and Stream Restored -->
+                <!-- Class, Section, and Stream -->
                 <div class="form-row">
                     <div>
                         <label>Target Class</label>
@@ -360,7 +365,7 @@
                 </div>
 
                 <div>
-                    <label>Attachment <span style="text-transform:none; font-weight:400;">(PDF/Image - Max 1.5MB)</span></label>
+                    <label>Attachment <span style="text-transform:none; font-weight:400;">(PDF/Image - Max 700KB)</span></label>
                     <div class="file-box">
                         <input type="file" id="noticeFileInput" accept="application/pdf,image/*" onchange="handleNoticeFile(event)">
                         <div class="file-msg" id="noticeFileStatus"><i class="fa-solid fa-paperclip"></i> Tap to attach file</div>
@@ -381,6 +386,13 @@
                 <h3><i class="fa-solid fa-list-check"></i> Database Manager</h3>
                 <button class="modal-close animated-btn" onclick="closeModal('manageNoticeModal')"><i class="fa-solid fa-xmark"></i></button>
             </div>
+            
+            <!-- Added Search Box Here -->
+            <div class="search-bar-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchNotice" class="input-box" placeholder="Search notices by title or class..." onkeyup="filterNotices()">
+            </div>
+
             <div class="modal-body" id="manageNoticesList">
                 <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Fetching records...</div>
             </div>
@@ -405,19 +417,19 @@
         const db = firebase.firestore();
 
         let uploadedNoticeDataUrl = '';
+        let allNotices = []; // Array to store all notices for searching
 
         window.onload = function() {
             const today = new Date().toISOString().split('T')[0];
             const dateInput = document.getElementById('noticeDate');
             if (dateInput) dateInput.value = today;
-            toggleStreamLogic(); // Initialize Stream display
+            toggleStreamLogic(); 
             listenNotices();
         };
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // Logic for triggering Stream dropdown based on 11/12 classes
         function toggleStreamLogic() {
             const cls = document.getElementById('noticeClass').value;
             const streamGroup = document.getElementById('streamGroup');
@@ -429,6 +441,7 @@
             }
         }
 
+        // === ENGINE FIX 1: PDF CRASH LIMIT (Max 700KB for Base64 in Firestore) ===
         function handleNoticeFile(event) {
             const file = event.target.files[0];
             const statusBox = document.getElementById('noticeFileStatus');
@@ -439,8 +452,9 @@
                 return;
             }
 
-            if (file.size > 1.5 * 1024 * 1024) {
-                alert("⚠️ File exceeds 1.5 MB. Please use a Drive link instead.");
+            // Database strict limit check
+            if (file.size > 700 * 1024) {
+                alert("⚠️ File exceeds 700KB. Firestore database cannot save PDFs larger than this directly. Please compress it or use a Google Drive link below.");
                 event.target.value = '';
                 uploadedNoticeDataUrl = '';
                 statusBox.innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach file';
@@ -455,6 +469,7 @@
             reader.readAsDataURL(file);
         }
 
+        // === PUBLISH NOTICE ===
         async function publishNotice() {
             const title = document.getElementById('noticeTitle').value.trim();
             const category = document.getElementById('noticeCategory').value;
@@ -462,7 +477,6 @@
             
             const targetClass = document.getElementById('noticeClass').value;
             const targetSection = document.getElementById('noticeSection').value;
-            // Get target stream based on class
             const targetStream = (targetClass === '11' || targetClass === '12') ? document.getElementById('noticeStream').value : "General";
             
             const description = document.getElementById('noticeDesc').value.trim();
@@ -485,7 +499,7 @@
                     date: dateVal,
                     targetClass: targetClass,
                     targetSection: targetSection,
-                    targetStream: targetStream, // SAVING STREAM FOR DB SYNC
+                    targetStream: targetStream,
                     priority: priority,
                     description: description,
                     fileUrl: finalFileUrl || '',
@@ -503,42 +517,69 @@
                 alert("✅ Notice Broadcasted Successfully!");
                 closeModal('createNoticeModal');
             } catch (error) {
-                alert("Failed to broadcast. Check connection.");
+                alert("Failed to broadcast. Please try again.");
             }
 
             btn.disabled = false;
             btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Broadcast Notice`;
         }
 
+        // === ENGINE FIX 2: FETCH & SYNC CRASH PROOF ===
         function listenNotices() {
             db.collection('notices').onSnapshot(snapshot => {
-                const manageList = document.getElementById('manageNoticesList');
-                let temp = [];
-                snapshot.forEach(doc => temp.push({id: doc.id, ...doc.data()}));
-                temp.sort((a,b) => (b.timestamp?.seconds||0) - (a.timestamp?.seconds||0));
-
-                manageList.innerHTML = temp.length === 0 ? `<div class="no-data">Database is empty.</div>` : '';
-
-                temp.forEach(data => {
-                    const badgeClass = data.type ? `type-${data.type.toLowerCase()}` : 'type-general';
-                    const streamDisp = data.targetClass === '11' || data.targetClass === '12' ? `(${data.targetStream || 'All'})` : '';
-                    
-                    manageList.innerHTML += `
-                        <div class="notice-strip fade-in">
-                            <div class="strip-left">
-                                <span class="type-badge ${badgeClass}">${data.type || 'GENERAL'}</span>
-                                <div class="strip-title">${data.title || 'Untitled Notice'}</div>
-                                <div class="strip-meta">
-                                    <span><i class="fa-regular fa-calendar"></i> ${data.date || 'Recent'}</span>
-                                    <span>Class: ${data.targetClass || 'All'} ${streamDisp} - Sec ${data.targetSection || 'All'}</span>
-                                </div>
-                            </div>
-                            <button class="btn-delete animated-btn" onclick="deleteNotice('${data.id}')">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
+                allNotices = [];
+                snapshot.forEach(doc => allNotices.push({id: doc.id, ...doc.data()}));
+                
+                // Safe sorting to prevent 'null.seconds' crash on freshly added items
+                allNotices.sort((a,b) => {
+                    let timeA = a.timestamp ? (a.timestamp.seconds || 0) : Infinity; // Infinity puts new at top
+                    let timeB = b.timestamp ? (b.timestamp.seconds || 0) : Infinity;
+                    return timeB - timeA;
                 });
+
+                renderNotices();
+            });
+        }
+
+        // === ENGINE FIX 3: SEARCH FUNCTIONALITY ===
+        function filterNotices() {
+            renderNotices();
+        }
+
+        function renderNotices() {
+            const manageList = document.getElementById('manageNoticesList');
+            const searchQ = (document.getElementById('searchNotice')?.value || '').toLowerCase().trim();
+
+            const filtered = allNotices.filter(n => {
+                let text = `${n.title} ${n.type} ${n.targetClass} ${n.targetSection} ${n.targetStream}`.toLowerCase();
+                return text.includes(searchQ);
+            });
+
+            if (filtered.length === 0) {
+                manageList.innerHTML = `<div class="no-data">No records found.</div>`;
+                return;
+            }
+
+            manageList.innerHTML = '';
+            filtered.forEach(data => {
+                const badgeClass = data.type ? `type-${data.type.toLowerCase()}` : 'type-general';
+                const streamDisp = data.targetClass === '11' || data.targetClass === '12' ? `(${data.targetStream || 'All'})` : '';
+                
+                manageList.innerHTML += `
+                    <div class="notice-strip fade-in">
+                        <div class="strip-left">
+                            <span class="type-badge ${badgeClass}">${data.type || 'GENERAL'}</span>
+                            <div class="strip-title">${data.title || 'Untitled Notice'}</div>
+                            <div class="strip-meta">
+                                <span><i class="fa-regular fa-calendar"></i> ${data.date || 'Recent'}</span>
+                                <span>Class: ${data.targetClass || 'All'} ${streamDisp} - Sec ${data.targetSection || 'All'}</span>
+                            </div>
+                        </div>
+                        <button class="btn-delete animated-btn" onclick="deleteNotice('${data.id}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
             });
         }
 
