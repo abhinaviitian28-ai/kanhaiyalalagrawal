@@ -216,7 +216,6 @@
                     </div>
                     <div class="form-field">
                         <label>Section</label>
-                        <!-- DEFAULT ALL SECTIONS TO FIX THE STUDENT HIDING GLITCH -->
                         <select id="flSection" class="input-box">
                             <option value="All" selected>All Sections</option>
                             <option value="A">Sec A</option><option value="B">Sec B</option>
@@ -380,12 +379,10 @@
         let studentFiles = {}; 
         let selectedClassObj = { cls: '', sec: '', stm: '' };
 
-        // Feedback Arrays
         let allClassFeedbacks = [];
         let fbSearchQuery = "";
         let fbVisibleCount = 5;
 
-        // ================= SESSION PERSISTENCE (REFRESH GLITCH FIX) =================
         window.onload = function() {
             let savedObj = sessionStorage.getItem('ta_selectedClassObj');
             let savedView = sessionStorage.getItem('ta_currentView');
@@ -393,11 +390,10 @@
             if (savedObj) {
                 selectedClassObj = JSON.parse(savedObj);
                 document.getElementById('flClass').value = selectedClassObj.cls;
-                document.getElementById('flSection').value = selectedClassObj.sec || 'All'; // Default
+                document.getElementById('flSection').value = selectedClassObj.sec || 'All';
                 document.getElementById('flStream').value = selectedClassObj.stm || 'All';
                 toggleStreamLogic();
                 
-                // Auto load without clicking
                 loadClassData(true, savedView);
             }
         };
@@ -430,7 +426,7 @@
             document.getElementById(id).classList.toggle('hidden');
         }
 
-        // ================= DUAL-FETCH STUDENT DATA (THE FATAL GLITCH FIX) =================
+        // === ENGINE FIX 1: DEDUPLICATION & DUAL-FETCH ===
         async function loadClassData(isAuto = false, viewToRestore = null) {
             const cls = document.getElementById('flClass').value;
             const sec = document.getElementById('flSection').value;
@@ -455,7 +451,6 @@
             document.getElementById('leaderboardContainer').innerHTML = '<div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading ranks...</div>';
 
             try {
-                // FIXED: Fetching from BOTH collections concurrently! No missing students.
                 const [usersSnap, studentsSnap] = await Promise.all([
                     db.collection('users').get().catch(() => ({ docs: [] })),
                     db.collection('students').get().catch(() => ({ docs: [] }))
@@ -486,13 +481,18 @@
                     }
 
                     if (cMatch && secMatch && stmMatch) {
-                        studentMap.set(doc.id, {id: doc.id, ...data});
+                        // Deduplication Fix: Merging duplicate profiles correctly
+                        const uniqueKey = String(data.email || data.phone || doc.id).toLowerCase().trim();
+                        if(studentMap.has(uniqueKey)) {
+                            studentMap.set(uniqueKey, { ...studentMap.get(uniqueKey), ...data });
+                        } else {
+                            studentMap.set(uniqueKey, { id: doc.id, docEmail: uniqueKey, ...data });
+                        }
                     }
                 };
 
                 usersSnap.docs?.forEach(processDoc);
                 studentsSnap.docs?.forEach(processDoc);
-                // Also handle direct iterable if native array returned
                 if(usersSnap.forEach) usersSnap.forEach(processDoc);
                 if(studentsSnap.forEach) studentsSnap.forEach(processDoc);
 
@@ -519,7 +519,7 @@
             }
         }
 
-        // ================= EVALUATE VIEW LOGIC =================
+        // ================= ENGINE FIX 4: SAFE SEARCH LOGIC =================
         function handleStudentSearch() {
             searchQuery = document.getElementById('studentSearch').value.toLowerCase().trim();
             visibleCount = 5; 
@@ -540,7 +540,6 @@
             const container = document.getElementById('studentsListContainer');
             container.innerHTML = '';
 
-            // CRASH-PROOF STRING SEARCH LOGIC
             let filtered = currentStudents.filter(item => {
                 let textArray = [
                     item.name, item.username, item.fullName,
@@ -634,11 +633,10 @@
                                 <input type="url" id="exLink_${student.id}" class="input-box" placeholder="Paste Drive Link..." style="margin-bottom:6px;" value="${student.reportCardUrl || ''}">
                                 <div class="file-box">
                                     <input type="file" accept="application/pdf" onchange="handleStudentFile(event, '${student.id}')">
-                                    <div class="file-msg" id="fileMsg_${student.id}"><i class="fa-solid fa-paperclip"></i> Or attach PDF (Max 1.5MB)</div>
+                                    <div class="file-msg" id="fileMsg_${student.id}"><i class="fa-solid fa-paperclip"></i> Or attach PDF (Max 700KB)</div>
                                 </div>
                             </div>
 
-                            <!-- CONFIDENTIAL REMARK MERGED HERE -->
                             <div class="confidential-box">
                                 <h4><i class="fa-solid fa-user-secret"></i> Send Confidential Remark to ${name}</h4>
                                 <div class="form-field">
@@ -647,7 +645,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn-primary animated-btn" id="btnSave_${student.id}" onclick="saveAllStudentData('${student.id}', '${student.email || student.id}', '${name.replace(/'/g, "\\'")}')">
+                            <button class="btn-primary animated-btn" id="btnSave_${student.id}" onclick="saveAllStudentData('${student.id}', '${student.docEmail || student.email || student.id}', '${name.replace(/'/g, "\\'")}')">
                                 <i class="fa-solid fa-cloud-arrow-up"></i> Save & Sync All Data
                             </button>
                         </div>
@@ -664,11 +662,18 @@
             }
         }
 
+        // === ENGINE FIX 2: 700KB LIMIT ===
         function handleStudentFile(event, studentId) {
             const file = event.target.files[0];
             const msg = document.getElementById(`fileMsg_${studentId}`);
             if(!file) return;
-            if (file.size > 1.5 * 1024 * 1024) return alert("File too large. Max 1.5MB.");
+            
+            if (file.size > 700 * 1024) {
+                alert("⚠️ File exceeds 700KB. Firestore database cannot save PDFs larger than this directly. Please use a Drive link.");
+                event.target.value = '';
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = e => {
                 studentFiles[studentId] = e.target.result;
@@ -678,6 +683,7 @@
             reader.readAsDataURL(file);
         }
 
+        // === ENGINE FIX 3: DUAL-WRITE SYNC ===
         async function saveAllStudentData(studentId, email, name) {
             const exName = document.getElementById(`exName_${studentId}`).value.trim() || 'Examination Report';
             const score = document.getElementById(`exScore_${studentId}`).value.trim();
@@ -702,11 +708,17 @@
                 if(rank !== null) updateData.rank = rank;
                 if(reportCard !== "") updateData.reportCardUrl = reportCard;
 
-                // Sync to BOTH collections just in case
-                try { await db.collection('students').doc(studentId).update(updateData); } catch(e){}
-                try { await db.collection('users').doc(studentId).update(updateData); } catch(e){}
+                // Bulletproof Dual Sync using set({merge: true})
+                let promises = [];
+                promises.push(db.collection('students').doc(studentId).set(updateData, {merge:true}).catch(()=>{}));
+                promises.push(db.collection('users').doc(studentId).set(updateData, {merge:true}).catch(()=>{}));
+                if(email && email.includes('@')) {
+                    promises.push(db.collection('students').doc(email).set(updateData, {merge:true}).catch(()=>{}));
+                    promises.push(db.collection('users').doc(email).set(updateData, {merge:true}).catch(()=>{}));
+                }
+                await Promise.all(promises);
                 
-                const idx = currentStudents.findIndex(s => s.id === studentId);
+                const idx = currentStudents.findIndex(s => s.id === studentId || s.docEmail === email);
                 if(idx > -1) {
                     currentStudents[idx].rank = rank;
                     currentStudents[idx].score = score;
@@ -778,26 +790,22 @@
             });
         }
 
-        // ================= FEEDBACK & RECORD MANAGER (THE ALL-CLASS FIX) =================
+        // ================= FEEDBACK & RECORD MANAGER =================
         function listenClassFeedbacks() {
-            // FIXED: NO .orderBy() HERE! Fetch everything safely, sort in JS to avoid hidden items!
             db.collection('feedbacks').onSnapshot(snapshot => {
                 allClassFeedbacks = [];
                 snapshot.forEach(doc => {
                     const fb = doc.data();
                     const fType = String(fb.type || 'general').toLowerCase();
                     
-                    // FIXED: Global Messages MUST show up!
                     let isGlobal = (!fb.targetClass || String(fb.targetClass).toLowerCase() === 'all' || fb.targetClass === '');
                     let isClassMatch = (String(fb.targetClass) === String(selectedClassObj.cls));
                     
                     if (fType === 'general') {
-                        // If it's general, show it if it's Global OR belongs to this class
                         if (isGlobal || isClassMatch) {
                             allClassFeedbacks.push({id: doc.id, ...fb});
                         }
                     } else if (fType === 'personal') {
-                        // Show personal notices ONLY if the student is in the current class list
                         let isTargetedPersonal = currentStudents.some(s => 
                             String(s.email||'').toLowerCase() === String(fb.targetUser||'').toLowerCase() || 
                             String(s.id||'').toLowerCase() === String(fb.targetUser||'').toLowerCase() ||
@@ -809,7 +817,6 @@
                     }
                 });
 
-                // SAFE JS SORTING (Won't drop documents missing createdAt)
                 allClassFeedbacks.sort((a, b) => {
                     let tA = a.createdAt ? (a.createdAt.seconds || 0) : 0;
                     let tB = b.createdAt ? (b.createdAt.seconds || 0) : 0;
@@ -860,7 +867,6 @@
                 const isPers = fb.type === 'personal';
                 const dateTxt = fb.createdAt ? new Date(fb.createdAt.toDate()).toLocaleDateString() : 'Recent';
                 
-                // Show clear ALL CLASSES badge for global notices
                 let typeBadge = '';
                 if(isPers) {
                     typeBadge = `<span class="badge-pill gold" style="font-size:9px;">Personal To: ${fb.targetName || fb.targetUser}</span>`;
