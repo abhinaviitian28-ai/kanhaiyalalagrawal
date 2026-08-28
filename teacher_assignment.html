@@ -166,7 +166,7 @@
             <i class="fa-solid fa-chevron-down" style="color: #64748b;"></i>
         </div>
 
-        <!-- INLINE FORM (Replaced Popup) -->
+        <!-- INLINE FORM -->
         <div class="form-card hidden fade-in" id="createForm">
             <div class="form-header">
                 <h3><i class="fa-solid fa-pen-to-square"></i> Draft Assignment</h3>
@@ -233,7 +233,8 @@
             </div>
 
             <div class="form-field">
-                <label>Attachment (PDF/Image - Max 1.5MB) OR Link</label>
+                <!-- ENGINE FIX 1: Max 700KB -->
+                <label>Attachment (PDF/Image - Max 700KB) OR Link</label>
                 <div class="file-box">
                     <input type="file" accept="application/pdf,image/*" onchange="handleFileUpload(event)">
                     <div class="file-msg" id="fileStatus"><i class="fa-solid fa-paperclip"></i> Tap to attach file</div>
@@ -313,15 +314,25 @@
             }
         }
 
+        // === ENGINE FIX 1: SECURE FILE LIMIT ===
         function handleFileUpload(event) {
             const file = event.target.files[0];
             const statusBox = document.getElementById('fileStatus');
-            if (!file) return;
-            if (file.size > 1.5 * 1024 * 1024) {
-                alert("File too large. Maximum size is 1.5MB.");
-                event.target.value = '';
+            
+            if (!file) {
+                uploadedFileBase64 = "";
+                statusBox.innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach file';
                 return;
             }
+
+            if (file.size > 700 * 1024) {
+                alert("⚠️ File exceeds 700KB. Firestore database cannot save PDFs larger than this directly. Please compress it or use a Google Drive link below.");
+                event.target.value = '';
+                uploadedFileBase64 = "";
+                statusBox.innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach file';
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = e => {
                 uploadedFileBase64 = e.target.result;
@@ -355,7 +366,6 @@
             const teacherName = localStorage.getItem('loggedInTeacher') || localStorage.getItem('loggedInUser') || 'Faculty Member';
 
             try {
-                // SAVING TO THE SAME FIREBASE COLLECTION STUDENT APP USES
                 await db.collection('assignments').add({
                     title: title,
                     subject: subject,
@@ -377,6 +387,8 @@
                 document.getElementById('asDesc').value = '';
                 document.getElementById('asDueDate').value = '';
                 document.getElementById('asLink').value = '';
+                document.getElementById('fileStatus').innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach file';
+                uploadedFileBase64 = '';
                 
                 toggleForm('createForm'); // Close form
             } catch (err) {
@@ -387,12 +399,18 @@
             btn.disabled = false;
         }
 
+        // === ENGINE FIX 2: FETCH & SYNC (CRASH-PROOF) ===
         function listenAssignmentsLive() {
-            db.collection("assignments").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+            // Removed orderBy to prevent missing documents bug
+            db.collection("assignments").onSnapshot((snapshot) => {
                 allAssignments = [];
                 snapshot.forEach(doc => {
                     allAssignments.push({ id: doc.id, ...doc.data() });
                 });
+                
+                // Safe JS Sorting
+                allAssignments.sort((a,b) => (b.createdAt?.seconds || Infinity) - (a.createdAt?.seconds || Infinity));
+                
                 renderList();
             });
         }
@@ -402,13 +420,18 @@
             renderList();
         }
 
+        // === ENGINE FIX 3: SAFE SEARCH LOGIC ===
         function renderList() {
             const container = document.getElementById('assignmentsContainer');
             container.innerHTML = "";
 
             let filtered = allAssignments.filter(item => {
-                let textToSearch = `${item.title} ${item.subject} ${item.class} ${item.section} ${item.stream}`.toLowerCase();
-                return textToSearch.includes(searchQuery);
+                // Safe array join to prevent null/undefined crash
+                let textArray = [
+                    item.title, item.subject, item.class, item.section, item.stream, item.description
+                ].map(v => String(v || '').toLowerCase());
+                
+                return textArray.join(' ').includes(searchQuery);
             });
 
             if (filtered.length === 0) {
@@ -428,7 +451,7 @@
                     if(displayDate !== "N/A") displayDate = new Date(displayDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); 
                 } catch(e){}
 
-                const streamTxt = (item.class === '11' || item.class === '12') && item.stream !== 'All' ? `(${item.stream})` : '';
+                const streamTxt = (item.class === '11' || item.class === '12') && item.stream && item.stream !== 'All' ? `(${item.stream})` : '';
 
                 const card = document.createElement('div');
                 card.className = "card fade-in";
@@ -437,16 +460,16 @@
                         <div class="card-title-group">
                             <div class="card-icon"><i class="fa-solid fa-file-lines"></i></div>
                             <div>
-                                <span class="sub-pill">${item.subject}</span>
-                                <h3 class="card-title">${item.title}</h3>
+                                <span class="sub-pill">${item.subject || 'General'}</span>
+                                <h3 class="card-title">${item.title || 'Untitled'}</h3>
                             </div>
                         </div>
                         <div class="card-date"><i class="fa-solid fa-hourglass-half"></i> Due: ${displayDate}</div>
                     </div>
-                    <div class="card-preview">${item.description}</div>
+                    <div class="card-preview">${item.description || 'No description provided.'}</div>
                     <div class="card-footer">
                         <div class="target-info">
-                            <i class="fa-solid fa-users"></i> Target: Class ${item.class} ${streamTxt} - Sec ${item.section}
+                            <i class="fa-solid fa-users"></i> Target: Class ${item.class || 'All'} ${streamTxt} - Sec ${item.section || 'All'}
                         </div>
                         <div class="card-actions">
                             <a href="${item.link || '#'}" target="_blank" class="btn-action ${!item.link ? 'hidden' : ''}">
