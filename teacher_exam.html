@@ -79,7 +79,7 @@
         .section-header { background: #162133; padding: 14px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
         .section-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: var(--primary); text-transform: uppercase; }
 
-        /* === XYZ THEME ACTION STRIPS (Fixing the blank pattiya) === */
+        /* === XYZ THEME ACTION STRIPS === */
         .action-strip-container { display: flex; flex-direction: column; gap: 14px; margin-bottom: 25px; }
         .strip { display: flex; justify-content: space-between; align-items: center; background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 18px 20px; cursor: pointer; transition: 0.25s; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
         .strip:hover { border-color: var(--primary); background: #162133; transform: translateY(-2px); }
@@ -92,7 +92,12 @@
         .strip-arrow { color: #64748b; font-size: 16px; transition: transform 0.3s; }
         .strip:hover .strip-arrow { transform: translateX(5px); color: var(--primary); }
 
-        /* === INLINE FORM CARDS (Replaced Popups) === */
+        /* === ENGINE FIX: ADDED SEARCH BAR CSS === */
+        .search-wrapper { position: relative; width: 100%; margin-bottom: 16px; }
+        .search-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--subtext); font-size: 13px; }
+        .search-wrapper input { padding-left: 38px !important; }
+
+        /* === INLINE FORM CARDS === */
         .form-card { background: var(--card); border: 1px solid rgba(56,189,248,0.25); border-radius: 16px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
         .form-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; margin-bottom: 20px; }
         .form-header h3 { font-size: 16.5px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
@@ -141,7 +146,6 @@
         .exam-time { font-size: 12.5px; color: var(--subtext); display: flex; align-items: center; gap: 6px; }
         .exam-time strong { color: var(--text); }
 
-        /* Action Footer Buttons */
         .card-actions { display: flex; gap: 8px; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 14px; }
         .btn-action { padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; border: 1px solid transparent; transition: 0.2s; text-decoration: none; }
         .btn-view { background: rgba(56, 189, 248, 0.1); color: var(--primary); border-color: var(--border); }
@@ -223,7 +227,6 @@
 
             <!-- List View for Syllabus -->
             <div id="syllabusListView">
-                <!-- Sleek Action Strips (Fixing the blank pattiya) -->
                 <div class="action-strip-container">
                     <div class="strip animated-btn" onclick="toggleForm('categoryForm')">
                         <div class="strip-left">
@@ -248,7 +251,7 @@
                     </div>
                 </div>
 
-                <!-- INLINE FORM: Add Category (Replaces Popup) -->
+                <!-- INLINE FORM: Add Category -->
                 <div class="form-card hidden fade-in" id="categoryForm">
                     <div class="form-header">
                         <h3><i class="fa-solid fa-folder-plus"></i> Create Category</h3>
@@ -265,7 +268,7 @@
                     <button class="btn-submit" onclick="saveCategory()">Create Folder</button>
                 </div>
 
-                <!-- INLINE FORM: Upload Syllabus (Replaces Popup) -->
+                <!-- INLINE FORM: Upload Syllabus -->
                 <div class="form-card hidden fade-in" id="syllabusForm">
                     <div class="form-header">
                         <h3><i class="fa-solid fa-file-arrow-up"></i> Upload Document</h3>
@@ -311,7 +314,8 @@
                         <textarea id="sylDesc" class="input-box" placeholder="Any specific notes for students?"></textarea>
                     </div>
                     <div class="form-field">
-                        <label>PDF Attachment (Max 1.5MB) OR Link</label>
+                        <!-- ENGINE FIX 1: Max 700KB -->
+                        <label>PDF Attachment (Max 700KB) OR Link</label>
                         <div class="file-box">
                             <input type="file" accept="application/pdf,image/*" onchange="handleFileUpload(event, 'sylFileStatus')">
                             <div class="file-msg" id="sylFileStatus"><i class="fa-solid fa-paperclip"></i> Tap to attach file</div>
@@ -331,9 +335,16 @@
 
             <!-- Documents Inside Category View -->
             <div id="syllabusDocsView" class="hidden">
-                <div class="section-header">
+                <div class="section-header" style="margin-bottom: 8px;">
                     <div class="section-title" id="subjectsHeaderTitle"><i class="fa-solid fa-book"></i> Uploaded Documents</div>
                 </div>
+                
+                <!-- ENGINE FIX 3: ADDED SEARCH BAR -->
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchSubject" class="input-box" placeholder="Search syllabus by title, class or stream..." onkeyup="renderSubjects()">
+                </div>
+
                 <div class="grid-cards" id="subjectsGridContainer">
                     <div class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
                 </div>
@@ -361,7 +372,7 @@
                 </div>
             </div>
 
-            <!-- INLINE FORM: Add Exam (Replaces Popup & Fixes Time Issue) -->
+            <!-- INLINE FORM: Add Exam -->
             <div class="form-card hidden fade-in" id="examForm">
                 <div class="form-header">
                     <h3><i class="fa-solid fa-calendar-plus"></i> Publish Timetable</h3>
@@ -387,7 +398,6 @@
                     </div>
                 </div>
 
-                <!-- Fix 2: Proper Time Pickers -->
                 <div class="form-row">
                     <div class="form-field">
                         <label>Start Time</label>
@@ -431,7 +441,8 @@
                 </div>
 
                 <div class="form-field">
-                    <label>PDF Attachment (Max 1.5MB) OR Link</label>
+                    <!-- ENGINE FIX 1: Max 700KB -->
+                    <label>PDF Attachment (Max 700KB) OR Link</label>
                     <div class="file-box">
                         <input type="file" accept="application/pdf,image/*" onchange="handleFileUpload(event, 'exFileStatus')">
                         <div class="file-msg" id="exFileStatus"><i class="fa-solid fa-paperclip"></i> Tap to attach datesheet</div>
@@ -441,8 +452,14 @@
                 <button class="btn-submit" id="btnSaveEx" onclick="saveExam()"><i class="fa-solid fa-paper-plane"></i> Publish Timetable</button>
             </div>
 
-            <div class="section-header">
+            <div class="section-header" style="margin-bottom: 8px;">
                 <div class="section-title"><i class="fa-solid fa-clock"></i> Active Timetables</div>
+            </div>
+
+            <!-- ENGINE FIX 3: ADDED SEARCH BAR -->
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchExam" class="input-box" placeholder="Search exams by title, class or stream..." onkeyup="renderExams()">
             </div>
 
             <div class="exams-list" id="examsListContainer">
@@ -483,7 +500,6 @@
             loadExams();
         };
 
-        // === VIEW MANAGEMENT (No Popups) ===
         function switchView(viewName) {
             document.getElementById('mainHubsView').classList.add('hidden');
             document.getElementById('syllabusHubView').classList.add('hidden');
@@ -504,11 +520,9 @@
         function toggleForm(formId) {
             const form = document.getElementById(formId);
             if (form.classList.contains('hidden')) {
-                // Reset file data
                 uploadedFileBase64 = '';
                 document.querySelectorAll('.file-msg').forEach(el => el.innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach file');
                 
-                // Hide other forms in the same hub to keep it clean
                 if(formId === 'categoryForm') document.getElementById('syllabusForm').classList.add('hidden');
                 if(formId === 'syllabusForm') document.getElementById('categoryForm').classList.add('hidden');
 
@@ -519,7 +533,6 @@
             }
         }
 
-        // Logic to show/hide stream
         function toggleStreamLogic(groupId, classVal) {
             const group = document.getElementById(groupId);
             if(classVal === '11' || classVal === '12') {
@@ -529,28 +542,32 @@
             }
         }
 
-        // Format Time to AM/PM helper
         function formatAMPM(time24) {
             if (!time24) return "";
             let [hours, minutes] = time24.split(':');
             hours = parseInt(hours);
             let ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12;
-            hours = hours ? hours : 12; // 0 becomes 12
+            hours = hours ? hours : 12; 
             let strTime = hours.toString().padStart(2, '0') + ':' + minutes + ' ' + ampm;
             return strTime;
         }
 
-        // File Handler
+        // === ENGINE FIX 1: PDF CRASH LIMIT (Max 700KB) ===
         function handleFileUpload(event, statusId) {
             const file = event.target.files[0];
             const statusBox = document.getElementById(statusId);
             if (!file) return;
-            if (file.size > 1.5 * 1024 * 1024) {
-                alert("File too large. Use drive link.");
+            
+            // Database strict limit check to prevent Firebase crash
+            if (file.size > 700 * 1024) {
+                alert("⚠️ File exceeds 700KB. Firestore database cannot save PDFs larger than this directly. Please compress it or use a Google Drive link below.");
                 event.target.value = '';
+                uploadedFileBase64 = '';
+                statusBox.innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach file';
                 return;
             }
+            
             const reader = new FileReader();
             reader.onload = e => {
                 uploadedFileBase64 = e.target.result;
@@ -559,16 +576,22 @@
             reader.readAsDataURL(file);
         }
 
-        // --- SYLLABUS LOGIC ---
+        // === ENGINE FIX 2: SYLLABUS FETCH (Crash-Proof JS Sorting) ===
         function loadCategories() {
-            db.collection('exam_categories').orderBy('createdAt', 'desc').onSnapshot(snap => {
+            db.collection('exam_categories').onSnapshot(snap => {
                 allCategories = [];
                 const selectEl = document.getElementById('sylCategory');
                 selectEl.innerHTML = '';
                 
                 snap.forEach(doc => {
                     allCategories.push({id: doc.id, ...doc.data()});
-                    selectEl.innerHTML += `<option value="${doc.data().name}">${doc.data().name}</option>`;
+                });
+
+                // Safe JS sorting instead of Firebase orderBy which drops missing timestamps
+                allCategories.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                allCategories.forEach(cat => {
+                    selectEl.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
                 });
                 renderCategories();
             });
@@ -611,6 +634,11 @@
             document.getElementById('syllabusListView').classList.add('hidden');
             document.getElementById('syllabusDocsView').classList.remove('hidden');
             document.getElementById('sylBreadcrumbText').innerHTML = `<span onclick="switchView('syllabusList')" style="color:var(--primary); cursor:pointer;">Categories</span> <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i> ${name}`;
+            
+            // Reset Search Box
+            const searchInput = document.getElementById('searchSubject');
+            if(searchInput) searchInput.value = '';
+            
             loadSubjects();
         }
 
@@ -618,15 +646,28 @@
             db.collection('exam_syllabus').where('category', '==', currentCategory).onSnapshot(snap => {
                 allSubjects = [];
                 snap.forEach(doc => allSubjects.push({id: doc.id, ...doc.data()}));
+                
+                // Safe Sorting
+                allSubjects.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                
                 renderSubjects();
             });
         }
 
+        // === ENGINE FIX 3: ADDED SYLLABUS SEARCH ===
         function renderSubjects() {
             const cont = document.getElementById('subjectsGridContainer');
-            if(allSubjects.length === 0) { cont.innerHTML = '<div class="no-data">No documents in this folder.</div>'; return; }
+            const searchQ = (document.getElementById('searchSubject')?.value || '').toLowerCase().trim();
+
+            const filtered = allSubjects.filter(sub => {
+                let text = `${sub.name} ${sub.class} ${sub.stream}`.toLowerCase();
+                return text.includes(searchQ);
+            });
+
+            if(filtered.length === 0) { cont.innerHTML = '<div class="no-data">No documents match your search.</div>'; return; }
+            
             cont.innerHTML = '';
-            allSubjects.forEach(sub => {
+            filtered.forEach(sub => {
                 const streamTxt = (sub.class === '11' || sub.class === '12') ? `(${sub.stream})` : '';
                 cont.innerHTML += `
                     <div class="sub-card animated-btn">
@@ -656,29 +697,49 @@
             if(!cat || !title || !fileUrl) return alert("Category, Title, and File are required!");
             
             document.getElementById('btnSaveSyl').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading...`;
-            await db.collection('exam_syllabus').add({ category: cat, name: title, class: cls, stream: stm, description: desc, fileUrl, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
             
-            toggleForm('syllabusForm');
+            try {
+                await db.collection('exam_syllabus').add({ category: cat, name: title, class: cls, stream: stm, description: desc, fileUrl, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                
+                toggleForm('syllabusForm');
+                document.getElementById('sylTitle').value = '';
+                document.getElementById('sylDesc').value = '';
+                document.getElementById('sylLink').value = '';
+                uploadedFileBase64 = '';
+                document.getElementById('sylFileStatus').innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach file';
+                alert("✅ Document Uploaded Successfully!");
+            } catch(e) { alert("Upload failed. Check connection."); }
+            
             document.getElementById('btnSaveSyl').innerHTML = `<i class="fa-solid fa-upload"></i> Upload Document`;
-            document.getElementById('sylTitle').value = '';
-            document.getElementById('sylDesc').value = '';
         }
 
         // --- EXAM TIMETABLE LOGIC ---
         function loadExams() {
-            db.collection('exams').orderBy('createdAt', 'desc').onSnapshot(snap => {
+            db.collection('exams').onSnapshot(snap => {
                 allExams = [];
                 snap.forEach(doc => allExams.push({id: doc.id, ...doc.data()}));
+                
+                // Safe JS Sorting to fix Missing Data Bug
+                allExams.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                
                 renderExams();
             });
         }
 
+        // === ENGINE FIX 4: ADDED EXAMS SEARCH ===
         function renderExams() {
             const cont = document.getElementById('examsListContainer');
-            if(allExams.length === 0) { cont.innerHTML = '<div class="no-data">No active timetables published yet.</div>'; return; }
+            const searchQ = (document.getElementById('searchExam')?.value || '').toLowerCase().trim();
+
+            const filtered = allExams.filter(exam => {
+                let text = `${exam.title} ${exam.class} ${exam.stream} ${exam.status}`.toLowerCase();
+                return text.includes(searchQ);
+            });
+
+            if(filtered.length === 0) { cont.innerHTML = '<div class="no-data">No active timetables found.</div>'; return; }
             cont.innerHTML = '';
             
-            allExams.forEach(exam => {
+            filtered.forEach(exam => {
                 const isResc = exam.status === 'Rescheduled';
                 let bColor = isResc ? 'rgba(239,68,68,0.1)' : 'rgba(56, 189, 248, 0.1)';
                 let tColor = isResc ? '#ef4444' : 'var(--primary)';
@@ -722,7 +783,6 @@
             const title = document.getElementById('exTitle').value.trim();
             const date = document.getElementById('exDate').value;
             
-            // Format Time String
             const startT = document.getElementById('exStartTime').value;
             const endT = document.getElementById('exEndTime').value;
             let timeString = "TBA";
@@ -742,15 +802,22 @@
             if(!title || !date || !fileUrl) return alert("Title, Date, and File are required!");
 
             document.getElementById('btnSaveEx').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publishing...`;
-            await db.collection('exams').add({ title, dateText: date, timeText: timeString, class: cls, stream: stm, status, description: desc, fileUrl, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
             
-            toggleForm('examForm');
+            try {
+                await db.collection('exams').add({ title, dateText: date, timeText: timeString, class: cls, stream: stm, status, description: desc, fileUrl, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+                
+                toggleForm('examForm');
+                document.getElementById('exTitle').value = '';
+                document.getElementById('exDesc').value = '';
+                document.getElementById('exLink').value = '';
+                uploadedFileBase64 = '';
+                document.getElementById('exFileStatus').innerHTML = '<i class="fa-solid fa-paperclip"></i> Tap to attach datesheet';
+                alert("✅ Timetable Published Successfully!");
+            } catch(e) { alert("Failed to publish timetable."); }
+
             document.getElementById('btnSaveEx').innerHTML = `<i class="fa-solid fa-paper-plane"></i> Publish Timetable`;
-            document.getElementById('exTitle').value = '';
-            document.getElementById('exDesc').value = '';
         }
 
-        // Generic Delete
         async function deleteDoc(collection, id) {
             if(!confirm("Are you sure you want to delete this permanently?")) return;
             await db.collection(collection).doc(id).delete();
